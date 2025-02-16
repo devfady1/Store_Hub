@@ -11,8 +11,270 @@
   <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
   <title>Store Hub | Main</title>
+  <style>
+    .container {
+    margin: 50px 50px 50px 50px;
+  }
+  .wishlist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .wishlist-header h2 {
+    margin: 0;
+  }
+  
+  .move-all-btn {
+    background-color: white;
+    color: black;
+    padding: 10px 15px;
+    border: 1px solid black;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  
+  .move-all-btn:hover {
+    background-color: var(--main-color);
+  }
+  
+  
+  .wishlist-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .just-for-you-section {
+    padding: 20px;
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .section-header h2 {
+    color: var(--main-color);
+    margin: 0;
+  }
+  
+  .see-all {
+    background: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .wishlist-row .see-all:hover {
+    background: var(--main-color);
+  }
+  
+  
+  .wishlist-row .product {
+    background: white;
+    padding: 15px;
+    border: 1px solid #ddd;
+    text-align: center;
+    width: 23%;
+    position: relative; 
+  }
+  .wishlist-row .discount-badge {
+    position: absolute;
+    top: 10px;  
+    left: 10px; 
+    background-color: var(--main-color);
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+  .wishlist-icon {
+    position: absolute;
+    top: 10px; 
+    right: 10px; 
+    background: white;
+    border-radius: 50%;
+    padding: 6px; 
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 14px; 
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10; 
+}
+
+  
+  
+  .wishlist-row .wishlist-icon:hover {
+    background:var(--main-color);
+    color: white;
+  }
+  .wishlist-row .view-icon {
+    position: absolute;
+    top: 15px;
+    right: 10px; 
+    background: white;
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 16px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+  .wishlist-row .view-icon:hover {
+    background: var(--main-color);
+    color: white;
+  }
+  
+  .wishlist-row .product img {
+    background-color: #e2dfdf;
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+  }
+  
+  
+  .wishlist-row .price-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .wishlist-row .price {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--main-color);
+  }
+  
+  .wishlist-row .old-price {
+    text-decoration: line-through;
+    color: gray;
+    font-size: 14px;
+  }
+  
+ 
+  .wishlist-row .stars {
+    color: #ffc918;
+  }
+  
+  .stars span {
+    color: gray;
+  }
+
+   .wishlist-row .product.add-to-carts {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+  .wishlist-row .product .add-to-carts:hover {
+    background-color: #9f1239;
+  }
+  
+  .wishlist-row .product .add-to-carts i {
+    font-size: 18px;
+  }
+  .dark .wishlist-header h2{
+  color: #fff  !important;
+}
+.dark .section-header h2,
+.dark .wishlist-row .price { 
+    color: #9f1239  !important; /* لون داكن للنصوص */
+}
+
+/* أيقونات القلب والعين */
+.dark .wishlist-icon, 
+.dark .view-icon {
+    background: #222; /* لون داكن */
+    color: white;
+}
+
+.dark .wishlist-icon:hover, 
+.dark .view-icon:hover {
+    background: var(--main-color);
+    color: #fff;
+}
+
+/* خصم المنتجات */
+.dark .wishlist-row .discount-badge {
+    background-color:#9f1239!important; /* الخصم يكون غامق */
+    color: #fff !important;
+}
+
+/* تحسين الصور */
+.dark.wishlist-row .product img {
+    filter: brightness(0.9); /* تقليل السطوع ليليق مع الدارك مود */
+    border-radius: 5px;
+    background-color: #222;
+}
+
+/* تعديل زر الإضافة للسلة */
+.dark .wishlist-row .product .add-to-carts {
+    background-color: #222;
+    color: white;
+}
+
+.dark.wishlist-row .product .add-to-carts:hover {
+    background-color: #9f1239;
+}
+  
+  </style>
+</style>
 </head>
 <body>
+    <header>
+        <div class="container">
+          <nav>
+            <h1>STOREHUB</h1>
+            <div class="linkes">
+              <a href="index.html" class="active">
+                <p>Home</p>
+              </a>
+              <a href="allproduct.html">
+                <p>All Product</p>
+              </a>
+              <a href="about.html">
+                <p>About</p>
+              </a>
+              <a href="contact.html">
+                <p>Contact</p>
+              </a>
+            </div>
+            <form class="header-form">
+              <input type="search" placeholder="Seacrch" class="seacrch" />
+              <i class="fa-regular fa-heart"></i>
+              <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+              <a href="account.html"><i class="fa-regular fa-user"></i></a>
+              <input type="checkbox" id="toggle" />
+  
+              <label class="toggle" for="toggle">
+                <i class="bx bxs-sun"></i>
+                <i class="bx bx-moon"></i>
+                <span class="ball"></span>
+              </label>
+            </form>
+          </nav>
+        </div>
+      </header>
+
+
 <div class="continer">
     <div class="wishlist-header">
         <h2>Wishlist (4)</h2>
@@ -21,27 +283,32 @@
     <!-- الصف الأول -->
     <div class="wishlist-row">
         <div class="product">
-            <img src="/FRONT-END/images/bag.png" alt="Gucci duffle bag">
+            <span class="discount-badge">-35%</span>
+            <i class="wishlist-icon fa fa-trash"></i>
+            <img src="images/bag.png" alt="Gucci duffle bag">
             <button class="add-to-cart"><i class="fas fa-shopping-cart"></i>Add To Cart</button><br><br>
             <p>Gucci duffle bag</p>
             <p class="price">$960 <span class="old-price">$1160</span></p>
             
         </div>
         <div class="product">
-            <img src="/FRONT-END/images/speaker.png" alt="RGB liquid CPU Cooler">
+            <i class="wishlist-icon fa fa-trash"></i>
+            <img src="images/speaker.png" alt="RGB liquid CPU Cooler">
             <button class="add-to-cart"><i class="fas fa-shopping-cart"></i> Add To Cart</button><br><br>
             <p>RGB liquid CPU Cooler</p>
             <p class="price">$1960</p>
             
         </div>
         <div class="product">
-            <img src="/FRONT-END/images/game.png" alt="GPII Shooter USB Gamepad">
+            <i class="wishlist-icon fa fa-trash"></i>
+            <img src="images/game.png" alt="GPII Shooter USB Gamepad">
             <button class="add-to-cart"><i class="fas fa-shopping-cart"></i>Add To Cart</button><br><br>
             <p>GPII Shooter USB Gamepad</p>
             <p class="price">$550</p>
         </div>
         <div class="product">
-            <img src="/FRONT-END/images/jacket2.png" alt="Quilted Satin Jacket">
+            <i class="wishlist-icon fa fa-trash"></i>
+            <img src="images/jacket2.png" alt="Quilted Satin Jacket">
             <button class="add-to-cart"><i class="fas fa-shopping-cart"></i> Add To Cart</button><br><br>
             <p>Quilted Satin Jacket</p>
             <p class="price">$750</p>
@@ -56,7 +323,9 @@
     <!-- الصف الثاني -->
     <div class="wishlist-row">
         <div class="product">
-            <img src="/FRONT-END/images/laptop.png" alt="ASUS FHD Gaming Laptop">
+            <span class="discount-badge">-35%</span>
+            <i class="view-icon fa fa-eye"></i>
+            <img src="images/laptop.png" alt="ASUS FHD Gaming Laptop">
             <button class="add-to-cart"> <i class="fas fa-shopping-cart"></i>Add To Cart</button><br><br>
             <p>ASUS FHD Gaming Laptop</p>
             <p class="price">$960 <span class="old-price">$1160</span></p>
@@ -70,7 +339,8 @@
               </div>
         </div>
         <div class="product">
-            <img src="/FRONT-END/images/lcd.png" alt="IPS LCD Gaming Monitor">
+            <i class="view-icon fa fa-eye"></i>
+            <img src="images/lcd.png" alt="IPS LCD Gaming Monitor">
             <button class="add-to-cart"><i class="fas fa-shopping-cart"></i>Add To Cart</button><br><br>
             <p>IPS LCD Gaming Monitor</p>
             <p class="price">$1160</p>
@@ -84,8 +354,9 @@
               </div>
         </div>
         <div class="product">
+            <i class="view-icon fa fa-eye"></i>
             <span class="new-badge">NEW</span> <!-- الشارة الجديدة -->
-            <img src="/FRONT-END/images/game.png" alt="HAVIT HV-692 Gamepad">
+            <img src="images/game.png" alt="HAVIT HV-692 Gamepad">
             <button class="add-to-cart"><i class="fas fa-shopping-cart"></i>Add To Cart</button><br><br>
             <p>HAVIT HV-692 Gamepad</p>
             <p class="price">$560</p>
@@ -99,7 +370,8 @@
               </div>
         </div>
         <div class="product">
-            <img src="/FRONT-END/images/keyboard.png" alt="AK-900 Wired Keyboard">
+            <i class="view-icon fa fa-eye"></i>
+            <img src="images/keyboard.png" alt="AK-900 Wired Keyboard">
             <button class="add-to-cart"><i class="fas fa-shopping-cart"></i>Add To Cart</button><br><br>
             <p>AK-900 Wired Keyboard</p>
             <p class="price">$200</p>
@@ -115,6 +387,10 @@
     </div>
     </div>
 </div>
+ <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/darkmode.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
 
