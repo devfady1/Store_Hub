@@ -1164,9 +1164,17 @@ section#browseCat .container {
 .imgAndDetailes .container .detailes .stars p#Available {
   color: #28a745;
 }
-.imgAndDetailes .container .detailes #sallery {
+.imgAndDetailes .container .detailes .sallery{
+  display: flex;
+}
+.imgAndDetailes .container .detailes #newSall {
   padding-bottom: 15px;
+  padding-right: 30px;
   color: var(--dark-color);
+}
+.imgAndDetailes .container .detailes #oldSall{
+  color: var(--main-color);
+  text-decoration: line-through;
 }
 .imgAndDetailes .container .detailes #caption {
   color: var(--dark-color);

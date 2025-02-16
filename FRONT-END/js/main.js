@@ -107,12 +107,21 @@ var x = new Swiper(".categs", {
   },
 });
 document.querySelectorAll(".pro").forEach((div) => {
-  div.addEventListener("click", function () {
+  div.addEventListener("click", function (event) {
+    if (event.target.closest(".addcart") || event.target.closest(".icons"))
+      return;
     let img = this.querySelector("img");
-    if (img) {
-      let imgSrc = img.getAttribute("src");
-      localStorage.setItem("imgsrc", imgSrc);
-      window.location.href = "onepro.html";
-    }
+    let name = this.querySelector("h5").innerHTML;
+    let newSall = this.querySelector(".new-sall").innerHTML;
+    let imgSrc = img.getAttribute("src");
+    localStorage.setItem("namePro", name);
+    localStorage.setItem("newSall", newSall);
+    localStorage.setItem("imgsrc", imgSrc);
+    let oldSall = this.querySelector(".old-sall");
+    if (oldSall) {
+      let oldSallH = oldSall.innerHTML;
+      localStorage.setItem("oldSall", oldSallH);
+    } else localStorage.removeItem("oldSall");
+    window.location.href = "onepro.html";
   });
 });
