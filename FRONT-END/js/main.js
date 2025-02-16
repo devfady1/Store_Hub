@@ -106,6 +106,8 @@ var x = new Swiper(".categs", {
     },
   },
 });
+
+
 document.querySelectorAll(".pro").forEach((div) => {
   div.addEventListener("click", function (event) {
     if (event.target.closest(".addcart") || event.target.closest(".icons"))

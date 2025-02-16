@@ -17,22 +17,24 @@ inc.addEventListener("click", () => {
   Num.innerHTML++;
 });
 
-window.addEventListener("load", function () {
-  let storedSrc = localStorage.getItem("imgsrc");
-  let namePro = localStorage.getItem("namePro");
-  let newSall = localStorage.getItem("newSall");
-  let oldSall = localStorage.getItem("oldSall");
-  let imgInOnePro = document.querySelector(".imgAndDetailes .img img");
-  let nameProH5 = document.querySelector(".imgAndDetailes #proname");
-  let newSallH = document.querySelector(".imgAndDetailes #newSall");
-  let oldSallH = document.querySelector(".imgAndDetailes #oldSall");
-  if (newSall) newSallH.innerHTML = newSall;
-  if (namePro) nameProH5.innerHTML = namePro;
-  if (storedSrc) imgInOnePro.setAttribute("src", storedSrc);
-  if (oldSall) {
-    oldSallH.innerHTML = oldSall;
-    oldSallH.style.display = "block";
-  } else {
-    oldSallH.style.display = "none";
-  }
-});
+let storedSrc = localStorage.getItem("imgsrc");
+let namePro = localStorage.getItem("namePro");
+let newSall = localStorage.getItem("newSall");
+let oldSall = localStorage.getItem("oldSall");
+let imgInOnePro = document.querySelector(".imgAndDetailes .img img");
+let nameProH5 = document.querySelector(".imgAndDetailes #proname");
+let newSallH = document.querySelector(".imgAndDetailes #newSall");
+let oldSallH = document.querySelector(".imgAndDetailes #oldSall");
+let nameHeader = document.querySelector(".address p #proName");
+if (newSall) newSallH.innerHTML = newSall;
+if (namePro) {
+  nameProH5.innerHTML = namePro;
+  nameHeader.innerHTML = namePro;
+}
+if (storedSrc) imgInOnePro.setAttribute("src", storedSrc);
+if (oldSall) {
+  oldSallH.innerHTML = oldSall;
+  oldSallH.style.display = "block";
+} else {
+  oldSallH.style.display = "none";
+}
