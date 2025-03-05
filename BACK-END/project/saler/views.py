@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect  
 from .forms import ProductForm 
+from django.conf import settings
+print(settings.TEMPLATES)
 
 
 def add_product(request):
@@ -11,7 +13,7 @@ def add_product(request):
     else:
         form = ProductForm() 
 
-    return render(request, "seller/seller.html", {"form": form}) 
+    return render(request, "saler/seler.html", {"form": form}) 
 
 def success_view(request):
     return render(request, "seller/success.html") 
