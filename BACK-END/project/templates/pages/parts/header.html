@@ -5,6 +5,82 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <style>
+      .user-menu {
+          position: fixed; 
+          top: 60px;
+          right: 70px; 
+          width: 180px;
+          background: linear-gradient(135deg, #3a3a3a, #888);
+          border-radius: 10px;
+          padding: 10px 0;
+          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+          display: none; 
+          z-index: 1000; 
+      }
+      
+      .user-menu-container {
+          position: relative;
+          display: inline-block;
+      }
+      
+      #user-icon {
+          cursor: pointer;
+          position: relative; 
+          z-index: 10; 
+      }
+      
+      .user-menu ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+      }
+      
+      .user-menu ul li {
+          padding: 10px;
+          display: flex;
+          align-items: center;
+      }
+      
+      .user-menu ul li a {
+          text-decoration: none;
+          color: white;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          width: 100%;
+      }
+      
+      .user-menu ul li:hover {
+          background: rgba(255, 255, 255, 0.2);
+      }
+      
+      #user-icon {
+          cursor: pointer;
+      }
+      
+      
+      
+      </style>
+      
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        let userIcon = document.getElementById("user-icon");
+        let userMenu = document.querySelector(".user-menu");
+    
+        userIcon.addEventListener("click", function (event) {
+            event.preventDefault();
+            userMenu.style.display = userMenu.style.display === "block" ? "none" : "block";
+        });
+    
+        document.addEventListener("click", function (event) {
+            if (!userIcon.contains(event.target) && !userMenu.contains(event.target)) {
+                userMenu.style.display = "none";
+            }
+        });
+    });
+    
+    </script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -46,14 +122,20 @@
                   <i class="fa-regular fa-user"></i>
               </a>
               <div class="user-menu">
-                  <ul>
-                      <li><a href="{% url 'account' %}"> <i class="fa-regular fa-user"></i> Manage My Account</a></li>
-                      <li><a href="#"> <i class="fa-solid fa-box"></i> My Order</a></li>
-                      <li><a href="#"> <i class="fa-solid fa-ban"></i> My Cancellations</a></li>
-                      <li><a href="#"> <i class="fa-regular fa-star"></i> My Reviews</a></li>
-                      <li><a href="{% url 'logout' %}"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
-                  </ul>
-              </div>
+                <ul>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'account' %}"> <i class="fa-regular fa-user"></i> Manage My Account</a></li>
+                        <li><a href="#"> <i class="fa-solid fa-box"></i> My Order</a></li>
+                        <li><a href="#"> <i class="fa-solid fa-ban"></i> My Cancellations</a></li>
+                        <li><a href="#"> <i class="fa-regular fa-star"></i> My Reviews</a></li>
+                        <li><a href="{% url 'account_logout' %}"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'account_login' %}"> <i class="fa-solid fa-sign-in"></i> Login</a></li>
+                        <li><a href="{% url 'account_signup' %}"> <i class="fa-solid fa-user-plus"></i> Sign Up</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            
           </div>
           
             <input type="checkbox" id="toggle" />
@@ -68,82 +150,3 @@
       </div>
     </header>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
-
-  
-
-<style>
-.user-menu {
-    position: fixed; /* ثبات القائمة فوق الصفحة */
-    top: 60px; /* تحت الناف بار */
-    right: 70px; /* في أقصى اليمين */
-    width: 180px;
-    background: linear-gradient(135deg, #3a3a3a, #888);
-    border-radius: 10px;
-    padding: 10px 0;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    display: none; /* خليها مخفية في البداية */
-    z-index: 1000; /* فوق كل العناصر */
-}
-
-.user-menu-container {
-    position: relative;
-    display: inline-block;
-}
-
-#user-icon {
-    cursor: pointer;
-    position: relative; 
-    z-index: 10; /* جعل الأيقونة في الأعلى */
-}
-
-.user-menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.user-menu ul li {
-    padding: 10px;
-    display: flex;
-    align-items: center;
-}
-
-.user-menu ul li a {
-    text-decoration: none;
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-}
-
-.user-menu ul li:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-#user-icon {
-    cursor: pointer;
-}
-
-
-
-</style>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    let userIcon = document.getElementById("user-icon");
-    let userMenu = document.querySelector(".user-menu");
-
-    userIcon.addEventListener("click", function (event) {
-        event.preventDefault();
-        userMenu.style.display = userMenu.style.display === "block" ? "none" : "block";
-    });
-
-    document.addEventListener("click", function (event) {
-        if (!userIcon.contains(event.target) && !userMenu.contains(event.target)) {
-            userMenu.style.display = "none";
-        }
-    });
-});
-
-</script>
