@@ -185,6 +185,12 @@ def register(request):
     return render(request, 'pages/account/signUp.html', {'form': form})
 
 
+
+
+def account(request):
+    return render(request, 'pages/account/account.html')
+
+
 def contact_view(request):
     if request.method == "POST":
         name = request.POST.get('name')

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'local.test']
 # Application definition
 SITE_ID = 1
 INSTALLED_APPS = [
+    'saler.apps.SalerConfig',
     'jazzmin',
     'pages.apps.PagesConfig',
     'django.contrib.admin',
