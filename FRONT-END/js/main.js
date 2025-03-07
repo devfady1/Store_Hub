@@ -26,14 +26,6 @@
       }
     });
 
-    // Hide dropdown on scroll
-    window.addEventListener('scroll', () => {
-      if (isDropdownVisible) {
-    accountDropdown.classList.remove('active');
-  isDropdownVisible = false;
-      }
-    });
-
     
 // Start Swiper Section 1
 const swiper = new Swiper(".swiper", {

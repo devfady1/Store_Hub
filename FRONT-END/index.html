@@ -47,6 +47,21 @@
             <a href="#" id="user-icon">
                 <i class="fa-regular fa-user"></i>
             </a>
+
+            <div class="user-menu" id="accountDropdown">
+              <ul>
+            
+                <li><a href="{% url 'account' %}"> <i class="fa-regular fa-user"></i> Manage My Account</a></li>
+                <li><a href="#"> <i class="fa-solid fa-box"></i> My Order</a></li>
+                <li><a href="#"> <i class="fa-solid fa-ban"></i> My Cancellations</a></li>
+                <li><a href="#"> <i class="fa-regular fa-star"></i> My Reviews</a></li>
+                <li><a href="{% url 'account_logout' %}"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+                <li><a href="{% url 'account_login' %}"> <i class="fa-solid fa-sign-in"></i> Login</a></li>
+                <li><a href="{% url 'account_signup' %}"> <i class="fa-solid fa-user-plus"></i> Sign Up</a></li>
+            
+              </ul>
+            </div>
+            
             <input type="checkbox" id="toggle" />
 
             <label class="toggle" for="toggle">
@@ -59,19 +74,7 @@
       </div>
     </header>
 
-    <div class="user-menu" id="accountDropdown">
-      <ul>
     
-        <li><a href="{% url 'account' %}"> <i class="fa-regular fa-user"></i> Manage My Account</a></li>
-        <li><a href="#"> <i class="fa-solid fa-box"></i> My Order</a></li>
-        <li><a href="#"> <i class="fa-solid fa-ban"></i> My Cancellations</a></li>
-        <li><a href="#"> <i class="fa-regular fa-star"></i> My Reviews</a></li>
-        <li><a href="{% url 'account_logout' %}"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
-        <li><a href="{% url 'account_login' %}"> <i class="fa-solid fa-sign-in"></i> Login</a></li>
-        <li><a href="{% url 'account_signup' %}"> <i class="fa-solid fa-user-plus"></i> Sign Up</a></li>
-    
-      </ul>
-    </div>
 
     <!--Section One-->
     <section class="slider">
