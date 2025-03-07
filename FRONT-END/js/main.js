@@ -2,31 +2,31 @@
 
 //User Account
 
-    // Account dropdown functionality
-  const accountIcon = document.getElementById('user-icon');
-  const accountDropdown = document.getElementById('accountDropdown');
-  let isDropdownVisible = false;
+// Account dropdown functionality
+const accountIcon = document.getElementById('user-icon');
+const accountDropdown = document.getElementById('accountDropdown');
+let isDropdownVisible = false;
 
-    // Toggle dropdown when account icon is clicked
-    accountIcon.addEventListener('click', (e) => {
-    e.stopPropagation();
+// Toggle dropdown when account icon is clicked
+accountIcon.addEventListener('click', (e) => {
+  e.stopPropagation();
   isDropdownVisible = !isDropdownVisible;
   if (isDropdownVisible) {
     accountDropdown.classList.add('active');
-      } else {
+  } else {
     accountDropdown.classList.remove('active');
-      }
-    });
+  }
+});
 
-    // Close dropdown when clicking elsewhere
-    document.addEventListener('click', (e) => {
-      if (isDropdownVisible && e.target !== accountIcon && !accountDropdown.contains(e.target)) {
+// Close dropdown when clicking elsewhere
+document.addEventListener('click', (e) => {
+  if (isDropdownVisible && e.target !== accountIcon && !accountDropdown.contains(e.target)) {
     accountDropdown.classList.remove('active');
-  isDropdownVisible = false;
-      }
-    });
+    isDropdownVisible = false;
+  }
+});
 
-    
+
 // Start Swiper Section 1
 const swiper = new Swiper(".swiper", {
   loop: true,
