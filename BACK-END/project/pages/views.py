@@ -13,6 +13,11 @@ from django.contrib.auth.decorators import *
 from django.shortcuts import get_object_or_404
 from decimal import Decimal
 import json
+from .decorators import role_required
+
+@role_required('saler')
+def add_product(request):
+    return render(request, 'add_product.html')
 
 
 
@@ -65,6 +70,7 @@ def wishlist(request):
         'random_products': random_products
     })
 @login_required
+@csrf_exempt
 def toggle_like(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     

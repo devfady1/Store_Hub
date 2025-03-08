@@ -53,6 +53,9 @@ var x = new Swiper(".products", {
 
 // End swiper product in section Four
 
+
+
+
 // Add and remove class active on icon Heart
 document.querySelectorAll("#iconheart").forEach((icon) => {
   icon.addEventListener("click", function () {
@@ -65,6 +68,11 @@ document.querySelectorAll("#iconheart").forEach((icon) => {
     }
   });
 });
+
+
+
+
+
 
 // Start Swiper Search by Category
 
@@ -127,6 +135,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+// start add to cart
 document.querySelectorAll(".addcart").forEach(button => {
   button.addEventListener("click", function() {
       let productId = this.dataset.id;
@@ -137,7 +148,7 @@ document.querySelectorAll(".addcart").forEach(button => {
           console.log("🔍 Response from server:", data);
           if (data.status === "success") {
               alert("✅ المنتج تم إضافته بنجاح!");
-              window.location.href = "/cart/"
+              window.location.href = "/cart/";
           } else {
               alert("❌ حدث خطأ أثناء الإضافة!");
           }
@@ -145,3 +156,8 @@ document.querySelectorAll(".addcart").forEach(button => {
       .catch(error => console.error('❌ Fetch Error:', error));
   });
 });
+
+// end add to cart
+
+
+

@@ -3,6 +3,7 @@
 
 {% load static %}
 <head>
+  <meta name="csrf-token" content="{{ csrf_token }}">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
@@ -119,6 +120,26 @@
         });
 
     </script>
+          <script>
+            function toggleLike(productId, btn) {
+                fetch(`/toggle-like/${productId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': 'c3ymF56RTKcTXiA0DEhfH4BFFCCWGiYW9C1vDYCRirRoLPqmdvOy0jG6nfBD2sSu'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    let heartIcon = btn.querySelector("i");
+                    if (data.liked) {
+                        heartIcon.classList.add("liked"); // إضافة اللون الأحمر عند اللايك
+                    } else {
+                        heartIcon.classList.remove("liked"); // إزالة اللون الأحمر عند إلغاء اللايك
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        </script>
 </body>
 </html>
 
