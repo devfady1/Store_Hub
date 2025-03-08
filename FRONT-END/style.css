@@ -382,7 +382,9 @@ footer .container h5:hover {
   margin-right: 10px;
   color: white;
 }
-
+.user-menu ul li i:hover {
+  color: var(--main-color);
+}
 .user-menu ul li a {
   text-decoration: none;
   color: white;
