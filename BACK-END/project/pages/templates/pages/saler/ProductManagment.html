@@ -1,0 +1,286 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <title>Store Hub | Product management</title>
+  </head>
+  <body class="light">
+  <!-- Start Product Managment -->
+
+    <div class="product-manag">
+      <div class="cont-product-manag">
+        <div class="head-product-manag">
+          <h1 class="h-product-manag">Product management</h1>
+          <input
+            type="text"
+            id="searchBox"
+            class="search-product-manag"
+            placeholder="Search for a product..."
+          />
+        </div>
+
+        <table class="table-product-manag">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Procedures</th>
+            </tr>
+          </thead>
+          <tbody id="productsListManag"></tbody>
+        </table>
+
+        <!-- Edit Product Modal -->
+
+        <div class="modal-modify" id="editModal">
+          <div class="modal-content">
+            <h2>Modify the product</h2>
+            <form id="editForm">
+              {% csrf_token %}
+              <input type="hidden" id="editId" />
+              <div>
+                <label>Product Name:</label>
+                <input type="text" id="editName" required />
+              </div>
+              <div>
+                <label>Product Color:</label>
+                <input type="text" id="editColor" required />
+              </div>
+              <div>
+                <label>Price:</label>
+                <input type="number" id="editPrice" required />
+              </div>
+              <div>
+                <label>Change The Image:</label>
+                <input type="file" id="editImage" accept="image/*" />
+              </div>
+              <div class="modal-buttons">
+                <button type="submit" class="confirm-btn">Save Changes</button>
+                <button type="button" onclick="closeModal()" class="cancel-btn">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Delete Product -->
+
+        <div class="modal-modify" id="deleteModal">
+          <div class="modal-content">
+            <h2>Delete Product</h2>
+            <p>Are you sure you want to delete this product?</p>
+            <div class="modal-buttons">
+              <button onclick="confirmDelete()" class="confirm-btn">
+                Yes, Delete
+              </button>
+              <button onclick="closeModal()" class="cancel-btn">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- End Product Managment -->
+    <script>
+      // ✅ تحميل Boxicons لو مش محمل
+      function checkBoxiconsLoaded() {
+        const boxiconsLoaded = document.querySelector('link[href*="boxicons"]');
+        if (!boxiconsLoaded) {
+          console.error("Boxicons CSS failed to load. Attempting to reload...");
+          const boxiconsLink = document.createElement("link");
+          boxiconsLink.rel = "stylesheet";
+          boxiconsLink.href =
+            "https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css";
+          document.head.appendChild(boxiconsLink);
+        }
+      }
+    
+      document.addEventListener("DOMContentLoaded", checkBoxiconsLoaded);
+    
+      // ✅ تحميل المنتجات من الـ API
+      let products = [];
+    
+      async function fetchProducts() {
+        try {
+          const response = await fetch("{% url 'product-management' %}");
+          if (!response.ok) throw new Error("Failed to fetch products");
+          products = await response.json();
+          renderProducts(products);
+        } catch (error) {
+          console.error("Error fetching products:", error);
+        }
+      }
+    
+      // ✅ عرض المنتجات في الجدول
+      function renderProducts(filteredProducts = products) {
+        const tbody = document.getElementById("productsListManag");
+        tbody.innerHTML = filteredProducts
+          .map(
+            (product, index) => `
+              <tr>
+                <td data-label="Image">
+                  <img src="${product.image}" class="product-image-manag" alt="${product.name}">
+                </td>
+                <td data-label="Name">${product.name}</td>
+                <td data-label="Price">${product.price} $</td>
+                <td data-label="Actions">
+                  <div class="action-buttons">
+                    <button class="edit-btn" onclick="openEditModal(${index})">Modify</button>
+                    <button class="delete-btn" onclick="openDeleteModal(${index})">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            `
+          )
+          .join("");
+      }
+    
+      // ✅ البحث عن منتج معين
+      document.getElementById("searchBox").addEventListener("input", function (e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const filtered = products.filter((product) =>
+          product.name.toLowerCase().includes(searchTerm)
+        );
+        renderProducts(filtered);
+      });
+    
+      // ✅ فتح المودال للتعديل
+      function openEditModal(index) {
+        const product = products[index];
+        document.getElementById("editId").value = product.id;
+        document.getElementById("editName").value = product.name;
+        document.getElementById("editColor").value = product.color;
+        document.getElementById("editPrice").value = product.price;
+        document.getElementById("editModal").style.display = "flex";
+      }
+    
+      // ✅ تعديل المنتج
+      document
+        .getElementById("editForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+    
+          const id = document.getElementById("editId").value;
+          const name = document.getElementById("editName").value;
+          const price = document.getElementById("editPrice").value;
+          const color = document.getElementById("editColor").value;
+          const file = document.getElementById("editImage").files[0];
+    
+          const formData = new FormData();
+          formData.append("name", name);
+          formData.append("price", price);
+          formData.append("color", color);
+          if (file) formData.append("image", file);
+    
+          try {
+            console.log("Submitting patch request..."); // ✅ للتأكد إن الـ function بتشتغل
+    
+              const response = await fetch(`/products/${id}/`, {
+                method: "PATCH",
+                headers: {
+                  "X-CSRFToken": getCSRFToken(),
+                  "Accept": "application/json", // 👈 دي بتخلي السيرفر يعترف بإن الطلب JSON
+                },
+                body: formData,
+              });
+
+    
+            if (!response.ok) throw new Error("Failed to update product");
+    
+            console.log("Product updated successfully!");
+    
+            await fetchProducts(); // ✅ تحديث المنتجات بعد التعديل
+            closeModal();
+          } catch (error) {
+            console.error("Error updating product:", error);
+          }
+        });
+    
+      // ✅ الحصول على CSRF Token
+      function getCSRFToken() {
+        const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]");
+        return csrfToken ? csrfToken.value : "";
+      }
+    
+      // ✅ فتح مودال الحذف
+      let currentDeleteIndex = null;
+    
+      function openDeleteModal(index) {
+        currentDeleteIndex = index;
+        document.getElementById("deleteModal").style.display = "flex";
+      }
+    
+      // ✅ تنفيذ عملية الحذف
+      async function confirmDelete() {
+        if (currentDeleteIndex !== null) {
+          const productId = products[currentDeleteIndex].id;
+          try {
+            const response = await fetch(`/products/${productId}/delete/`, {
+              method: "DELETE",
+              headers: {
+                "X-CSRFToken": getCSRFToken(),
+              },
+            });
+    
+            if (!response.ok) throw new Error("Failed to delete product");
+    
+            console.log("Product deleted successfully!");
+    
+            await fetchProducts(); // ✅ تحديث القائمة بعد الحذف
+            closeModal();
+          } catch (error) {
+            console.error("Error deleting product:", error);
+          }
+        }
+      }
+    
+      // ✅ إغلاق أي مودال مفتوح
+      function closeModal() {
+        document.querySelectorAll(".modal-modify").forEach((modal) => {
+          modal.style.display = "none";
+        });
+        currentDeleteIndex = null;
+      }
+    
+      // ✅ إغلاق المودال عند الضغط خارجه
+      window.addEventListener("click", (event) => {
+        if (event.target.classList.contains("modal-modify")) {
+          closeModal();
+        }
+      });
+    
+      // ✅ تحديث المنتجات عند التغيير في Local Storage
+      window.addEventListener("storage", async (e) => {
+        if (e.key === "products") {
+          await fetchProducts();
+        }
+      });
+    
+      // ✅ تحميل المنتجات عند فتح الصفحة
+      fetchProducts();
+    </script>
+    
+      
+    
+    <script src="{% static 'js/darkmode.js' %}"></script>
+  </body>
+</html>
+{% endblock content %}

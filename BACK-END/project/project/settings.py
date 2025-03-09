@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'products',
+    'rest_framework',
 ]
 
 REDIRECT_URI = 'http://localhost:8000/accounts/google/login/callback/'

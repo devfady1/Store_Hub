@@ -73,3 +73,20 @@ class CustomLoginForm(forms.Form):
                 raise forms.ValidationError("هذا الحساب غير مفعل.")
 
         return cleaned_data
+    
+
+from django import forms
+from .models import Product
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'description', 'color', 'category', 'price', 'image']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-input-seller', 'placeholder': 'Product Name'}),
+            'description': forms.Textarea(attrs={'class': 'form-input-seller', 'placeholder': 'Product Description'}),
+            'color': forms.Select(attrs={'class': 'form-input-seller'}),
+            'category': forms.Select(attrs={'class': 'form-input-seller'}),
+            'price': forms.NumberInput(attrs={'class': 'form-input-seller', 'placeholder': 'Price ($)'}),
+            'image': forms.FileInput(attrs={'class': 'file-input'}),
+        }

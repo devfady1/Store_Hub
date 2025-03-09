@@ -17,4 +17,14 @@ urlpatterns = [
     path("update-cart/", update_cart, name="update_cart"),
     path("logout/", views.logout_view, name="logout"),
     path("account/", views.account, name="account"),
+    path("add_product/", views.add_product, name="add_product"),
+     # ✅ عرض المنتجات
+    path('products/', ProductManagement, name='product-management'),
+
+    # ✅ تعديل المنتج
+    path('products/<int:id>/', UpdateProduct.as_view(), name='update-product'),
+
+    # ✅ حذف المنتج
+    path('products/<int:id>/delete/', DeleteProduct.as_view(), name='delete-product'),
+    path('api/products/', product_list, name='product-list'),
 ]

@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include('pages.urls')),
     path('saler/', include('saler.urls')),
     path('accounts/', include('allauth.urls')),
+    path('api/', include('pages.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'project.views.handel404'

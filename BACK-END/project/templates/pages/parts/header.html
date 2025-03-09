@@ -50,8 +50,8 @@
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'account' %}"> <i class="fa-regular fa-user"></i> Manage My Account</a></li>
                     {% if user.userprofile.role == 'saler' %}
-                        <li><a href=""> <i class="fa-solid fa-plus"></i> Add Product</a></li>
-                        <li><a href=""> <i class="fa-solid fa-pen-to-square"></i> Manage Product</a></li>
+                        <li><a href="{% url 'add_product' %}"> <i class="fa-solid fa-plus"></i> Add Product</a></li>
+                        <li><a href="{% url 'product-management' %}"> <i class="fa-solid fa-pen-to-square"></i> Manage Product</a></li>
                     {% endif %}
                     <li><a href="#"> <i class="fa-solid fa-box"></i> My Order</a></li>
                     <li><a href="#"> <i class="fa-solid fa-ban"></i> My Cancellations</a></li>

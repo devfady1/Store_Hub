@@ -2,6 +2,8 @@ from django.shortcuts import render , redirect
 from .models import *
 from django.db.models import Count , Max 
 from .forms import *
+from .forms import ProductForm
+from django.contrib.auth.decorators import user_passes_test 
 from django.contrib import messages 
 from django.contrib.auth import login, authenticate ,logout
 from django.views.decorators.csrf import csrf_protect
@@ -13,12 +15,9 @@ from django.contrib.auth.decorators import *
 from django.shortcuts import get_object_or_404
 from decimal import Decimal
 import json
-from .decorators import role_required
 
-@role_required('saler')
-def add_product(request):
-    return render(request, 'add_product.html')
-
+def is_seler(user):
+    return user.userprofile.role == 'seller'
 
 
 
@@ -313,11 +312,153 @@ def cart(request):
 
     return render(request, 'pages/payment/cart.html', {'cart': cart, 'total': total})
 
+from django.http import JsonResponse
 
 
-#لو حطيت .get(rating__gte=3) لا يعرض الا المنتجات التي تكون تقييمها 3 او اكبر
-#.filter-price__exact=10 view all price10
-#contains=10 view all contains 10
-#price__range=(10,20) view all between 10-20
-#price__in=(10,20) view all between 10-20
-#price__in=[10,20] view all between 10-20
+#@user_passes_test(is_seler)
+def add_product(request):  
+    if request.method == 'POST':  
+        form = ProductForm(request.POST, request.FILES)  
+        if form.is_valid():  
+            product = form.save(commit=False)  
+            product.saler = request.user  
+            product.save()  
+            return JsonResponse({'success': True})  
+        else:  
+            return JsonResponse({'success': False, 'errors': form.errors})  
+    else:  
+        form = ProductForm() 
+
+    categories = Category.objects.all()  
+    return render(request, 'pages/saler/saler.html', {'form': form, 'categories': categories})  
+
+
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render, get_object_or_404
+from django.utils.decorators import method_decorator
+from django.views import View
+from .models import Product
+import json
+
+# ✅ عرض المنتجات في الصفحة وفي API
+from django.contrib.auth.decorators import login_required
+def product_list(request):
+    if request.user.is_authenticated:
+        products = Product.objects.filter(saler=request.user)  # ✅ فلترة المنتجات على المستخدم الحالي
+        products_list = [
+            {
+                'id': product.id,
+                'name': product.name,
+                'price': product.price,
+                'color': product.color,
+                'image': product.image.url if product.image else '',
+            }
+            for product in products
+        ]
+        return JsonResponse(products_list, safe=False)
+    else:
+        return JsonResponse({'error': 'User not authenticated'}, status=401)
+
+@login_required
+def ProductManagement(request):
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        products = Product.objects.filter(saler=request.user)
+        products_list = [
+            {
+                'id': product.id,
+                'name': product.name,
+                'price': product.price,
+                'color': product.color,
+                'image': product.image.url if product.image else '',
+            }
+            for product in products
+        ]
+        print(products_list)  # ✅ تأكد إن الـ JSON صحيح
+        return JsonResponse(products_list, safe=False)
+    
+    products = Product.objects.filter(saler=request.user)
+    return render(request, 'pages/saler/ProductManagment.html', {'products': products})
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from .models import Product
+
+from rest_framework.permissions import IsAuthenticated
+
+class UpdateProduct(APIView):
+    parser_classes = (MultiPartParser, FormParser)
+    permission_classes = [IsAuthenticated]  # 🔥 السماح للمستخدمين المسجلين فقط
+
+    def patch(self, request, id):
+        product = get_object_or_404(Product, id=id)
+
+        # ✅ التحقق من إن المستخدم الحالي هو المالك
+        if product.saler != request.user:
+            return Response({'error': 'You do not have permission to edit this product'}, status=403)
+
+        try:
+            # 👌 تحديث البيانات
+            product.name = request.data.get('name', product.name)
+            product.price = request.data.get('price', product.price)
+            product.color = request.data.get('color', product.color)
+
+            if 'image' in request.FILES:
+                product.image = request.FILES['image']
+
+            product.save()
+            return Response({'message': 'Product updated successfully!'})
+        except Exception as e:
+            print(f"Error updating product: {str(e)}")
+            return Response({'error': f'Failed to update product: {str(e)}'}, status=400)
+
+    parser_classes = (MultiPartParser, FormParser)
+    permission_classes = [IsAuthenticated]  # 🔥 السماح فقط للمستخدمين المسجلين
+
+    def patch(self, request, id):
+        product = get_object_or_404(Product, id=id)
+
+        # 👌 تأكد إن المستخدم الحالي هو المالك (saler)
+        if product.saler != request.user:
+            return JsonResponse({'error': 'You do not have permission to edit this product'}, status=403)
+
+        try:
+            # ✅ تحديث البيانات
+            product.name = request.data.get('name', product.name)
+            product.price = request.data.get('price', product.price)
+            product.color = request.data.get('color', product.color)
+
+            # ✅ تحديث الصورة (لو فيه صورة مرفوعة)
+            if 'image' in request.FILES:
+                product.image = request.FILES['image']
+
+            product.save()
+
+            # ✅ استجابة JSON منظمة
+            return JsonResponse({
+                'message': 'Product updated successfully!',
+                'data': {
+                    'id': product.id,
+                    'name': product.name,
+                    'price': product.price,
+                    'color': product.color,
+                    'image': product.image.url if product.image else None,
+                }
+            })
+        except Exception as e:
+            print(f"❌ Error updating product: {str(e)}")  # سجل الخطأ
+            return JsonResponse({'error': f'Failed to update product: {str(e)}'}, status=400)
+
+# ✅ حذف المنتج
+@method_decorator(csrf_exempt, name='dispatch')
+class DeleteProduct(View):
+    def delete(self, request, id):
+        product = get_object_or_404(Product, id=id, saler=request.user)
+        product.delete()
+        return JsonResponse({'message': 'Product deleted successfully!'})
+
+
