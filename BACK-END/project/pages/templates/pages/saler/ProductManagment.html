@@ -18,7 +18,7 @@
       href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
       rel="stylesheet"
     />
-    <title>Store Hub | Product management</title>
+    <title>Store Hub | Product Management</title>
   </head>
   <body class="light">
   <!-- Start Product Managment -->
@@ -61,7 +61,12 @@
               </div>
               <div>
                 <label>Product Color:</label>
-                <input type="text" id="editColor" required />
+                <input type="text" id="editColor" list="productList" required />
+                  <datalist id="productList">
+                   {% for product in products %}
+                    <option value="{{ product.name }}">
+                    {% endfor %}
+                  </datalist>
               </div>
               <div>
                 <label>Price:</label>
@@ -120,7 +125,7 @@
     
       async function fetchProducts() {
         try {
-          const response = await fetch("{% url 'product-management' %}");
+          const response = await fetch("{% url 'product-list' %}");
           if (!response.ok) throw new Error("Failed to fetch products");
           products = await response.json();
           renderProducts(products);

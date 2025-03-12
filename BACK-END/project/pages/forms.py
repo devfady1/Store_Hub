@@ -83,10 +83,10 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = ['name', 'description', 'color', 'category', 'price', 'image']
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-input-seller', 'placeholder': 'Product Name'}),
-            'description': forms.Textarea(attrs={'class': 'form-input-seller', 'placeholder': 'Product Description'}),
+            'name': forms.TextInput(attrs={'class': 'form-input-seller', 'placeholder':''}),
+            'description': forms.Textarea(attrs={'class': 'form-input-seller', 'placeholder': ''}),
             'color': forms.Select(attrs={'class': 'form-input-seller'}),
             'category': forms.Select(attrs={'class': 'form-input-seller'}),
-            'price': forms.NumberInput(attrs={'class': 'form-input-seller', 'placeholder': 'Price ($)'}),
+            'price': forms.NumberInput(attrs={'class': 'form-input-seller', 'placeholder': ''}),
             'image': forms.FileInput(attrs={'class': 'file-input'}),
         }
