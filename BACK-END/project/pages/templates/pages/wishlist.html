@@ -62,8 +62,6 @@
       {% endfor %}
   </div>
 </div>
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<script src="{% static 'js/test.js' %}"></script>
 <script>
   function removeFromWishlist(productId) {
       fetch(`/toggle-like/${productId}/`, {
