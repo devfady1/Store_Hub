@@ -1,0 +1,138 @@
+{% extends 'pages/base.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <title>Store Hub | {{ product.name }}</title>
+  </head>
+
+  <body class="light">
+
+    <section class="address">
+      <div class="container">
+        <p><a href="{% url 'index' %}">Home</a> / <span id="proName">{{ product.name }}</span></p>
+      </div>
+    </section>
+
+    <section class="imgAndDetailes">
+      <div class="container">
+        <div class="img">
+          <img src="{{ product.image.url }}" alt="{{ product.name }}" id="proImg" />
+        </div>
+        <div class="detailes">
+          <h3 id="proname">{{ product.name }}</h3>
+          <div class="stars">
+            {% for _ in star_list %}
+                <i class="fa-solid fa-star"></i>  
+            {% endfor %}
+    
+            {% for _ in empty_stars %}
+                <i class="fa-regular fa-star"></i>  
+            {% endfor %}
+    
+            <span>({{ rating }})</span>  
+        </div>
+          <h3 id="sallery">${{ product.price }}</h3>
+          <p id="caption">
+            {{ product.description }}
+          </p>
+
+          <div class="size">
+            <h3>Size :</h3>
+            <div><p>XS</p></div>
+            <div><p>S</p></div>
+            <div><p>M</p></div>
+            <div><p>L</p></div>
+            <div><p>XL</p></div>
+          </div>
+
+          <div class="buyLove">
+            <div class="Number">
+              <div class="dec">-</div>
+              <div id="Num">0</div>
+              <div class="inc">+</div>
+            </div>
+            <button>Buy Now</button>
+            <div class="ico">
+              <i class="fa-regular fa-heart"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="RelatedItem">
+      <div class="container">
+        <div class="RelatedItemtext">
+          <span class="shape">.</span>
+          <p>Related Item</p>
+        </div>
+        <div class="products">
+          {% for item in related_items %}
+          <div class="pro">
+              <div class="icons">
+                  <div class="icon">
+                      <i class="fa-regular fa-heart"></i>
+                      <i class="fa-regular fa-eye"></i>
+                  </div>
+              </div>
+              <div class="addcart">
+                  <div class="text">
+                      <p>Add To Cart</p>
+                  </div>
+              </div>
+              <div class="img">
+                  <a href="{% url 'product' item.id %}">
+                      <img src="{{ item.image.url }}" alt="{{ item.name }}" />
+                  </a>
+              </div>
+              <div class="detailes">
+                  <h5>{{ item.name }}</h5>
+                  <div class="dis">
+                      <div class="sallery">
+                          <span class="new-sall">${{ item.price }}</span>
+                      </div>
+                      <div class="stars">
+                        {% for _ in item.star_list %}
+                            <i class="fa-solid fa-star"></i>  
+                        {% endfor %}
+                    
+                        {% for _ in item.empty_stars %}
+                            <i class="fa-regular fa-star"></i>  
+                        {% endfor %}
+                    
+                        <span>({{ item.rating }})</span>  
+                    </div>
+                    
+                  </div>
+              </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="{% static 'js/onepro.js' %}"></script>
+    <script src="{% static 'js/darkmode.js' %}"></script>
+
+  </body>
+</html>
+{% endblock content %} 

@@ -1,0 +1,95 @@
+{% extends 'pages/base.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet" />
+    <title>Store Hub | Account</title>
+  </head>
+  <body class="light">
+    <div class="breadcrumb-account">
+      <div class="bread">
+        <a href="index.html" class="a1">Home</a>
+        <span class="check">/</span>
+        <a href="account.html" class="check">My Account</a>
+      </div>
+      <div class="check">Welcome! <span>StoreHub Team!</span></div>
+    </div>
+
+    <div class="container-account">
+      <aside class="sidebar-account">
+        <p>Manage My Account</p>
+        <p></p>
+        <ul class="sidebar-menu-account">
+          <li class="active">My Profile</li>
+          <li>Address Book</li>
+          <li onclick="window.location.href='{% url 'cart' %}'">My Payment Options</li>
+        </ul>
+        <p>My Orders</p>
+        <ul class="sidebar-menu-account">
+          <li>My Returns</li>
+          <li>My Cancellations </li>
+        </ul>
+        <p>My Wishlist</p>
+      </aside>
+
+      <div class="profile-form">
+        <p class="form-title">Edit Your Profile</p>
+        <form class="account-forms">
+          <div class="form-grid">
+            <div class="form-account">
+              <label>First Name</label>
+              <input type="text" placeholder="StoreHub" required />
+            </div>
+            <div class="form-account">
+              <label>Last Name</label>
+              <input type="text" placeholder="Team" required />
+            </div>
+            <div class="form-account">
+              <label>Email</label>
+              <input type="email" placeholder="StoreHub@gmail.com" required />
+            </div>
+            <div class="form-account">
+              <label>Address</label>
+              <input type="text" placeholder="ASSUIT" required />
+            </div>
+          </div>
+          <div class="form-account">
+            <label>Password Changes</label>
+            <input type="password" placeholder="Current Password" required />
+          </div>
+          <div class="form-account">
+            <input type="password" placeholder="New Password" required />
+          </div>
+          <div class="form-account">
+            <input
+              type="password"
+              placeholder="Confirm New Password"
+              required />
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-account btn-cancel">Cancel</button>
+            <button type="submit" class="btn-account btn-save">
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="js/darkmode.js"></script>
+  </body>
+</html>
+{% endblock content %}

@@ -1,0 +1,130 @@
+{% extends 'pages/base.html' %}
+
+{% load socialaccount %}
+{% block content %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <title>Store Hub | Sign Up</title>
+  </head>
+  <body class="light">
+    </style>
+    <!-- Start Sign -->
+    <div class="sign">
+      <div class="sign-container">
+        <div class="sign-image">
+          <img src="{% static 'images/login.png' %}" alt="Login Image">
+        </div>
+        <div class="sign-form">
+          <h6>Create an account</h6>
+          <p>Enter your details below</p>  
+          <p> {% if form.username.errors %}
+              <div class="error-message">{{ form.username.errors }}</div>
+            {% endif %}
+
+            {% if form.email.errors %}
+              <div class="error-message">{{ form.email.errors }}</div>
+            {% endif %}
+
+            {% if form.phone_number.errors %}
+              <div class="error-message">{{ form.phone_number.errors }}</div>
+            {% endif %}
+
+            {% if form.password1.errors %}
+              <div class="error-message">{{ form.password1.errors }}</div>
+            {% endif %}
+
+            {% if form.password2.errors %}
+              <div class="error-message">{{ form.password2.errors }}</div>
+            {% endif %}</p>
+          <form method="post">
+            {% csrf_token %}
+            <div class="input-box">
+              <input type="text" name="username" id="id_username" required>
+              <label for="id_username">Name</label>
+              <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div class="input-box">
+              <input type="email" name="email" id="id_email" required>
+              <label for="id_email">Email</label>
+              <i class="fa-solid fa-envelope"></i>
+            </div>
+
+            <div class="input-box">
+              <input type="text" name="PhoneNumber" id="id_PhoneNumber" required>
+              <label for="id_PhoneNumber">Phone Number</label>
+              <i class="fa-solid fa-phone"></i>
+            </div>
+
+            <div class="input-box">
+              <input type="password" name="password1" id="id_password1" required>
+              <label for="id_password1">Password</label>
+              <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <div class="input-box">
+              <input type="password" name="password2" id="id_password2" required>
+              <label for="id_password2">Confirm Password</label>
+              <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <div class="input-box">
+              <select name="role" id="id_role" required>
+                  <option value="" disabled selected></option>
+                  {% for value, label in form.role.field.choices %}
+                      <option value="{{ value }}">{{ label }}</option>
+                  {% endfor %}
+              </select>
+              <label for="id_role">Select Your Role</label>
+              <i class="fa-solid fa-user-tag"></i>
+            </div>
+            <div class="input-box">
+              <button type="submit"><span>Sign Up</span></button>
+            </div>
+            
+          </form>
+          <form method="POST" action="{% provider_login_url 'google' site_id=1 %}?next=index/">
+            {% csrf_token %}
+            <div class="input-box">
+              <button type="submit" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48">
+                  <path fill="#EA4335" d="M24 9.5c3.54 0 6.69 1.22 9.19 3.21l6.85-6.85C36.13 2.15 30.4 0 24 0 14.66 0 6.8 5.58 2.98 13.59l7.97 6.2C12.82 13.7 17.9 9.5 24 9.5z"/>
+                  <path fill="#4285F4" d="M46.5 24.5c0-1.55-.14-3.04-.4-4.5H24v9h12.65c-.54 2.9-2.15 5.36-4.59 7.02l7.04 5.46C43.85 37.8 46.5 31.74 46.5 24.5z"/>
+                  <path fill="#FBBC05" d="M10.95 28.79c-1.13-3.38-1.13-7.2 0-10.59l-7.97-6.2c-3.47 6.93-3.47 15.05 0 21.98l7.97-6.19z"/>
+                  <path fill="#34A853" d="M24 46c6.4 0 12.13-2.12 16.59-5.77l-7.04-5.46c-2.07 1.39-4.72 2.2-7.55 2.2-6.1 0-11.28-4.2-13.1-9.8l-7.97 6.19C6.8 42.42 14.66 48 24 48z"/>
+                  <path fill="none" d="M0 0h48v48H0z"/>
+                </svg>
+                <span>Sign Up with Google</span>
+              </button>
+            </div>
+          </form>
+          
+          
+          <div class="already-account">
+            Already have an account? <a href="{% url 'login' %}">Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Sign -->
+    
+    <script src="{% static 'js/test.js' %}"></script>
+  </body>
+</html>
+{% endblock %}

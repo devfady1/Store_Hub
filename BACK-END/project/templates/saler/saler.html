@@ -1,0 +1,192 @@
+{% extends 'pages/base.html' %}
+{% block content %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <title>Store Hub | Seller</title>
+  </head>
+  <body class="light">
+   
+
+    <!-- Start Seller -->
+
+    <div class="seller">
+      <div class="cont-seller">
+        <h1 class="h-seller">Add New Product</h1>
+
+        <form id="productForm">
+          <div class="form-group-seller">
+            <input
+              type="text"
+              id="productName"
+              class="form-input-seller"
+              required
+            />
+            <label class="form-label-seller">Product Name</label>
+          </div>
+          <div class="form-group-seller">
+            <textarea
+              id="productDesc"
+              class="form-input-seller"
+              required
+            ></textarea>
+            <label class="form-label-seller">Product Description</label>
+          </div>
+          <div class="form-group-seller">
+            <input
+              type="text"
+              id="productColor"
+              class="form-input-seller"
+              required
+            />
+            <label class="form-label-seller">Product Color</label>
+          </div>
+          <div class="form-group-seller">
+            <select id="productCategory" class="form-input-seller" required>
+              <option value=""></option>
+              <option value="electronics">Electronics</option>
+              <option value="fashion">XX</option>
+            </select>
+            <label class="form-label-seller">Product Category</label>
+          </div>
+          <div class="form-group-seller">
+            <input
+              type="number"
+              id="productPrice"
+              class="form-input-seller"
+              required
+            />
+            <label class="form-label-seller">Price ($)</label>
+          </div>
+          <div class="form-group-seller">
+            <div class="file-upload-box">
+              <input
+                type="file"
+                id="productImage"
+                class="file-input"
+                accept="image/*"
+                required
+              />
+              <label for="productImage" class="file-label">
+                <span class="upload-text">Choose Product Image</span>
+              </label>
+            </div>
+          </div>
+          <button type="submit" class="btn-seller">
+            <span>Add Product</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Product added successfully -->
+
+    <div class="product-add" id="productAdd">
+      <div class="add-content">
+        <h2>Product added successfully!</h2>
+        <div class="add-buttons">
+          <button onclick="closeAddModal()">Ok</button>
+          <button onclick="window.location.href='ProductManagment.html'">
+            View your product
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- End Seller -->
+
+   
+    <script>
+      // Handle file input change event - update filename display
+      document
+        .getElementById("productImage")
+        .addEventListener("change", function (e) {
+          const fileName = e.target.files[0]
+            ? e.target.files[0].name
+            : "No file chosen";
+          document.getElementById("fileNameSeller").textContent = fileName;
+        });
+
+      // Add input animation for form fields
+      document.querySelectorAll(".form-input-seller").forEach((input) => {
+        input.addEventListener("input", function () {
+          if (this.value.trim() !== "") {
+            this.classList.add("not-empty");
+          } else {
+            this.classList.remove("not-empty");
+          }
+        });
+      });
+
+      // Modal control functions
+      function showAddModal() {
+        document.getElementById("productAdd").style.display = "flex";
+      }
+
+      function closeAddModal() {
+        document.getElementById("productAdd").style.display = "none";
+      }
+
+      // Handle form submission for adding new product
+      document
+        .getElementById("productForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Collect form data
+          const formData = {
+            name: document.getElementById("productName").value,
+            category: document.getElementById("productCategory").value,
+            price: document.getElementById("productPrice").value,
+            image: document.getElementById("productImage").files[0],
+          };
+
+          // Validate image is selected
+          if (!formData.image) {
+            alert("Please select a product image");
+            return;
+          }
+
+          // Process image and save product
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const newProduct = {
+              ...formData,
+              id: Date.now(),
+              image: e.target.result,
+              date: new Date().toISOString(),
+            };
+
+            // Save to localStorage
+            let products = JSON.parse(localStorage.getItem("products")) || [];
+            products.push(newProduct);
+            localStorage.setItem("products", JSON.stringify(products));
+
+            // Reset form and show success modal
+            document.getElementById("productForm").reset();
+            showAddModal();
+          };
+
+          reader.readAsDataURL(formData.image);
+        });
+    </script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="{% static 'js/test.js' %}"></script>
+  </body>
+</html>
+{% endblock content %}

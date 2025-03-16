@@ -15,9 +15,11 @@
       rel="stylesheet" />
 
     <!--Link Swiper-->
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
     <title>Store Hub | Main</title>
   </head>
 
@@ -42,9 +44,22 @@
           </div>
           <form class="header-form">
             <input type="search" placeholder="Seacrch" class="seacrch" />
-            <i class="fa-regular fa-heart"></i>
-            <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
-            <a href="account.html"><i class="fa-regular fa-user"></i></a>
+            <a href="{% url 'wishlist' %}"><i class="fa-regular fa-heart"></i></a>
+            <a href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i></a>
+            <a href="#" id="user-icon">
+                <i class="fa-regular fa-user"></i>
+            </a>
+
+            <div class="user-menu" id="accountDropdown">
+              <ul>
+            
+                <li><a href="{% url 'account' %}"> <i class="fa-regular fa-user"></i> Manage My Account</a></li>
+                <li><a href="#"> <i class="fa-solid fa-box"></i> My Order</a></li>
+                <li><a href="#"> <i class="fa-solid fa-ban"></i> My Cancellations</a></li>
+                <li><a href="#"> <i class="fa-regular fa-star"></i> My Reviews</a></li>
+              </ul>
+            </div>
+            
             <input type="checkbox" id="toggle" />
 
             <label class="toggle" for="toggle">
@@ -56,6 +71,8 @@
         </nav>
       </div>
     </header>
+
+    
 
     <!--Section One-->
     <section class="slider">

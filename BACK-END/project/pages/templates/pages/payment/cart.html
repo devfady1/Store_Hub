@@ -1,0 +1,175 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+{% block content %}
+
+<main class="cart-container">
+    <div class="breadcrumb-cart">
+        <a href="{% url 'index' %}" class="a1">Home</a>
+        <span class="a2">/</span>
+        <a href="{% url 'cart' %}" class="a2">Cart</a>
+    </div>
+
+    <div class="cart-grid">
+        <div class="cart-header">
+            <div>Product</div>
+            <div>Price</div>
+            <div>Quantity</div>
+            <div>Subtotal</div>
+        </div>
+
+        {% if cart %}
+            {% for product_id, item in cart.items %}
+            <div class="cart-item-row">
+                <div class="product-info">
+                    <i class="fa-solid fa-circle-xmark remove" data-id="{{ product_id }}"></i>
+                    <img src="{{ item.image }}" alt="{{ item.name }}" />
+                    <span>{{ item.name }}</span>
+                </div>
+                <div>${{ item.price|floatformat:2 }}</div>
+                <div>
+                    <input type="number" class="quantity-input" value="{{ item.quantity }}" data-id="{{ product_id }}" />
+                </div>
+                <div>${{ item.subtotal|floatformat:2 }}</div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p style="text-align: center; font-size: 18px; color: #ff0000;">السلة فارغة!</p>
+        {% endif %}
+    </div>
+
+    <div class="cart-buttons">
+        <button class="btn btnn" onclick="location.href='{% url 'allproducts' %}'">Return To Shop</button>
+        <button class="btn btnn" id="update-cart-btn">Update Cart</button>
+    </div>
+
+    <div class="cart-bottom-section">
+        <div class="left-section">
+            <div class="coupon-section-cart">
+                <input type="text" class="coupon-input-cart" placeholder="Coupon Code" />
+                <button class="btn btn-primary">Apply Coupon</button>
+            </div>
+        </div>
+
+        <div class="cart-total">
+            <h3>Cart Total</h3>
+            {% if cart %}
+                <div class="total-row row1">
+                    <span>Subtotal:</span>
+                    <span>${{ total|floatformat:2 }}</span>
+                </div>
+                <div class="total-row row2">
+                    <span>Shipping:</span>
+                    <span>Free</span>
+                </div>
+                <div class="total-row">
+                    <span>Total:</span>
+                    <span>${{ total|floatformat:2 }}</span>
+                </div>
+            {% else %}
+                <div class="total-row">
+                    <span>Total:</span>
+                    <span>$0.00</span>
+                </div>
+            {% endif %}
+            <button class="btn btn-primary" style="width: 100%; margin-top: 20px">
+                Process to checkout
+            </button>
+        </div>
+    </div>
+</main>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll(".remove").forEach(button => {
+          button.addEventListener("click", function () {
+              let productId = this.getAttribute("data-id");
+
+              fetch(`/remove_from_cart/${productId}/`, {
+                  method: "POST",
+                  headers: {
+                      "X-CSRFToken": getCSRFToken(),  
+                      "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify({})
+              })
+              .then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      location.reload(); 
+                  }
+              })
+              .catch(error => console.error("Error:", error));
+          });
+      });
+
+      function getCSRFToken() {
+          return document.cookie.split('; ')
+              .find(row => row.startsWith('csrftoken='))
+              ?.split('=')[1];
+      }
+  });
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const updateCartButton = document.getElementById("update-cart-btn");
+
+    if (updateCartButton) {
+        updateCartButton.addEventListener("click", function() {
+            let cartItems = document.querySelectorAll(".quantity-input");
+            let cartData = {};
+
+            cartItems.forEach(item => {
+                let productId = item.dataset.id;
+                let newQuantity = item.value;
+
+                if (productId && newQuantity > 0) {
+                    cartData[productId] = newQuantity;
+                }
+            });
+
+            if (Object.keys(cartData).length > 0) {
+                fetch("/update-cart/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": getCookie("csrftoken")
+                    },
+                    body: JSON.stringify(cartData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        alert("✅ تم تحديث السلة بنجاح!");
+                        location.reload(); 
+                    } else {
+                        alert("❌ فشل التحديث: " + data.message);
+                    }
+                })
+                .catch(error => console.error("❌ Fetch Error:", error));
+            } else {
+                alert("⚠️ من فضلك أدخل كمية صحيحة!");
+            }
+        });
+    }
+
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            let cookies = document.cookie.split(";");
+            cookies.forEach(cookie => {
+                let trimmedCookie = cookie.trim();
+                if (trimmedCookie.startsWith(name + "=")) {
+                    cookieValue = decodeURIComponent(trimmedCookie.substring(name.length + 1));
+                }
+            });
+        }
+        return cookieValue;
+    }
+});
+
+</script>
+
+
+<script src="{% static 'js/test.js' %}"></script>
+{% endblock %}

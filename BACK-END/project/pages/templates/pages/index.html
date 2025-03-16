@@ -29,6 +29,13 @@
 <section class="slider">
   <div class="container">
     <div class="side_bar">
+      <div class="welcome-message">
+        {% if user.is_authenticated %}
+          <h3>مرحبًا بك، {{ username }}!</h3>
+        {% else %}
+          <h3>مرحبًا بك في متجرنا!</h3>
+        {% endif %}
+      </div>
       <a href="#">Men's Fashion</a>
       <a href="#">Woman's Fashion</a>
       <a href="#">Electronics</a>
@@ -42,7 +49,7 @@
       <div class="swiper-wrapper">
         {% for product in products %}
         <div class="swiper-slide">
-          <a href="#"><img src="{{ product.image.url }}" alt="{{ product.name }}" /></a>
+          <a href="#"><img src="{{ product.image.url }}" alt="{{ product.name }}"  onclick="window.location.href='/product/{{ product.id }}/'"/></a>
         </div>
         {% endfor %}
       </div>
@@ -102,23 +109,26 @@
               </div>
               <div class="icon">
                 <i class="fa-regular fa-heart" id="iconheart"></i>
-                <i class="fa-regular fa-eye"></i>
+                <i class="fa-regular fa-eye" onclick="window.location.href='/product/{{ pro.product.id }}/'; return false;" ></i>
               </div>
             </div>
-            <div class="addcart">
+
+            <div class="addcart" data-id="{{ pro.product.id }}">
               <div class="text">
                 <p>Add To Cart</p>
               </div>
             </div>
+            
             <div class="img">
-              <a href="#">
+              <a href="/product/{{ pro.product.id }}/" onclick="window.location.href='/product/{{ pro.product.id }}/'; return false;">
                 <img src="{{ pro.product.image.url }}" alt="{{ pro.product.name }}" />
               </a>
             </div>
+            
             <div class="detailes">
-              <h5>{{ pro.product.name }}</h5>
+              <h5>{{ pro.product.name }} </h5>
               <div class="sallery">
-                <span class="new-sall">${{ pro.new_price }}</span>
+                <span class="new-sall">${{ pro.new_price }}  </span>
                 <span class="old-sall">${{ pro.old_price }}</span>
               </div>
               <div class="stars">
@@ -138,14 +148,11 @@
       </div>
     </div>
   </section>
-
-    
-
     <!--Section Five-->
     <section>
       <div class="container">
         <div class="bttnAllProduct">
-          <a href="#">
+          <a href="{% url 'allproducts' %}">
             <button>View All Products</button>
           </a>
         </div>
@@ -212,36 +219,37 @@
             <h5 class="txt">This Month</h5>
           </div>
           <div class="bttn">
-            <h4>Best Selling Products</h4>
-            <a href="#">
+            <h4>Top liked Products</h4>
+            <a href="{% url 'allproducts' %}">
               <button>View All</button>
             </a>
           </div>
         </div>
-      
+        
         <div class="bttom">
-          <div class="pro">
+          {% for product in products %}
+          <div class="pro"  >
             <div class="icons">
               <div class="icon">
                 <i class="fa-regular fa-heart" id="iconheart"></i>
-                <i class="fa-regular fa-eye"></i>
+                <i class="fa-regular fa-eye" onclick="window.location.href='/product/{{ product.id }}/'" ></i>
               </div>
             </div>
-            <div class="addcart">
+            <div class="addcart" data-id="{{ product.id }}">
               <div class="text">
                 <p>Add To Cart</p>
               </div>
             </div>
-            <div class="img">
-              <a href="#">
-                <img src="images/game.png" alt="" />
+            
+            <div class="img"  >
+              <a href="/product/{{ product.id }}/">
+                <img src="{{ product.image.url }}" alt=""  onclick="window.location.href='/product/{{ product.id }}/'"  />
               </a>
             </div>
             <div class="detailes">
-              <h5>HAVIT HV-G92 Gamepad</h5>
+              <h5>{{  product.name  }}</h5>
               <div class="sallery">
-                <span class="new-sall">$120</span>
-                <span class="old-sall">$160</span>
+                <span class="new-sall">${{  product.price  }}</span>
               </div>
               <div class="stars">
                 <i class="fa-solid fa-star"></i>
@@ -252,106 +260,7 @@
                 <span>(88)</span>
               </div>
             </div>
-          </div>
-          <div class="pro">
-            <div class="icons">
-              <div class="icon">
-                <i class="fa-regular fa-heart" id="iconheart"></i>
-                <i class="fa-regular fa-eye"></i>
-              </div>
-            </div>
-            <div class="addcart">
-              <div class="text">
-                <p>Add To Cart</p>
-              </div>
-            </div>
-            <div class="img">
-              <a href="#">
-                <img src="images/keyboard.png" alt="" />
-              </a>
-            </div>
-            <div class="detailes">
-              <h5>AK-900 Wired Keyboard</h5>
-              <div class="sallery">
-                <span class="new-sall">$960</span>
-                <span class="old-sall">$1160</span>
-              </div>
-              <div class="stars">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <span>(88)</span>
-              </div>
-            </div>
-          </div>
-          <div class="pro">
-            <div class="icons">
-              <div class="icon">
-                <i class="fa-regular fa-heart" id="iconheart"></i>
-                <i class="fa-regular fa-eye"></i>
-              </div>
-            </div>
-            <div class="addcart">
-              <div class="text">
-                <p>Add To Cart</p>
-              </div>
-            </div>
-            <div class="img">
-              <a href="#">
-                <img src="images/lcd.png" alt="" />
-              </a>
-            </div>
-            <div class="detailes">
-              <h5>IPS LCD Gaming Monitor</h5>
-              <div class="sallery">
-                <span class="new-sall">$370</span>
-                <span class="old-sall">$400</span>
-              </div>
-              <div class="stars">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <span>(88)</span>
-              </div>
-            </div>
-          </div>
-          <div class="pro">
-            <div class="icons">
-              <div class="icon">
-                <i class="fa-regular fa-heart" id="iconheart"></i>
-                <i class="fa-regular fa-eye"></i>
-              </div>
-            </div>
-            <div class="addcart">
-              <div class="text">
-                <p>Add To Cart</p>
-              </div>
-            </div>
-            <div class="img">
-              <a href="#">
-                <img src="" alt="" />
-              </a>
-            </div>
-            <div class="detailes">
-              <h5>S-Series Comfort Chair</h5>
-              <div class="sallery">
-                <span class="new-sall">$375</span>
-                <span class="old-sall">$400</span>
-              </div>
-              <div class="stars">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <span>(88)</span>
-              </div>
-            </div>
-        </div>
+          </div>{% endfor %}
       </div>
     </section>
     <script>
@@ -388,7 +297,8 @@
       });
     </script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="{% static 'js/test.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
   </body>
   
 </html>

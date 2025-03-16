@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <title>Store Hub | Product management</title>
+  </head>
+  <body class="light">
+    <header>
+      <div class="container">
+        <nav>
+          <h1>STOREHUB</h1>
+          <div class="linkes">
+            <a href="index.html" class="active">
+              <p>Home</p>
+            </a>
+            <a href="allproduct.html">
+              <p>All Product</p>
+            </a>
+            <a href="about.html">
+              <p>About</p>
+            </a>
+            <a href="contact.html">
+              <p>Contact</p>
+            </a>
+          </div>
+          <form class="header-form">
+            <input type="search" placeholder="Seacrch" class="seacrch" />
+            <i class="fa-regular fa-heart"></i>
+            <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+            <a href="account.html"><i class="fa-regular fa-user"></i></a>
+            <input type="checkbox" id="toggle" />
+
+            <label class="toggle" for="toggle">
+              <i class="bx bxs-sun"></i>
+              <i class="bx bx-moon"></i>
+              <span class="ball"></span>
+            </label>
+          </form>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Start Product Managment -->
+
+    <div class="product-manag">
+      <div class="cont-product-manag">
+        <div class="head-product-manag">
+          <h1 class="h-product-manag">Product management</h1>
+          <input
+            type="text"
+            id="searchBox"
+            class="search-product-manag"
+            placeholder="Search for a product..."
+          />
+        </div>
+
+        <table class="table-product-manag">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Procedures</th>
+            </tr>
+          </thead>
+          <tbody id="productsListManag"></tbody>
+        </table>
+
+        <!-- Edit Product Modal -->
+
+        <div class="modal-modify" id="editModal">
+          <div class="modal-content">
+            <h2>Modify the product</h2>
+            <form id="editForm">
+              <input type="hidden" id="editId" />
+              <div>
+                <label>Product Name:</label>
+                <input type="text" id="editName" required />
+              </div>
+              <div>
+                <label>Product Color:</label>
+                <input type="text" id="editColor" required />
+              </div>
+              <div>
+                <label>Price:</label>
+                <input type="number" id="editPrice" required />
+              </div>
+              <div>
+                <label>Change The Image:</label>
+                <input type="file" id="editImage" accept="image/*" />
+              </div>
+              <div class="modal-buttons">
+                <button type="submit" class="confirm-btn">Save Changes</button>
+                <button type="button" onclick="closeModal()" class="cancel-btn">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Delete Product -->
+
+        <div class="modal-modify" id="deleteModal">
+          <div class="modal-content">
+            <h2>Delete Product</h2>
+            <p>Are you sure you want to delete this product?</p>
+            <div class="modal-buttons">
+              <button onclick="confirmDelete()" class="confirm-btn">
+                Yes, Delete
+              </button>
+              <button onclick="closeModal()" class="cancel-btn">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- End Product Managment -->
+
+    <!--Footer-->
+    <footer>
+      <div class="container">
+        <div class="foot1">
+          <h3>STOREHUB</h3>
+          <a href="#">
+            <p>Subscribe</p>
+          </a>
+          <a href="#">
+            <p>Get 10% off your first order</p>
+          </a>
+          <input
+            type="email"
+            class="seacrch"
+            placeholder="Enter Your Email : "
+          />
+        </div>
+        <div class="foot2">
+          <h3>Support</h3>
+          <a href="#">
+            <p>NATU - NEW ASSUIT</p>
+          </a>
+          <a href="#">
+            <p>StoreHub@gmail.com</p>
+          </a>
+          <a href="#">
+            <p>+201551803645</p>
+          </a>
+          <a href="#">
+            <p>+201551954315</p>
+          </a>
+        </div>
+        <div class="foot3">
+          <h3>Account</h3>
+          <a href="account.html">
+            <p>My Account</p>
+          </a>
+          <a href="#">
+            <p>Login / Register</p>
+          </a>
+          <a href="cart.html">
+            <p>Cart</p>
+          </a>
+          <a href="#">
+            <p>All Product</p>
+          </a>
+          <a href="#">
+            <p>Shop</p>
+          </a>
+        </div>
+        <div class="foot4">
+          <h3>Quick Link</h3>
+          <a href="#">
+            <p>Privacy Policy</p>
+          </a>
+          <a href="#">
+            <p>Terms Of Use</p>
+          </a>
+          <a href="#">
+            <p>FAQ</p>
+          </a>
+          <a href="contact.html">
+            <p>Contact</p>
+          </a>
+        </div>
+      </div>
+      <p style="text-align: center; padding-bottom: 8px">
+        Copyright &copy;<span> STOREHUB </span>all right reserved
+      </p>
+    </footer>
+
+    <script>
+      // Function to check and reload Boxicons CSS if not loaded properly
+      function checkBoxiconsLoaded() {
+        const boxiconsLoaded = document.querySelector('link[href*="boxicons"]');
+        if (!boxiconsLoaded) {
+          console.error("Boxicons CSS failed to load. Attempting to reload...");
+          const boxiconsLink = document.createElement("link");
+          boxiconsLink.rel = "stylesheet";
+          boxiconsLink.href =
+            "https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css";
+          document.head.appendChild(boxiconsLink);
+        }
+      }
+
+      // Initialize Boxicons check when DOM is ready
+      document.addEventListener("DOMContentLoaded", checkBoxiconsLoaded);
+
+      // Initialize products array from localStorage or empty array if none exists
+      let products = JSON.parse(localStorage.getItem("products")) || [];
+      // Track current product being deleted
+      let currentDeleteIndex = null;
+
+      // Render products table with optional filtering
+      function renderProducts(filteredProducts = products) {
+        const tbody = document.getElementById("productsListManag");
+        tbody.innerHTML = filteredProducts
+          .map(
+            (product, index) => `
+        <tr>
+           <td data-label="Image"><img src="${product.image}" class="product-image-manag" alt="${product.name}"></td>
+            <td data-label="Name">${product.name}</td>
+            <td data-label="Price">${product.price} $</td>
+            <td data-label="Actions">
+                <div class="action-buttons">
+                    <button class="edit-btn" onclick="openEditModal(${index})">Modify</button>
+                    <button class="delete-btn" onclick="openDeleteModal(${index})">Delete</button>
+                </div>
+          </td>
+        </tr>
+      `
+          )
+          .join("");
+      }
+
+      // Search functionality implementation
+      document
+        .getElementById("searchBox")
+        .addEventListener("input", function (e) {
+          const searchTerm = e.target.value.toLowerCase();
+          const filtered = products.filter((product) =>
+            product.name.toLowerCase().includes(searchTerm)
+          );
+          renderProducts(filtered);
+        });
+
+      // Open edit modal with product details
+      function openEditModal(index) {
+        const product = products[index];
+        document.getElementById("editId").value = index;
+        document.getElementById("editName").value = product.name;
+        document.getElementById("editColor").value = product.color;
+        document.getElementById("editPrice").value = product.price;
+        document.getElementById("editModal").style.display = "flex";
+      }
+
+      // Open delete confirmation modal
+      function openDeleteModal(index) {
+        currentDeleteIndex = index;
+        document.getElementById("deleteModal").style.display = "flex";
+      }
+
+      // Handle edit form submission
+      document
+        .getElementById("editForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const index = document.getElementById("editId").value;
+          const file = document.getElementById("editImage").files[0];
+
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              updateProduct(index, e.target.result);
+            };
+            reader.readAsDataURL(file);
+          } else {
+            updateProduct(index);
+          }
+        });
+
+      // Update product in localStorage and UI
+      function updateProduct(index, newImage) {
+        products[index] = {
+          ...products[index],
+          name: document.getElementById("editName").value,
+          price: document.getElementById("editPrice").value,
+          image: newImage || products[index].image,
+        };
+
+        localStorage.setItem("products", JSON.stringify(products));
+        renderProducts();
+        closeModal();
+      }
+
+      // Handle product deletion
+      function confirmDelete() {
+        if (currentDeleteIndex !== null) {
+          products.splice(currentDeleteIndex, 1);
+          localStorage.setItem("products", JSON.stringify(products));
+          renderProducts();
+          closeModal();
+        }
+      }
+
+      // Close all modals and reset delete index
+      function closeModal() {
+        document.querySelectorAll(".modal-modify").forEach((modal) => {
+          modal.style.display = "none";
+        });
+        currentDeleteIndex = null;
+      }
+
+      // Close modal when clicking outside
+      window.addEventListener("click", (event) => {
+        if (event.target.classList.contains("modal-modify")) {
+          closeModal();
+        }
+      });
+
+      // Initial render of products
+      renderProducts();
+
+      // Listen for changes in localStorage from other tabs/windows
+      window.addEventListener("storage", function (e) {
+        if (e.key === "products") {
+          products = JSON.parse(e.newValue);
+          renderProducts();
+        }
+      });
+    </script>
+    <script src="js/darkmode.js"></script>
+  </body>
+</html>

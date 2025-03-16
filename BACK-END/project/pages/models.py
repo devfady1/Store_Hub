@@ -49,8 +49,10 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=255, verbose_name="اسم المنتج", blank=True, null=True, default="منتج بدون اسم")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="السعر", default=0.00)
+    description = models.TextField(verbose_name="الوصف", blank=True, null=True)
+    quantity = models.PositiveIntegerField(verbose_name="الكمية", default=0)
     saler = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products', null=True, blank=True)
-    image = models.ImageField(upload_to='products/', default='default.jpg', verbose_name="صورة المنتج", blank=True, null=True)
+    image = models.ImageField(upload_to='products/', default='default.jpg', verbose_name="صورة المنتج", blank=True, null=True,max_length=255)
     color = models.CharField(max_length=50, verbose_name="اللون", blank=True, null=True)
     likes = models.ManyToManyField(User, related_name='product_likes', blank=True, verbose_name="اللايكات")
     color = models.CharField(max_length=50, choices=[
@@ -78,20 +80,6 @@ class Product(models.Model):
         verbose_name = "منتج"
         verbose_name_plural = "منتجات"
 
-    def _str_(self):
-        return self.name
-
-    def total_likes(self):
-        return self.likes.count()
-
-    def update_rating(self, new_rating):
-        self.rating = new_rating
-        self.save()
-
-    class Meta:
-        verbose_name = "منتج"
-        verbose_name_plural = "منتجات"
-        ordering = ['-rating']
 
 # نموذج Order
 class Order(models.Model):
@@ -159,7 +147,6 @@ class FlashSale(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    #سعر المنتج القديم و السعر بعد الخصم يورثه من كلاس برودكت
     old_price = models.DecimalField(max_digits=10, decimal_places=2)
     new_price = models.DecimalField(max_digits=10, decimal_places=2)
     rating = models.DecimalField(max_digits=2, decimal_places=1)

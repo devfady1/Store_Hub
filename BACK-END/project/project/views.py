@@ -9,3 +9,4 @@ def handel500(request,exception):
 
 def index(request):
     return render(request, '400.html', name = 'index')
+

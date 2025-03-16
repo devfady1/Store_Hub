@@ -1,0 +1,98 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="seller">
+  <div class="cont-seller">
+    <h1 class="h-seller">Add New Product</h1>
+
+    <form id="productForm" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group-seller">
+        {{ form.name }}
+        <label class="form-label-seller">Product Name</label>
+      </div>
+      <div class="form-group-seller">
+        {{ form.description }}
+        <label class="form-label-seller">Product Description</label>
+      </div>
+      <div class="form-group-seller">
+        {{ form.color }}
+        <label class="form-label-seller">Product Color</label>
+      </div>
+      <div class="form-group-seller">
+        {{ form.category }}
+        <label class="form-label-seller">Product Category</label>
+      </div>
+      <div class="form-group-seller">
+        {{ form.price }}
+        <label class="form-label-seller">Price ($)</label>
+      </div>
+      <div class="form-group-seller">
+        {{ form.image }}
+        <label for="productImage" class="file-label">
+          <span id="fileNameSeller" class="upload-text">Choose Product Image</span>
+        </label>
+      </div>
+      <button type="submit" class="btn-seller">
+        <span>Add Product</span>
+      </button>
+    </form>
+    
+  </div>
+</div>
+
+<!-- Product added successfully -->
+<div class="product-add" id="productAdd" style="display: none;">
+  <div class="add-content">
+    <h2>Product added successfully!</h2>
+    <div class="add-buttons">
+      <button onclick="closeAddModal()">Ok</button>
+      <button onclick="window.location.href=''">
+        View your product
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+document
+  .getElementById("productForm")
+  .addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    
+    // هات الـ CSRF token من الصفحة
+    let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    fetch('/add_product/', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRFToken': csrfToken // ضيف التوكن في الهيدر
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        showAddModal(); // لو العملية نجحت، افتح الـ modal
+      } else {
+        console.log("Error:", data.errors); // لو فيه خطأ، اطبعه في الـ console
+      }
+    })
+    .catch(error => console.error('Error:', error));
+  });
+
+function showAddModal() {
+  document.getElementById("productAdd").style.display = "flex";
+}
+
+function closeAddModal() {
+  document.getElementById("productAdd").style.display = "none";
+}
+
+</script>
+
+{% endblock content %}

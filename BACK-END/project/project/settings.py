@@ -25,12 +25,13 @@ SECRET_KEY = 'django-insecure-6y!svxc#ynh52$al4&y^ql$u0kyob#s08+033t%oj)7ufui8w)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'local.test']
 
 
 # Application definition
-
+SITE_ID = 1
 INSTALLED_APPS = [
+    'saler.apps.SalerConfig',
     'jazzmin',
     'pages.apps.PagesConfig',
     'django.contrib.admin',
@@ -39,7 +40,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'products',
+    'rest_framework',
 ]
+
+REDIRECT_URI = 'http://localhost:8000/accounts/google/login/callback/'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -49,8 +60,28 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 ROOT_URLCONF = 'project.urls'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'APP': {
+            'client_id': '631760675060-815heqausl09tnmu9vajrc099mk6mnn6.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        },
+        'OAUTH_PKCE_ENABLED': True, 
+    }
+}
+
 
 TEMPLATES = [
     {
@@ -126,6 +157,8 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+
+#admin panel
 JAZZMIN_SETTINGS = {
     'copyright': 'FADY ASHRAF',
     'site_title': "STOREHUB",
@@ -141,7 +174,7 @@ JAZZMIN_SETTINGS = {
     'login_logo_small_light': 'images/LOGO1.png',
     'login_logo_small_alt': 'images/LOGO1.png',
     
-    "welcome_sign": "Welcome to STOREHUB Admin Panel",  # رسالة الترحيب
+    "welcome_sign": "Welcome to STOREHUB Admin Panel",  
 
    
     "show_sidebar": True, 
@@ -227,6 +260,35 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
-#AUTH_USER_MODEL = 'pages.User'
+#auth
+LOGIN_REDIRECT_URL = '/index'
+LOGOUT_REDIRECT_URL = '/login'
+LOGIN_URL = '/login'
 
 
+
+
+
+#messages on forget password
+from django.contrib.messages import constants as message_constants
+MESSAGE_TAGS = {
+    message_constants.DEBUG: 'alert-info',
+    message_constants.INFO: 'alert-info',
+    message_constants.SUCCESS: 'alert-success',
+    message_constants.WARNING: 'alert-warning',
+    message_constants.ERROR: 'alert-danger',
+}
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  
+    'allauth.account.auth_backends.AuthenticationBackend', 
+]
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'e05d8f8bf91b6e'
+EMAIL_HOST_PASSWORD = '5b0be7f03fd05b'
+EMAIL_USE_TLS = True
