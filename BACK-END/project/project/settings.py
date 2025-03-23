@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'local.test']
 SITE_ID = 1
 INSTALLED_APPS = [
     'saler.apps.SalerConfig',
+    'chartjs',
     'jazzmin',
     'pages.apps.PagesConfig',
     'django.contrib.admin',
@@ -173,64 +174,12 @@ JAZZMIN_SETTINGS = {
     'login_logo_small_dark': 'images/LOGO1.png',
     'login_logo_small_light': 'images/LOGO1.png',
     'login_logo_small_alt': 'images/LOGO1.png',
-    
     "welcome_sign": "Welcome to STOREHUB Admin Panel",  
-
-   
     "show_sidebar": True, 
     "navigation_expanded": True, 
-
     "theme": "dark", 
-
-
-    "charts": [
-        {
-            "title": "Sales Report",
-            "type": "bar", 
-            "data": {
-                "labels": ["January", "February", "March", "April", "May", "June", "July"],
-                "datasets": [
-                    {
-                        "label": "Sales",
-                        "backgroundColor": "#79aec8",
-                        "data": [65, 59, 80, 81, 56, 55, 40],
-                    }
-                ],
-            },
-        },
-    ],    
-        "charts": [
-    {
-        "title": "Product Sales",
-        "type": "bar",
-        "data": {
-            "labels": ["Product A", "Product B", "Product C"],
-            "datasets": [
-                {
-                    "label": "Sales",
-                    "backgroundColor": "#79aec8",
-                    "data": [100, 200, 150],  
-                }
-            ],
-        },
-    },
-        {
-            "title": "User Activity",
-            "type": "line",
-            "data": {
-                "labels": ["January", "February", "March", "April", "May", "June", "July"],
-                "datasets": [
-                    {
-                        "label": "Active Users",
-                        "backgroundColor": "rgba(60,141,188,0.9)",
-                        "data": [28, 48, 40, 19, 86, 27, 90],
-                    }
-                ],
-            },
-        },
-    ],
-
-    
+    "costmize_botton": True,
+    "show_ui_builder": True,
     "changeform_format": "horizontal_tabs",  
     "related_modal_active": True,
 }    
@@ -238,7 +187,7 @@ JAZZMIN_SETTINGS = {
 JAZZMIN_UI_TWEAKS = {
     "theme": "darkly",
     "dark_mode_theme": "darkly",
-     "navbar_small_text": False,
+    "navbar_small_text": False,
     "footer_small_text": False,
     "body_small_text": False,
     "brand_small_text": False,
@@ -285,7 +234,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend', 
 ]
 
-
+#mailtrap لحد مبعت الرساله علي جوجل دا احتياطي
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
 EMAIL_PORT = 587
