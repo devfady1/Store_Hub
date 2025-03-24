@@ -80,27 +80,39 @@ class Product(models.Model):
         verbose_name = "منتج"
         verbose_name_plural = "منتجات"
 
-
-# نموذج Order
-class Order(models.Model):
-    STATUS_CHOICES = [
-        ('Pending', 'Pending'),
-        ('In Progress', 'In Progress'),
-        ('Completed', 'Completed'),
-        ('Cancelled', 'Cancelled'),
+# all checkout
+class Checkout(models.Model):
+    PAYMENT_METHOD_CHOICES = [
+        ('cash', 'Cash'),
+        ('visa', 'Visa'),
     ]
-    Product = models.ForeignKey(Product, verbose_name="المنتج", on_delete=models.CASCADE)
-    Customer = models.ForeignKey( User,verbose_name="العميل" ,on_delete=models.CASCADE, related_name='orders')
-    Quantity = models.IntegerField(verbose_name="كمية", default=1)
-    OrderDate = models.DateTimeField(verbose_name="تاريخ الطلب" ,auto_now_add=True)
-    Status = models.CharField( verbose_name="حالة الطلب" ,max_length=20, choices=STATUS_CHOICES, default='Pending')
-    DeliveryAgent = models.ForeignKey(User, verbose_name="وكيل التوصيل", on_delete=models.SET_NULL, null=True, blank=True, related_name='deliveries')
 
-    def _str_(self):
-        return f"Order {self.id} - {self.Status}"
+    customer = models.ForeignKey(User, verbose_name="العميل", on_delete=models.CASCADE, related_name='checkouts')
+    product = models.ForeignKey(Product, verbose_name="المنتج", on_delete=models.CASCADE)
+    quantity = models.IntegerField(verbose_name="كمية", default=1)
+    first_name = models.CharField(max_length=100, verbose_name="الاسم الأول")
+    company_name = models.CharField(max_length=100, verbose_name="اسم الشركة", blank=True, null=True)
+    street_address = models.CharField(max_length=200, verbose_name="عنوان الشارع")
+    apartment = models.CharField(max_length=200, verbose_name="الشقة/الطابق", blank=True, null=True)
+    town_city = models.CharField(max_length=100, verbose_name="المدينة")
+    phone_number = models.CharField(max_length=20, verbose_name="رقم الهاتف")
+    email_address = models.EmailField(verbose_name="البريد الإلكتروني")
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES, verbose_name="طريقة الدفع")
+    
+    # بيانات الفيزا (تظهر فقط عند اختيار الدفع بالفيزا)
+    card_number = models.CharField(max_length=16, verbose_name="رقم البطاقة", blank=True, null=True)
+    expiry_date = models.CharField(max_length=5, verbose_name="تاريخ الانتهاء (MM/YY)", blank=True, null=True)
+    cvv = models.CharField(max_length=3, verbose_name="رمز الأمان", blank=True, null=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الإنشاء")
+
+    def __str__(self):
+        return f"Checkout {self.id} - {self.customer.username} - {self.product.name}"
+
     class Meta:
-        verbose_name = "طلب"
-        verbose_name_plural = "طلبات"
+        verbose_name = "عملية الدفع"
+        verbose_name_plural = "عمليات الدفع"
+
 
 # نموذج Report
 class Report(models.Model):
@@ -120,6 +132,29 @@ class Report(models.Model):
     class Meta:
         verbose_name = "تقرير"
         verbose_name_plural = "تقارير"
+
+
+class Order(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('in_progress', 'In Progress'),
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled'),
+    ]
+    product = models.ForeignKey(Product, verbose_name="المنتج", on_delete=models.CASCADE, related_name='orders')
+    customer = models.ForeignKey(User, verbose_name="العميل", on_delete=models.CASCADE, related_name='customer_orders')
+    quantity = models.IntegerField(verbose_name="كمية", default=1)
+    order_date = models.DateTimeField(verbose_name="تاريخ الطلب", auto_now_add=True)
+    status = models.CharField(verbose_name="حالة الطلب", max_length=20, choices=STATUS_CHOICES, default='pending')
+    delivery_agent = models.ForeignKey(User, verbose_name="وكيل التوصيل", on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_orders')
+
+    def __str__(self):
+        return f"Order {self.id} - {self.status}"
+
+    class Meta:
+        verbose_name = "طلب"
+        verbose_name_plural = "طلبات"
+
 
 # نموذج DeliveryAssignment
 class DeliveryAssignment(models.Model):

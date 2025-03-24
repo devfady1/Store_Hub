@@ -84,21 +84,6 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 
-# تسجيل نموذج Order
-@admin.register(Order)
-class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'Product', 'Customer', 'Quantity', 'Status', 'OrderDate')  # الحقول المعروضة في القائمة
-    list_filter = ('Status', 'OrderDate')  
-    search_fields = ('Product__name', 'Customer__username')
-    list_display_links = ('Product',)
-    readonly_fields = ('OrderDate',)  # حقل للقراءة فقط
-
-    # Action لتغيير حالة الطلبات
-    actions = ['mark_as_completed']
-
-    @admin.action(description="Mark selected orders as Completed")
-    def mark_as_completed(self, request, queryset):
-        queryset.update(Status='Completed')
 
 # تسجيل نموذج Report
 @admin.register(Report)
