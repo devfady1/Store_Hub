@@ -11,11 +11,8 @@ let isDropdownVisible = false;
 accountIcon.addEventListener('click', (e) => {
   e.stopPropagation();
   isDropdownVisible = !isDropdownVisible;
-  if (isDropdownVisible) {
-    accountDropdown.classList.add('active');
-  } else {
-    accountDropdown.classList.remove('active');
-  }
+  if (isDropdownVisible) accountDropdown.classList.add('active');
+  else accountDropdown.classList.remove('active');
 });
 
 // Close dropdown when clicking elsewhere
