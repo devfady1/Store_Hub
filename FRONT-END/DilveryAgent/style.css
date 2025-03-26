@@ -399,31 +399,118 @@ footer .container h5:hover {
   border-radius: 6px;
 }
 
-
 /* Start text */
-.text .container > h3{
-    color: var(--dark-color);
-    font-size: 25px;
-    padding-bottom: 10px;
+.text .container > h3 {
+  color: var(--dark-color);
+  font-size: 25px;
+  padding-bottom: 10px;
 }
-.text .container > p{
-    color: var(--main-color);
-    font-weight: bold;
-    padding-bottom: 15px;
+.text .container > p {
+  color: var(--main-color);
+  font-weight: bold;
+  padding-bottom: 15px;
 }
-.text .container select{
-    width: 100px;
-    height: 30px;
-    border-radius: 5px;
-    background-color: var(--dark-toogle);
-    color: #fff;
-    margin-right: 20px;
+.text .container select {
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+  background-color: var(--dark-toogle);
+  color: #fff;
+  margin-right: 20px;
 }
-.text .container > .seacrch{
-    width: 40%;
-    background-color: var(--dark-toogle);
-    padding-left: 15px;
-    font-size: 14px;
-    color: #fff;
+.text .container > .seacrch {
+  width: 40%;
+  background-color: var(--dark-toogle);
+  padding-left: 15px;
+  font-size: 14px;
+  color: #fff;
 }
 
+.table .container table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--dark-toogle);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table .container table th,
+.table .container table td {
+  padding: 15px;
+  text-align: left;
+  color: #fff;
+}
+
+.table .container table th {
+  background-color: var(--dark-toogle);
+  color: var(--white-color);
+}
+
+.table .container table tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.table .container table tr:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.table .container table .status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85em;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.table .container table .completed {
+  background-color: #0f6930;
+  color: #33ff7e;
+}
+
+.table .container table .failed {
+  background-color: #5c0c0c;
+  color: rgb(233, 49, 49);
+}
+
+.table .container table .in-progress {
+  background-color: #796518;
+  color: #facc15;
+}
+
+.table .container table .commission {
+  font-weight: bold;
+}
+
+.table .container table .actions svg {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  fill: var(--text-color);
+  transition: 0.3s;
+}
+
+.table .container table .actions svg:hover {
+  fill: var(--main-color);
+}
+
+section.container{
+    display: flex;
+    justify-content: space-evenly;
+    width: 20%;
+}
+
+section.container .btn{
+    width: 13%;
+    height: 40px;
+    font-size: 18px;
+    line-height: 30px;
+    border-radius: 8px;
+    background-color: var(--dark-toogle);
+    color: #fff;
+    transition: 0.3s;
+}
+section.container .btn:hover{
+    background-color: var(--main-color);
+    cursor: pointer;
+}
