@@ -4,26 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
       integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer" />
+
     <link
       href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
       rel="stylesheet" />
 
     <!--Link Swiper-->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 
-<!-- Swiper JS -->
-<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 
     <title>Store Hub | Main</title>
   </head>
 
   <body class="light">
+    <!--Header-->
     <header>
       <div class="container">
         <nav>
@@ -44,22 +49,37 @@
           </div>
           <form class="header-form">
             <input type="search" placeholder="Seacrch" class="seacrch" />
-            <a href="{% url 'wishlist' %}"><i class="fa-regular fa-heart"></i></a>
-            <a href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i></a>
+            <a href="{% url 'wishlist' %}"
+              ><i class="fa-regular fa-heart"></i
+            ></a>
+            <a href="{% url 'cart' %}"
+              ><i class="fa-solid fa-cart-shopping"></i
+            ></a>
             <a href="#" id="user-icon">
-                <i class="fa-regular fa-user"></i>
+              <i class="fa-regular fa-user"></i>
             </a>
 
             <div class="user-menu" id="accountDropdown">
               <ul>
-            
-                <li><a href="{% url 'account' %}"> <i class="fa-regular fa-user"></i> Manage My Account</a></li>
-                <li><a href="#"> <i class="fa-solid fa-box"></i> My Order</a></li>
-                <li><a href="#"> <i class="fa-solid fa-ban"></i> My Cancellations</a></li>
-                <li><a href="#"> <i class="fa-regular fa-star"></i> My Reviews</a></li>
+                <li>
+                  <a href="{% url 'account' %}">
+                    <i class="fa-regular fa-user"></i> Manage My Account</a
+                  >
+                </li>
+                <li>
+                  <a href="#"> <i class="fa-solid fa-box"></i> My Order</a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="fa-solid fa-ban"></i> My Cancellations</a
+                  >
+                </li>
+                <li>
+                  <a href="#"> <i class="fa-regular fa-star"></i> My Reviews</a>
+                </li>
               </ul>
             </div>
-            
+
             <input type="checkbox" id="toggle" />
 
             <label class="toggle" for="toggle">
@@ -611,326 +631,327 @@
                 <span>(88)</span>
               </div>
             </div>
+          </div>
         </div>
       </div>
     </section>
 
+    <!--Section Eghit-->
     <section class="banner-section">
       <div class="container">
         <div class="banner-text">
           <h5>Categories</h5>
-          <h1>Enhance Your <br>Music Experience</h1>
+          <h1>Enhance Your <br />Music Experience</h1>
           <button>Buy Now!</button>
         </div>
         <div class="image-container">
           <div class="glow-effect"></div>
-          <img src="images/jblSpeacker.png" alt="Speaker">
+          <img src="images/jblSpeacker.png" alt="Speaker" />
         </div>
-        
-      </div>
-    </section>
-    
-    <!--Section Eghit-->
-    <section class="ourproduct">
-      <div class="container">
-          <div class="ourprotext">
-              <span class="shape">.</span>
-              <p>Our Products</p>
-          </div>
-          <h3>Explore Our Products</h3>
-          <div class="products">
-              <div class="pro">
-              <div class="icons">
-                <div class="icon">
-                  <i class="fa-regular fa-heart" id="iconheart"></i>
-                  <i class="fa-regular fa-eye"></i>
-                </div>
-              </div>
-              <div class="addcart">
-                <div class="text">
-                  <p>Add To Cart</p>
-                </div>
-              </div>
-              <div class="img">
-                <a href="#">
-                  <img src="images/camera.png" alt="" />
-                </a>
-              </div>
-              
-              <div class="detailes">
-                <h5 id="name">S-Series Comfort Chair</h5>
-                <div class="dis">
-                  <div class="sallery">
-                    <span class="new-sall">$375</span>
-                  </div>
-                  <div class="stars">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <span>(88)</span>
-                  </div>
-                </div>
-              </div>
-              </div>
-              <div class="pro">
-                <div class="icons">
-                  <div class="icon">
-                    <i class="fa-regular fa-heart" id="iconheart"></i>
-                    <i class="fa-regular fa-eye"></i>
-                  </div>
-                </div>
-                <div class="addcart">
-                  <div class="text">
-                    <p>Add To Cart</p>
-                  </div>
-                </div>
-                <div class="img">
-                  <a href="#">
-                    <img src="images/laptop.png" alt="" />
-                  </a>
-                </div>
-                <div class="detailes">
-                  <h5 id="name">S-Series Comfort Chair</h5>
-                  <div class="dis">
-                    <div class="sallery">
-                      <span class="new-sall">$375</span>
-                    </div>
-                    <div class="stars">
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <span>(88)</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="pro">
-                <div class="icons">
-                  <div class="icon">
-                    <i class="fa-regular fa-heart" id="iconheart"></i>
-                    <i class="fa-regular fa-eye"></i>
-                  </div>
-                </div>
-                <div class="addcart">
-                  <div class="text">
-                    <p>Add To Cart</p>
-                  </div>
-                </div>
-                <div class="img">
-                  <a href="#">
-                    <img src="images/lcd.png" alt="" />
-                  </a>
-                </div>
-                <div class="detailes">
-                  <h5 id="name">S-Series Comfort Chair</h5>
-                  <div class="dis">
-                    <div class="sallery">
-                      <span class="new-sall">$375</span>
-                    </div>
-                    <div class="stars">
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <span>(88)</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="pro">
-                <div class="icons">
-                  <div class="icon">
-                    <i class="fa-regular fa-heart" id="iconheart"></i>
-                    <i class="fa-regular fa-eye"></i>
-                  </div>
-                </div>
-                <div class="addcart">
-                  <div class="text">
-                    <p>Add To Cart</p>
-                  </div>
-                </div>
-                <div class="img">
-                  <a href="#">
-                    <img src="images/car.png" alt="" />
-                  </a>
-                </div>
-                <div class="detailes">
-                  <h5 id="name">S-Series Comfort Chair</h5>
-                  <div class="dis">
-                    <div class="sallery">
-                      <span class="new-sall">$375</span>
-                    </div>
-                    <div class="stars">
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <span>(88)</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="pro">
-                <div class="icons">
-                  <div class="icon">
-                    <i class="fa-regular fa-heart" id="iconheart"></i>
-                    <i class="fa-regular fa-eye"></i>
-                  </div>
-                </div>
-                <div class="addcart">
-                  <div class="text">
-                    <p>Add To Cart</p>
-                  </div>
-                </div>
-                <div class="img">
-                  <a href="#">
-                    <img src="images/sports boot.png" alt="" />
-                  </a>
-                </div>
-                <div class="detailes">
-                  <h5 id="name">S-Series Comfort Chair</h5>
-                  <div class="dis">
-                    <div class="sallery">
-                      <span class="new-sall">$375</span>
-                    </div>
-                    <div class="stars">
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <span>(88)</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="pro"> 
-                <div class="icons">
-                  <div class="icon">
-                    <i class="fa-regular fa-heart" id="iconheart"></i>
-                    <i class="fa-regular fa-eye"></i>
-                  </div>
-                </div>
-                <div class="addcart">
-                  <div class="text">
-                    <p>Add To Cart</p>
-                  </div>
-                </div>
-                <div class="img">
-                  <a href="#">
-                    <img src="images/keybad.png" alt="" />
-                  </a>
-                </div>
-                <div class="detailes">
-                  <h5 id="name">S-Series Comfort Chair</h5>
-                  <div class="dis">
-                    <div class="sallery">
-                      <span class="new-sall">$375</span>
-                    </div>
-                    <div class="stars">
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <span>(88)</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="pro">
-                <div class="icons">
-                  <div class="icon">
-                    <i class="fa-regular fa-heart" id="iconheart"></i>
-                    <i class="fa-regular fa-eye"></i>
-                  </div>
-                </div>
-                <div class="addcart">
-                  <div class="text">
-                    <p>Add To Cart</p>
-                  </div>
-                </div>
-                <div class="img">
-                  <a href="#">
-                    <img src="images/jacket.png" alt="" />
-                  </a>
-                </div>
-                <div class="detailes">
-                  <h5 id="name">S-Series Comfort Chair</h5>
-                  <div class="dis">
-                    <div class="sallery">
-                      <span class="new-sall">$375</span>
-                    </div>
-                    <div class="stars">
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <span>(88)</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="pro">
-                <div class="icons">
-                  <div class="icon">
-                    <i class="fa-regular fa-heart" id="iconheart"></i>
-                    <i class="fa-regular fa-eye"></i>
-                  </div>
-                </div>
-                <div class="addcart">
-                  <div class="text">
-                    <p>Add To Cart</p>
-                  </div>
-                </div>
-                <div class="img">
-                  <a href="#">
-                    <img src="images/laptop.png" alt="" />
-                  </a>
-                </div>
-                <div class="detailes">
-                  <h5 id="name">S-Series Comfort Chair</h5>
-                  <div class="dis">
-                    <div class="sallery">
-                      <span class="new-sall">$375</span>
-                    </div>
-                    <div class="stars">
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <span>(88)</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          </div>
-          <a href="allproduct.html">
-            <button>View All Products</button>
-          </a>
       </div>
     </section>
 
     <!--Section Nine-->
+    <section class="ourproduct">
+      <div class="container">
+        <div class="ourprotext">
+          <span class="shape">.</span>
+          <p>Our Products</p>
+        </div>
+        <h3>Explore Our Products</h3>
+        <div class="products">
+          <div class="pro">
+            <div class="icons">
+              <div class="icon">
+                <i class="fa-regular fa-heart" id="iconheart"></i>
+                <i class="fa-regular fa-eye"></i>
+              </div>
+            </div>
+            <div class="addcart">
+              <div class="text">
+                <p>Add To Cart</p>
+              </div>
+            </div>
+            <div class="img">
+              <a href="#">
+                <img src="images/camera.png" alt="" />
+              </a>
+            </div>
+
+            <div class="detailes">
+              <h5 id="name">S-Series Comfort Chair</h5>
+              <div class="dis">
+                <div class="sallery">
+                  <span class="new-sall">$375</span>
+                </div>
+                <div class="stars">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <span>(88)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pro">
+            <div class="icons">
+              <div class="icon">
+                <i class="fa-regular fa-heart" id="iconheart"></i>
+                <i class="fa-regular fa-eye"></i>
+              </div>
+            </div>
+            <div class="addcart">
+              <div class="text">
+                <p>Add To Cart</p>
+              </div>
+            </div>
+            <div class="img">
+              <a href="#">
+                <img src="images/laptop.png" alt="" />
+              </a>
+            </div>
+            <div class="detailes">
+              <h5 id="name">S-Series Comfort Chair</h5>
+              <div class="dis">
+                <div class="sallery">
+                  <span class="new-sall">$375</span>
+                </div>
+                <div class="stars">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <span>(88)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pro">
+            <div class="icons">
+              <div class="icon">
+                <i class="fa-regular fa-heart" id="iconheart"></i>
+                <i class="fa-regular fa-eye"></i>
+              </div>
+            </div>
+            <div class="addcart">
+              <div class="text">
+                <p>Add To Cart</p>
+              </div>
+            </div>
+            <div class="img">
+              <a href="#">
+                <img src="images/lcd.png" alt="" />
+              </a>
+            </div>
+            <div class="detailes">
+              <h5 id="name">S-Series Comfort Chair</h5>
+              <div class="dis">
+                <div class="sallery">
+                  <span class="new-sall">$375</span>
+                </div>
+                <div class="stars">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <span>(88)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pro">
+            <div class="icons">
+              <div class="icon">
+                <i class="fa-regular fa-heart" id="iconheart"></i>
+                <i class="fa-regular fa-eye"></i>
+              </div>
+            </div>
+            <div class="addcart">
+              <div class="text">
+                <p>Add To Cart</p>
+              </div>
+            </div>
+            <div class="img">
+              <a href="#">
+                <img src="images/car.png" alt="" />
+              </a>
+            </div>
+            <div class="detailes">
+              <h5 id="name">S-Series Comfort Chair</h5>
+              <div class="dis">
+                <div class="sallery">
+                  <span class="new-sall">$375</span>
+                </div>
+                <div class="stars">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <span>(88)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pro">
+            <div class="icons">
+              <div class="icon">
+                <i class="fa-regular fa-heart" id="iconheart"></i>
+                <i class="fa-regular fa-eye"></i>
+              </div>
+            </div>
+            <div class="addcart">
+              <div class="text">
+                <p>Add To Cart</p>
+              </div>
+            </div>
+            <div class="img">
+              <a href="#">
+                <img src="images/sports boot.png" alt="" />
+              </a>
+            </div>
+            <div class="detailes">
+              <h5 id="name">S-Series Comfort Chair</h5>
+              <div class="dis">
+                <div class="sallery">
+                  <span class="new-sall">$375</span>
+                </div>
+                <div class="stars">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <span>(88)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pro">
+            <div class="icons">
+              <div class="icon">
+                <i class="fa-regular fa-heart" id="iconheart"></i>
+                <i class="fa-regular fa-eye"></i>
+              </div>
+            </div>
+            <div class="addcart">
+              <div class="text">
+                <p>Add To Cart</p>
+              </div>
+            </div>
+            <div class="img">
+              <a href="#">
+                <img src="images/keybad.png" alt="" />
+              </a>
+            </div>
+            <div class="detailes">
+              <h5 id="name">S-Series Comfort Chair</h5>
+              <div class="dis">
+                <div class="sallery">
+                  <span class="new-sall">$375</span>
+                </div>
+                <div class="stars">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <span>(88)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pro">
+            <div class="icons">
+              <div class="icon">
+                <i class="fa-regular fa-heart" id="iconheart"></i>
+                <i class="fa-regular fa-eye"></i>
+              </div>
+            </div>
+            <div class="addcart">
+              <div class="text">
+                <p>Add To Cart</p>
+              </div>
+            </div>
+            <div class="img">
+              <a href="#">
+                <img src="images/jacket.png" alt="" />
+              </a>
+            </div>
+            <div class="detailes">
+              <h5 id="name">S-Series Comfort Chair</h5>
+              <div class="dis">
+                <div class="sallery">
+                  <span class="new-sall">$375</span>
+                </div>
+                <div class="stars">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <span>(88)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pro">
+            <div class="icons">
+              <div class="icon">
+                <i class="fa-regular fa-heart" id="iconheart"></i>
+                <i class="fa-regular fa-eye"></i>
+              </div>
+            </div>
+            <div class="addcart">
+              <div class="text">
+                <p>Add To Cart</p>
+              </div>
+            </div>
+            <div class="img">
+              <a href="#">
+                <img src="images/laptop.png" alt="" />
+              </a>
+            </div>
+            <div class="detailes">
+              <h5 id="name">S-Series Comfort Chair</h5>
+              <div class="dis">
+                <div class="sallery">
+                  <span class="new-sall">$375</span>
+                </div>
+                <div class="stars">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <span>(88)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="allproduct.html">
+          <button>View All Products</button>
+        </a>
+      </div>
+    </section>
+
+    <!--Section Ten-->
     <section class="newArrival">
       <div class="container">
         <div class="featured">
           <span class="shape">.</span>
           <p>Featured</p>
-      </div>
-      <h2>New Arrival</h2>
+        </div>
+        <h2>New Arrival</h2>
         <div class="imges">
           <div class="leftSideImg">
             <div>
-              <img src="images/PS.png" alt="PlayStation 5">
+              <img src="images/PS.png" alt="PlayStation 5" />
               <h4>PlayStation 5</h4>
               <p>Black and White version of the PS5 coming out on sale.</p>
             </div>
@@ -938,7 +959,7 @@
           <div class="RightSideImg">
             <div class="rightTop">
               <div>
-                <img src="images/ss.jpeg" alt="Women's Collections">
+                <img src="images/ss.jpeg" alt="Women's Collections" />
                 <h4>Women’s Collections</h4>
                 <p>Featured woman collections that give you another vibe.</p>
               </div>
@@ -946,14 +967,14 @@
             <div class="rightBttom">
               <div class="rightBttomLeft">
                 <div>
-                  <img src="images/speakerAZ.png" alt="Speakers">
+                  <img src="images/speakerAZ.png" alt="Speakers" />
                   <h4>Speakers</h4>
                   <p>Amazon wireless speakers</p>
                 </div>
               </div>
               <div class="rightBttomRight">
                 <div>
-                  <img src="images/gucci.png" alt="Perfume">
+                  <img src="images/gucci.png" alt="Perfume" />
                   <h4>Perfume</h4>
                   <p>GUCCI INTENSE OUD EDP</p>
                 </div>
@@ -964,7 +985,7 @@
       </div>
     </section>
 
-    <!--Section Ten-->
+    <!--Section Eleven-->
     <section class="features">
       <div class="container">
         <div class="f1">
@@ -996,7 +1017,7 @@
         </div>
       </div>
     </section>
-    
+
     <!--Footer-->
     <footer>
       <div class="container">
@@ -1071,5 +1092,4 @@
     <script src="js/darkmode.js"></script>
     <script src="js/main.js"></script>
   </body>
-  
 </html>
