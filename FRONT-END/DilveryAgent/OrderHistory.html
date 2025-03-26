@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet" />
+
+    <title>Store Hub | Delivery | Order History</title>
+  </head>
+  <body class="light">
+    <header>
+      <div class="container">
+        <nav>
+          <h1>STOREHUB</h1>
+          <div class="linkes">
+            <a href="index.html">
+              <p>Home</p>
+            </a>
+            <a href="allproduct.html">
+              <p>All Product</p>
+            </a>
+            <a href="about.html">
+              <p>About</p>
+            </a>
+            <a href="contact.html">
+              <p>Contact</p>
+            </a>
+          </div>
+          <form class="header-form">
+            <input type="search" placeholder="Seacrch" class="seacrch" />
+            <a href="{% url 'wishlist' %}"
+              ><i class="fa-regular fa-heart"></i
+            ></a>
+            <a href="{% url 'cart' %}"
+              ><i class="fa-solid fa-cart-shopping"></i
+            ></a>
+            <a href="#" id="user-icon">
+              <i class="fa-regular fa-user"></i>
+            </a>
+
+            <div class="user-menu" id="accountDropdown">
+              <ul>
+                <li>
+                  <a href="{% url 'account' %}">
+                    <i class="fa-regular fa-user"></i> Manage My Account</a
+                  >
+                </li>
+                <li>
+                  <a href="#"> <i class="fa-solid fa-box"></i> My Order</a>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="fa-solid fa-ban"></i> My Cancellations</a
+                  >
+                </li>
+                <li>
+                  <a href="#"> <i class="fa-regular fa-star"></i> My Reviews</a>
+                </li>
+              </ul>
+            </div>
+
+            <input type="checkbox" id="toggle" />
+
+            <label class="toggle" for="toggle">
+              <i class="bx bxs-sun"></i>
+              <i class="bx bx-moon"></i>
+              <span class="ball"></span>
+            </label>
+          </form>
+        </nav>
+      </div>
+    </header>
+
+    <section class="text">
+      <div class="container">
+        <h3>Order History</h3>
+        <p>View and track your delivery records</p>
+        <select id="SelectDays" style="width: 150px; ">
+          <option>📅 Last 7 Days</option>
+          <option>📅 Last 10 Days</option>
+          <option>📅 Last 15 Days</option>
+          <option>📅 Last 30 Days</option>
+        </select>
+        <select>
+          <option>All Status</option>
+          <option>Completed</option>
+          <option>Failed</option>
+          <option>In Progress</option>
+        </select>
+        <input type="search" class="seacrch" placeholder="Search Order...." />
+      </div>
+    </section>
+    <footer>
+      <div class="container">
+        <div class="foot1">
+          <h3>STOREHUB</h3>
+          <a href="#">
+            <p>Subscribe</p>
+          </a>
+          <a href="#">
+            <p>Get 10% off your first order</p>
+          </a>
+          <input
+            type="email"
+            class="seacrch"
+            placeholder="Enter Your Email : " />
+        </div>
+        <div class="foot2">
+          <h3>Support</h3>
+          <a href="#">
+            <p>NATU - NEW ASSUIT</p>
+          </a>
+          <a href="#">
+            <p>StoreHub@gmail.com</p>
+          </a>
+          <a href="#">
+            <p>+201551803645</p>
+          </a>
+          <a href="#">
+            <p>+201551954315</p>
+          </a>
+        </div>
+        <div class="foot3">
+          <h3>Account</h3>
+          <a href="account.html">
+            <p>My Account</p>
+          </a>
+          <a href="#">
+            <p>Login / Register</p>
+          </a>
+          <a href="cart.html">
+            <p>Cart</p>
+          </a>
+          <a href="#">
+            <p>All Product</p>
+          </a>
+          <a href="#">
+            <p>Shop</p>
+          </a>
+        </div>
+        <div class="foot4">
+          <h3>Quick Link</h3>
+          <a href="#">
+            <p>Privacy Policy</p>
+          </a>
+          <a href="#">
+            <p>Terms Of Use</p>
+          </a>
+          <a href="#">
+            <p>FAQ</p>
+          </a>
+          <a href="contact.html">
+            <p>Contact</p>
+          </a>
+        </div>
+      </div>
+      <p style="text-align: center; padding-bottom: 8px">
+        Copyright &copy;<span> STOREHUB </span>all right reserved
+      </p>
+    </footer>
+    <script src="mainDelivery.js"></script>
+  </body>
+</html>
