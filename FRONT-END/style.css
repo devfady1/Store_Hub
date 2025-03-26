@@ -1256,6 +1256,9 @@ section#browseCat .container {
   background-color: #000;
   height: 100%;
 }
+.newArrival .container .imges .RightSideImg .rightBttom .rightBttomLeft > div img{
+  width: 130% !important;
+}
 .newArrival .container .imges .RightSideImg .rightBttom .rightBttomRight > div{
   background-color: #000;
   height: 100%;
@@ -1292,7 +1295,18 @@ section#browseCat .container {
   bottom: 10px;
   font-size: 12px;
 }
-
+.newArrival .container .imges .leftSideImg > div > img,
+.newArrival .container .imges .RightSideImg .rightTop > div > img,
+.newArrival .container .imges .RightSideImg .rightBttom .rightBttomLeft > div > img,
+.newArrival .container .imges .RightSideImg .rightBttom .rightBttomRight > div > img{
+  transition: 0.3s;
+}
+.newArrival .container .imges .leftSideImg > div:hover > img,
+.newArrival .container .imges .RightSideImg .rightTop > div:hover > img,
+.newArrival .container .imges .RightSideImg .rightBttom .rightBttomLeft > div:hover > img,
+.newArrival .container .imges .RightSideImg .rightBttom .rightBttomRight > div:hover > img{
+  scale: 1.1;
+}
 @media (max-width: 991px) {
   .newArrival .container .imges {
     flex-direction: column;
@@ -1327,7 +1341,6 @@ section#browseCat .container {
   .newArrival .container .imges .RightSideImg {
     flex-direction: column;
   }
-
   .newArrival .container .imges .RightSideImg .rightTop,
   .newArrival .container .imges .RightSideImg .rightBttom > div {
     width: 100%;
