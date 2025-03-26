@@ -442,8 +442,7 @@ footer .container h5:hover {
 }
 
 .table .container table th {
-  background-color: var(--dark-toogle);
-  color: var(--white-color);
+  font-size: 14px;
 }
 
 .table .container table tr:nth-child(even) {
