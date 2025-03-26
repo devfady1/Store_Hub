@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+
+    <!--Link Swiper-->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <title>Store Hub | Delivery Order Details</title>
+    
+</head>
+
+<body class="light">
+    <header>
+        <div class="container">
+            <nav>
+                <h1>STOREHUB</h1>
+                <div class="linkes">
+                    <a href="index.html" class="active">
+                        <p>Home</p>
+                    </a>
+                    <a href="allproduct.html">
+                        <p>All Product</p>
+                    </a>
+                    <a href="about.html">
+                        <p>About</p>
+                    </a>
+                    <a href="contact.html">
+                        <p>Contact</p>
+                    </a>
+                </div>
+                <form class="header-form">
+                    <input type="search" placeholder="Seacrch" class="seacrch" />
+                    <a href="{% url 'wishlist' %}"><i class="fa-regular fa-heart"></i></a>
+                    <a href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i></a>
+                    <a href="#" id="user-icon">
+                        <i class="fa-regular fa-user"></i>
+                    </a>
+
+                    <input type="checkbox" id="toggle" />
+
+                    <label class="toggle" for="toggle">
+                        <i class="bx bxs-sun"></i>
+                        <i class="bx bx-moon"></i>
+                        <span class="ball"></span>
+                    </label>
+                </form>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container-delivery-order">
+        <div class="left-panel">
+            <div class="customer-info">
+                <h3 style="margin-bottom: 15px;">Customer Information</h3>
+                <p><i class="fas fa-user icon"></i>John Smith</p>
+                <p><i class="fas fa-id-card icon"></i>Customer ID: #12345</p>
+                <p><i class="fas fa-phone icon"></i>+1 (555) 123-4567</p>
+            </div>
+
+            <div class="order-details">
+                <h3 style="margin-bottom: 15px;"><i class="fas fa-clipboard-list icon"></i> Order Details</h3>
+                <div>
+                    <span>2 Laptop</span>
+                    <span>$240.00</span>
+                </div>
+                <div>
+                    <span>1 Camera</span>
+                    <span>$55.99</span>
+                </div>
+                <div style="border-bottom: 1px solid rgb(194, 192, 192);">
+                    <span style="margin-bottom: 18px;">2 Speaker</span>
+                    <span>$660.00</span>
+                </div>
+                <div class="total">
+                    <span>Total</span>
+                    <span>$350.99</span>
+                </div>
+            </div>
+
+            <div class="delivery-status">
+                <h3 style="margin-bottom: 25px;">Delivery Status</h3>
+                <div class="status-item">
+                    <div class="status-item-span">
+                        <span><i class="fa-solid fa-circle-check" style="color: var(--main-color); cursor: pointer;"></i>Order
+                            Received</span>
+                        <span>10:30 AM</span>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-item-span">
+                        <span><i class="fa-solid fa-circle-check" style="color: var(--main-color); cursor: pointer;"></i>Preparing
+                            Order</span>
+                        <span>10:35 AM</span>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-item-span">
+                        <span style="color: #2196F3;" ><i class="fa-regular fa-circle "
+                                style="color: #2196F3; cursor: pointer;"></i></i>On the Way</span>
+                        <span >10:45 AM</span>
+                    </div>
+                </div>
+                <div class="status-item" style="color: gray;">
+                    <i class="fa-regular fa-circle "></i>
+                    <span>Delivered</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="right-panel-1">
+                <div id="map">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d110573.72684610262!2d31.133333!3d27.166667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x144ff8f5e1b9e5d1%3A0x3e5f0e8f0738f71e!2z2KfZhNmB2YrYqSDYp9mE2LTYsdmD2Kk!5e0!3m2!1sar!2seg!4v1709387586276!5m2!1sar!2seg"
+                        width="100%" height="100%"  allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+                <div class="location-info">
+                    <div class="location-info-icon">
+                        <i class="fas fa-map-marker-alt map-pin-pickup"style="color: var(--main-color);"></i>
+                        <div>
+                            <h4>Pickup Location</h4>
+                            <p>StoreHub St, Store District</p>
+                        </div>
+                    </div>
+                    <div class="location-info-icon">
+                        <i class="fas fa-map-marker-alt map-pin-delivery" style="color: #28a745;"></i>
+                        <div>
+                            <h4>Delivery Location</h4>
+                            <p>456 Customer Ave, Residential Area</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-panel-2">
+                <div class="delivery-info">
+                    <div class="delivery-info-top">
+                        <div class="icon-info">
+                            <i class="fas fa-clock icon" style="color: var(--main-color);"></i>
+                            <div>
+                                <h4> Estimated Delivery Time</h4>
+                                <p>25 minutes</p>
+                            </div>
+                        </div>
+                        <div class="icon-info">
+                            <i class="fas fa-road icon"style="color: var(--main-color);"></i>
+                            <div>
+                                <h4> Distance</h4>
+                                <p>3.5 km</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="delivery-info-bottom">
+                        <button class="start-delivery"><i class="fa-solid fa-truck"></i>Start
+                            Delivery</button>
+                        <button class="complete-delivery"><i class="fa-solid fa-circle-check"></i>Complete Delivery</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="foot1">
+                <h3>STOREHUB</h3>
+                <a href="#">
+                    <p>Subscribe</p>
+                </a>
+                <a href="#">
+                    <p>Get 10% off your first order</p>
+                </a>
+                <input type="email" class="seacrch" placeholder="Enter Your Email : " />
+            </div>
+            <div class="foot2">
+                <h3>Support</h3>
+                <a href="#">
+                    <p>NATU - NEW ASSUIT</p>
+                </a>
+                <a href="#">
+                    <p>StoreHub@gmail.com</p>
+                </a>
+                <a href="#">
+                    <p>+201551803645</p>
+                </a>
+                <a href="#">
+                    <p>+201551954315</p>
+                </a>
+            </div>
+            <div class="foot3">
+                <h3>Account</h3>
+                <a href="account.html">
+                    <p>My Account</p>
+                </a>
+                <a href="#">
+                    <p>Login / Register</p>
+                </a>
+                <a href="cart.html">
+                    <p>Cart</p>
+                </a>
+                <a href="#">
+                    <p>All Product</p>
+                </a>
+                <a href="#">
+                    <p>Shop</p>
+                </a>
+            </div>
+            <div class="foot4">
+                <h3>Quick Link</h3>
+                <a href="#">
+                    <p>Privacy Policy</p>
+                </a>
+                <a href="#">
+                    <p>Terms Of Use</p>
+                </a>
+                <a href="#">
+                    <p>FAQ</p>
+                </a>
+                <a href="contact.html">
+                    <p>Contact</p>
+                </a>
+            </div>
+        </div>
+        <p style="text-align: center; padding-bottom: 8px">
+            Copyright &copy;<span> STOREHUB </span>all right reserved
+        </p>
+    </footer>
+
+    <script src="mainDelivery.js"></script>
+
+</body>
+
+</html>
