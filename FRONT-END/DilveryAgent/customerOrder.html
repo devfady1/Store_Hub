@@ -68,52 +68,69 @@
       </div>
     </header>
     <div class="CustomerOrder">
-        <div class="containera">
-            <div class="order-status">
-                <h5>Order ID:#123456789</h5><br>
-                <h3>Out for Delivery</h3>
-                <ul class="prog">
-                    <li class="completed">Order Confirmed <span>13:45</span></li>
-                    <li class="completed"> Preparing <span>14:00</span></li>
-                    <li class="active"> Out for Delivery <span>14:15</span></li>
-                    <li>Delivered <span>14:45</span></li>
-                </ul>
-            </div>
-
-            <div class="order-details">
-                <h3>Order Details</h3>
-                <p>Double Cheeseburger x2</p>
-                <p>French Fries (Large) x1</p>
-                <p> Coca Cola (500ml) x1</p><hr>
-                <h4>Total Amount: <span>$24.99</span></h4><br>
-                <div class="delivery-time">
-                    <p>Estimated Delivery Time</p>
-                    <strong>14:30 - 14:45</strong>
+        <div class="content-container">
+            <div class="containera">
+                <div class="order-status">
+                    <p>Order ID:#123456789</p><br>
+                    <h3>Out for Delivery</h3>
+                    <div class="progress-bar">
+                        <div class="progress">
+                            <span class="dot completed"></span>
+                            <span class="dot completed"></span>
+                            <span class="dot active"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>                    
+                    <ul class="prog">
+                        <li class="completed">Order Confirmed <span>13:45</span></li><br>
+                        <li class="completed"> Preparing <span>14:00</span></li><br>
+                        <li class="active"> Out for Delivery <span>14:15</span></li><br>
+                        <li>Delivered <span>14:45</span></li>
+                    </ul>
                 </div>
-            </div>
     
-            <div class="driver-info">
-                <img src="/fady.jpg" alt="Driver">
-                <div>
-                    <h4>Michael Johnson</h4>
-                    <p>⭐⭐⭐⭐⭐ 4.9</p>
+                <div class="order-details">
+                    <h3>Order Details</h3><br>
+                    <p><span>Double Cheeseburger</span> <span>x2</span></p><br>
+                    <p><span>French Fries (Large)</span> <span>x1</span></p><br>
+                    <p><span>Coca Cola (500ml)</span> <span>x1</span></p><br>
+                    <hr class="separator">
+                    <p class="total">
+                        <span>Total Amount:</span>
+                        <span>$24.99</span>
+                      </p><br>
+                      
+                    <div class="delivery-time">
+                        <p>Estimated Delivery Time</p>
+                        <strong>14:30 - 14:45</strong>
+                    </div>
+                </div>
+                
+    
+                <div class="driver-info">
+                    <img src="/FRONT-END/images/mariam.jpg" alt="Driver">
+                    <div>
+                        <h4>Mariam AYMAN</h4>
+                        <p>⭐⭐⭐⭐⭐ 4.9</p>
+                    </div>
                 </div>
                 <button class="call-btn">📞 Call Driver</button>
             </div>
+        </div>
     
-            <div class="map-container">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d110573.72684610262!2d31.133333!3d27.166667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x144ff8f5e1b9e5d1%3A0x3e5f0e8f0738f71e!2z2KfZhNmB2YrYqSDYp9mE2LTYsdmD2Kk!5e0!3m2!1sar!2seg!4v1709387586276!5m2!1sar!2seg"
-                  width="100%"
-                  height="100%"
-                  style="border: 0"
-                  allowfullscreen=""
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
-            </div>
-        </div> 
-    </div>  
+        <div class="map-container">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d110573.72684610262!2d31.133333!3d27.166667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x144ff8f5e1b9e5d1%3A0x3e5f0e8f0738f71e!2z2KfZhNmB2YrYqSDYp9mE2LTYsdmD2Kk!5e0!3m2!1sar!2seg!4v1709387586276!5m2!1sar!2seg"
+              width="100%"
+              height="100%"
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </div>
+    
     
     <footer>
       <div class="container">
