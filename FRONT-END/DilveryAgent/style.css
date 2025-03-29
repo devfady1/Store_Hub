@@ -800,13 +800,13 @@ section.container .btn:hover{
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.order-Trick .container .map-container {
+.order-Trick .container #map-container {
   flex: 2;
-  height: 100vh;
+  height: 100vh; 
   background-size: cover;
 }
 
-.order-Trick .container .map-container iframe {
+.order-Trick .container #map-container iframe {
   width: 100%;
   height: 100%;
   border: none;
@@ -902,10 +902,10 @@ section.container .btn:hover{
   transform: scale(1.02);
 }
 
-.order-Trick .container .map-container iframe dark.{
+.dark .order-Trick .container #map-container iframe {
   background-color: #151d2a;
 }
-.order-Trick .container .orders-panel dark. {
+.dark .order-Trick .container .orders-panel  {
   flex: 1;
   background: #151d2a;
   padding: 20px;
@@ -915,7 +915,7 @@ section.container .btn:hover{
   color: #ddd;
 }
 
-.order-Trick .container .order dark.{
+.dark .order-Trick .container .order {
   background: #151d2a;
   padding: 15px;
   border-radius: 10px;
@@ -929,7 +929,7 @@ section.container .btn:hover{
     width: 95%;
   }
 
-  .order-Trick .container .map-container iframe{
+  .order-Trick .container #map-container iframe{
     height: 700px;
   }
 
@@ -940,36 +940,36 @@ section.container .btn:hover{
 
 
 /* ==> customer order <==*/
-body {
+/* body {
   background-color: #e1e1e1;
   color: #0e0d0d;
   margin: 0;
   padding: 0;
-}
+} */
 
 .CustomerOrder {
   display: flex;
-  justify-content: space-between; 
-  align-items: flex-start;
   gap: 20px;
-  padding: 20px;
+  width: 100%;
+  padding: 2%;
 }
 
 .CustomerOrder .content-container {
   flex: 1;
-  max-width: 25%;
+  width: 500px;
+  height: 880px;
 }
 
 .CustomerOrder .map-container {
   flex: 2; 
-  max-width: 75%;
-  height: 500px;
+  width: 820.8px;
+  height: 860px;
 }
 
  .CustomerOrder .map-container iframe {
+  border-radius: 12px;
   width: 100%;
   height: 100%;
-  border-radius: 12px;
 }
 
 .CustomerOrder .containera {
