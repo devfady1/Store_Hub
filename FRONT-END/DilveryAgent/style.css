@@ -915,6 +915,14 @@ section.container .btn:hover{
   color: #ddd;
 }
 
+.order-Trick .container .order dark.{
+  background: #151d2a;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  color: #ddd;
+}
 @media (max-width: 768px) {
   .order-Trick .container {
     flex-direction: column;
@@ -928,4 +936,85 @@ section.container .btn:hover{
   .order-Trick .container .orders-panel {
     padding: 15px;
   }
+}
+
+
+/* ==> customer order <==*/
+body {
+  background-color: #e1e1e1;
+  color: #0e0d0d;
+}
+.CustomerOrder {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.CustomerOrder .container {
+  width: 100%;
+  max-width: 600px; 
+  background: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+}
+.CustomerOrder .order-status,
+.CustomerOrder .order-details,
+.CustomerOrder .driver-info,
+.map-container {
+  width: 100%;
+  background: #222;
+  padding: 20px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+}
+.CustomerOrder .progress-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 15px 0;
+}
+
+.CustomerOrder .progress-bar span {
+  width: 15px;
+  height: 15px;
+  background: #4CAF50;
+  border-radius: 50%;
+}
+
+.CustomerOrder .progress-bar .active {
+  background: #ff9800;
+}
+.CustomerOrder .delivery-time {
+  background: #333;
+  padding: 10px;
+  text-align: center;
+  color: white;
+  border-radius: 6px;
+}
+.CustomerOrder .driver-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.CustomerOrder .driver-info img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.CustomerOrder .call-btn {
+  background: #28a745;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  width: 100%;
+}
+.map-container iframe {
+  width: 100%;
+  height: 300px;
+  border-radius: 12px;
 }
