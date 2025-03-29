@@ -796,12 +796,8 @@ section.container .btn:hover{
 
 .containera {
   display: flex;
-  width: 90%;
-  max-width: 1200px;
-  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  margin: auto;
 }
 
 .map-container {
