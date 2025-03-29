@@ -67,56 +67,97 @@
         </nav>
       </div>
     </header>
-
-    <div class="order-Trick">
-      <div class="container">
-        <div id="map-container">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d110573.72684610262!2d31.133333!3d27.166667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x144ff8f5e1b9e5d1%3A0x3e5f0e8f0738f71e!2z2KfZhNmB2YrYqSDYp9mE2LTYsdmD2Kk!5e0!3m2!1sar!2seg!4v1709387586276!5m2!1sar!2seg"
-            style="border: 0"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade">
-          </iframe>
+    <div class="CustomerOrder">
+        <div class="content-container">
+            <div class="containera">
+                <div class="order-status">
+                    <p>Order ID:#123456789</p><br>
+                    <h3>Out for Delivery</h3>
+                    <div class="progress-bar">
+                        <div class="progress-line"></div>
+                        <div class="progress-completed"></div>
+                        <div class="progress-point active"></div>
+                        <div class="progress-point active"></div>
+                        <div class="progress-point active"></div>
+                        <div class="progress-point"></div>
+                    </div>                    
+                    <div class="stages">
+                      <div class="stage">
+                        <div class="stage-name">
+                          <div class="stage-dot active"></div>
+                          <div>Order Confirmed</div>
+                        </div>
+                        <div class="stage-time">13:45</div>
+                      </div>
+                    
+                      <div class="stage">
+                        <div class="stage-name">
+                          <div class="stage-dot active"></div>
+                          <div>Preparing</div>
+                        </div>
+                        <div class="stage-time">14:00</div>
+                      </div>
+                    
+                      <div class="stage">
+                        <div class="stage-name">
+                          <div class="stage-dot active"></div>
+                          <div>Out for Delivery</div>
+                        </div>
+                        <div class="stage-time">14:15</div>
+                      </div>
+                    
+                      <div class="stage">
+                        <div class="stage-name">
+                          <div class="stage-dot"></div>
+                          <div>Delivered</div>
+                        </div>
+                        <div class="stage-time">14:45</div>
+                      </div>
+                    </div>
+                </div>
+    
+                <div class="order-details">
+                    <h3>Order Details</h3><br>
+                    <p><span>Double Cheeseburger</span> <span>x2</span></p><br>
+                    <p><span>French Fries (Large)</span> <span>x1</span></p><br>
+                    <p><span>Coca Cola (500ml)</span> <span>x1</span></p><br>
+                    <hr class="separator">
+                    <p class="total">
+                        <span>Total Amount:</span>
+                        <span>$24.99</span>
+                      </p><br>
+                      
+                    <div class="delivery-time">
+                        <p>Estimated Delivery Time</p>
+                        <p style="font-size: 20px;">14:30 - 14:45</p>
+                    </div>
+                </div>
+                
+    
+                <div class="driver-info">
+                    <img src="../images/mariam.jpg" alt="Driver">
+                    <div>
+                        <h4>Mariam AYMAN</h4>
+                        <p>⭐⭐⭐⭐⭐ 4.9</p>
+                    </div>
+                </div>
+                <button class="call-btn">📞 Call Driver</button>
+            </div>
         </div>
-
-        <div class="orders-panel">
-          <h2>New Orders</h2>
-          <div class="order">
-            <p><strong>Sarah Johnson</strong></p>
-            <p>456 Park Avenue, New York</p>
-            <p>
-              <span class="time">15-20 min</span> |
-              <span class="distance">1.2 km</span>
-            </p>
-            <p class="price">$12.50</p>
-            <button class="accept">Accept</button>
-            <button class="decline">Decline</button>
-          </div>
-          <div class="order">
-            <p><strong>Michael Brown</strong></p>
-            <p>789 Broadway, New York</p>
-            <p>
-              <span class="time">25-30 min</span> |
-              <span class="distance">2.5 km</span>
-            </p>
-            <p class="price">$15.75</p>
-            <button class="accept">Accept</button>
-            <button class="decline">Decline</button>
-          </div>
-          <h2>Past Deliveries</h2>
-          <div class="order past">
-            <p>#1234 Emma Wilson</p>
-            <p>$10.25</p>
-          </div>
-          <div class="order past">
-            <p>#1233 James Smith</p>
-            <p>$8.50</p>
-          </div>
+    
+        <div class="map-container">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d110573.72684610262!2d31.133333!3d27.166667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x144ff8f5e1b9e5d1%3A0x3e5f0e8f0738f71e!2z2KfZhNmB2YrYqSDYp9mE2LTYsdmD2Kk!5e0!3m2!1sar!2seg!4v1709387586276!5m2!1sar!2seg"
+              
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
         </div>
-      </div>
     </div>
-
+    
+    
     <footer>
       <div class="container">
         <div class="foot1">
