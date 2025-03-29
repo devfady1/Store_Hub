@@ -943,50 +943,62 @@ section.container .btn:hover{
 body {
   background-color: #e1e1e1;
   color: #0e0d0d;
+  margin: 0;
+  padding: 0;
 }
 .CustomerOrder {
   width: 100%;
   display: flex;
-  justify-content: center;
 }
 
 .CustomerOrder .container {
   width: 100%;
   max-width: 600px; 
-  background: #1e1e1e;
+  background: #e1e1e1;
   border-radius: 12px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
   padding: 20px;
 }
+.CustomerOrder .order-status ul .completed::marker{
+  padding:15px ;
+  margin: 15px;
+  color: #4CAF50;
+}
+.CustomerOrder .order-status ul .active::marker{
+  margin: 15px;
+  color: #4CAF50;
+}
+.CustomerOrder .order-status li::marker{
+  padding:15px ;
+  margin: 15px;
+  color: #444;
+}
+
 .CustomerOrder .order-status,
 .CustomerOrder .order-details,
 .CustomerOrder .driver-info,
-.map-container {
+.map-container {  
+  margin: 15px;
   width: 100%;
-  background: #222;
+  background: #e1e1e1;
   padding: 20px;
   margin-bottom: 10px;
   border-radius: 12px;
 }
-.CustomerOrder .progress-bar {
+.CustomerOrder .prog {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 15px 0;
 }
 
-.CustomerOrder .progress-bar span {
+.CustomerOrder .prog span {
   width: 15px;
   height: 15px;
-  background: #4CAF50;
   border-radius: 50%;
 }
-
-.CustomerOrder .progress-bar .active {
-  background: #ff9800;
-}
 .CustomerOrder .delivery-time {
-  background: #333;
+  background: #444;
   padding: 10px;
   text-align: center;
   color: white;
