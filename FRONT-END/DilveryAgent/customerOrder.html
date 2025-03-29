@@ -74,19 +74,46 @@
                     <p>Order ID:#123456789</p><br>
                     <h3>Out for Delivery</h3>
                     <div class="progress-bar">
-                        <div class="progress">
-                            <span class="dot completed"></span>
-                            <span class="dot completed"></span>
-                            <span class="dot active"></span>
-                            <span class="dot"></span>
-                        </div>
+                        <div class="progress-line"></div>
+                        <div class="progress-completed"></div>
+                        <div class="progress-point active"></div>
+                        <div class="progress-point active"></div>
+                        <div class="progress-point active"></div>
+                        <div class="progress-point"></div>
                     </div>                    
-                    <ul class="prog">
-                        <li class="completed">Order Confirmed <span>13:45</span></li><br>
-                        <li class="completed"> Preparing <span>14:00</span></li><br>
-                        <li class="active"> Out for Delivery <span>14:15</span></li><br>
-                        <li>Delivered <span>14:45</span></li>
-                    </ul>
+                    <div class="stages">
+                      <div class="stage">
+                        <div class="stage-name">
+                          <div class="stage-dot active"></div>
+                          <div>Order Confirmed</div>
+                        </div>
+                        <div class="stage-time">13:45</div>
+                      </div>
+                    
+                      <div class="stage">
+                        <div class="stage-name">
+                          <div class="stage-dot active"></div>
+                          <div>Preparing</div>
+                        </div>
+                        <div class="stage-time">14:00</div>
+                      </div>
+                    
+                      <div class="stage">
+                        <div class="stage-name">
+                          <div class="stage-dot active"></div>
+                          <div>Out for Delivery</div>
+                        </div>
+                        <div class="stage-time">14:15</div>
+                      </div>
+                    
+                      <div class="stage">
+                        <div class="stage-name">
+                          <div class="stage-dot"></div>
+                          <div>Delivered</div>
+                        </div>
+                        <div class="stage-time">14:45</div>
+                      </div>
+                    </div>
                 </div>
     
                 <div class="order-details">
@@ -108,7 +135,7 @@
                 
     
                 <div class="driver-info">
-                    <img src="/FRONT-END/images/mariam.jpg" alt="Driver">
+                    <img src="../images/mariam.jpg" alt="Driver">
                     <div>
                         <h4>Mariam AYMAN</h4>
                         <p>⭐⭐⭐⭐⭐ 4.9</p>
