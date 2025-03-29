@@ -949,7 +949,7 @@ body {
 
 .CustomerOrder {
   display: flex;
-  justify-content: space-between; /* يوزع المحتوى والخريطة */
+  justify-content: space-between; 
   align-items: flex-start;
   gap: 20px;
   padding: 20px;
@@ -1062,7 +1062,7 @@ button:hover {
 }
 .CustomerOrder .driver-info {
   display: flex;
-  justify-content: space-between; /* توزيع العناصر على الأطراف */
+  justify-content: space-between;
   align-items: center;
   background: #e1e1e1;
   padding: 15px;
@@ -1077,9 +1077,9 @@ button:hover {
   border: none;
   cursor: pointer;
   border-radius: 6px;
-  width: auto; /* حتى لا يمتد الزر */
+  width: auto; 
   position: absolute;
-  bottom: 10px; /* تثبيت الزر في الأسفل */
+  bottom: 10px; 
   right: 10px;
 }
 
@@ -1113,10 +1113,10 @@ button:hover {
 
 .order-details .total {
   display: flex;
-  justify-content: space-between; /* يوزع النص والمبلغ على الأطراف */
-  align-items: center; /* يجعل النص والمبلغ متناسقين */
-  font-weight: bold; /* لجعل النص بارز */
-  margin-top: 10px; /* لإضافة مسافة علوية */
+  justify-content: space-between; 
+  align-items: center; 
+  font-weight: bold; 
+  margin-top: 10px;
 }
 
 .CustomerOrder .order-status ul .completed::marker {
@@ -1161,7 +1161,7 @@ button:hover {
 }
 
 .call-btn:hover {
-  background: #218838; /* تأثير عند التمرير */
+  background: #218838; 
 }
 .CustomerOrder .call-btn:active {
   transform: scale(0.95);
