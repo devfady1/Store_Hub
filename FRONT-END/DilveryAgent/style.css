@@ -881,15 +881,14 @@ button:hover {
 .decline:hover {
   background-color: #c82333;
 }
-/* Past Deliveries Section */
 h2 {
-  color: #fff;
+  color: #070707;
   font-size: 1.5rem;
   margin-bottom: 10px;
 }
 
 .order.past {
-  background-color: #fffdfd; 
+  background-color: #faf4f4;
   color: #0e0d0d; 
   border-radius: 8px;
   display: flex;
@@ -899,14 +898,14 @@ h2 {
 }
 
 .order.past:hover {
-  background-color: #ffffff; 
+  background-color:#faf4f4;
   transform: scale(1.02);
 }
 
-.map-container iframe.dark{
+.map-container iframe dark.{
   background-color: #151d2a;
 }
-.orders-panel.dark {
+.orders-panel dark. {
   flex: 1;
   background: #151d2a;
   padding: 20px;
