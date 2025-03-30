@@ -896,7 +896,9 @@ section.container .btn:hover{
   align-items: center;
   transition: all 0.3s ease-in-out;
 }
-
+.order-Trick .container .order.past:hover p{
+  color: #000;
+}
 .order-Trick .container .order.past:hover {
   background-color:#faf4f4;
   transform: scale(1.02);
