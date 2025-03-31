@@ -493,25 +493,25 @@ footer .container h5:hover {
   fill: var(--main-color);
 }
 
-section.container{
-    display: flex;
-    justify-content: space-evenly;
-    width: 20%;
+section.container {
+  display: flex;
+  justify-content: space-evenly;
+  width: 20%;
 }
 
-section.container .btn{
-    width: 13%;
-    height: 40px;
-    font-size: 18px;
-    line-height: 30px;
-    border-radius: 8px;
-    background-color: var(--dark-toogle);
-    color: #fff;
-    transition: 0.3s;
+section.container .btn {
+  width: 13%;
+  height: 40px;
+  font-size: 18px;
+  line-height: 30px;
+  border-radius: 8px;
+  background-color: var(--dark-toogle);
+  color: #fff;
+  transition: 0.3s;
 }
-section.container .btn:hover{
-    background-color: var(--main-color);
-    cursor: pointer;
+section.container .btn:hover {
+  background-color: var(--main-color);
+  cursor: pointer;
 }
 
 /* ==> Start Delivery Order Details <==*/
@@ -552,7 +552,7 @@ section.container .btn:hover{
   margin-right: 12px;
 }
 
-.container-delivery-order .customer-info>p {
+.container-delivery-order .customer-info > p {
   margin-bottom: 15px;
   font-size: 16px;
   line-height: 25px;
@@ -595,7 +595,7 @@ section.container .btn:hover{
   color: var(--main-color);
 }
 
-.container-delivery-order .order-details>div {
+.container-delivery-order .order-details > div {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
@@ -681,7 +681,6 @@ section.container .btn:hover{
   margin-bottom: 14px;
 }
 
-
 .container-delivery-order .delivery-info {
   background-color: #f5f5f5;
   border-radius: 12px;
@@ -712,7 +711,6 @@ section.container .btn:hover{
   display: flex;
   justify-content: space-between;
   gap: 20px;
-
 }
 
 .container-delivery-order .start-delivery,
@@ -743,7 +741,6 @@ section.container .btn:hover{
   background-color: white;
   color: var(--main-color);
   border: 1px solid var(--main-color);
-
 }
 
 .container-delivery-order .complete-delivery {
@@ -762,7 +759,7 @@ section.container .btn:hover{
 }
 
 /* --Responsive-- */
-@media (max-width:950px) {
+@media (max-width: 950px) {
   .container-delivery-order {
     display: flex;
     flex-direction: column;
@@ -774,11 +771,9 @@ section.container .btn:hover{
     width: 100%;
     height: 100%;
   }
-
 }
 
-@media (max-width:550px) {
-
+@media (max-width: 550px) {
   .container-delivery-order .delivery-info-top,
   .container-delivery-order .delivery-info-bottom {
     display: flex;
@@ -787,10 +782,6 @@ section.container .btn:hover{
 }
 
 /* ==> End Delivery Order Details <== */
-
-
-
-
 
 /* ===> ordertracking  <===*/
 
@@ -802,7 +793,7 @@ section.container .btn:hover{
 
 .order-Trick .container #map-container {
   flex: 2;
-  height: 100vh; 
+  height: 100vh;
   background-size: cover;
 }
 
@@ -844,7 +835,7 @@ section.container .btn:hover{
 }
 
 .order-Trick .container .price {
-  color: #4CAF50;
+  color: #4caf50;
   font-weight: bold;
   font-size: 16px;
 }
@@ -889,25 +880,25 @@ section.container .btn:hover{
 
 .order-Trick .container .order.past {
   background-color: #faf4f4;
-  color: #0e0d0d; 
+  color: #0e0d0d;
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: all 0.3s ease-in-out;
 }
-.order-Trick .container .order.past:hover p{
+.order-Trick .container .order.past:hover p {
   color: #000;
 }
 .order-Trick .container .order.past:hover {
-  background-color:#faf4f4;
+  background-color: #faf4f4;
   transform: scale(1.02);
 }
 
 .dark .order-Trick .container #map-container iframe {
   background-color: #151d2a;
 }
-.dark .order-Trick .container .orders-panel  {
+.dark .order-Trick .container .orders-panel {
   flex: 1;
   background: #151d2a;
   padding: 20px;
@@ -931,7 +922,7 @@ section.container .btn:hover{
     width: 95%;
   }
 
-  .order-Trick .container #map-container iframe{
+  .order-Trick .container #map-container iframe {
     height: 700px;
   }
 
@@ -939,7 +930,6 @@ section.container .btn:hover{
     padding: 15px;
   }
 }
-
 
 /* ==> customer order <==*/
 /* body {
@@ -963,12 +953,12 @@ section.container .btn:hover{
 }
 
 .CustomerOrder .map-container {
-  flex: 2; 
+  flex: 2;
   width: 820.8px;
   height: 915px;
 }
 
- .CustomerOrder .map-container iframe {
+.CustomerOrder .map-container iframe {
   border-radius: 12px;
   width: 100%;
   height: 100%;
@@ -987,73 +977,73 @@ section.container .btn:hover{
   margin: 10px 0;
 }
 
- .progress-bar {
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   position: relative;
-   margin: 30px 0;
- }
+.progress-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  margin: 30px 0;
+}
 
- .progress-line {
-   position: absolute;
-   height: 3px;
-   background-color: #999;
-   width: 100%;
-   z-index: 1;
- }
+.progress-line {
+  position: absolute;
+  height: 3px;
+  background-color: #999;
+  width: 100%;
+  z-index: 1;
+}
 
- .progress-completed {
-   position: absolute;
-   height: 3px;
-   background-color: #00c853;
-   width: 80%;
-   z-index: 2;
- }
+.progress-completed {
+  position: absolute;
+  height: 3px;
+  background-color: #00c853;
+  width: 80%;
+  z-index: 2;
+}
 
- .progress-point {
-   width: 12px;
-   height: 12px;
-   border-radius: 50%;
-   background-color: #999;
-   z-index: 3;
-   position: relative;
- }
+.progress-point {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #999;
+  z-index: 3;
+  position: relative;
+}
 
- .progress-point.active {
-   background-color: #00c853;
- }
+.progress-point.active {
+  background-color: #00c853;
+}
 
- .stages {
-   margin-top: 20px;
- }
+.stages {
+  margin-top: 20px;
+}
 
- .stage {
-   display: flex;
-   justify-content: space-between;
-   margin-bottom: 15px;
- }
+.stage {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
 
- .stage-name {
-   display: flex;
-   align-items: center;
- }
+.stage-name {
+  display: flex;
+  align-items: center;
+}
 
- .stage-dot {
-   width: 12px;
-   height: 12px;
-   border-radius: 50%;
-   background-color: black;
-   margin-right: 10px;
- }
+.stage-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: black;
+  margin-right: 10px;
+}
 
- .stage-dot.active {
-   background-color: #00c853;
- }
+.stage-dot.active {
+  background-color: #00c853;
+}
 
- .stage-time {
-   color: black;
- }
+.stage-time {
+  color: black;
+}
 
 .CustomerOrder .order-status,
 .CustomerOrder .order-details,
@@ -1084,7 +1074,7 @@ button:hover {
   border-radius: 6px;
   padding-left: 20px;
 }
-.CustomerOrder .delivery-time :hover{
+.CustomerOrder .delivery-time :hover {
   transform: translateY(-3px);
   box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.15);
 }
@@ -1104,15 +1094,15 @@ button:hover {
   border: none;
   cursor: pointer;
   border-radius: 6px;
-  width: auto; 
+  width: auto;
   position: absolute;
-  bottom: 10px; 
+  bottom: 10px;
   right: 10px;
 }
 
 .CustomerOrder .driver-info img {
   width: 50px;
-  height: 50px; 
+  height: 50px;
   border-radius: 50%;
 }
 
@@ -1122,36 +1112,36 @@ button:hover {
 
 .CustomerOrder .order-status ul li {
   display: flex;
-  justify-content: space-between; 
-  align-items: center; 
-  gap: 10px; 
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 }
 .order-details p {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 5px 0; 
+  margin: 5px 0;
 }
 
 .order-details p span {
-  min-width: 40px; 
+  min-width: 40px;
   text-align: right;
 }
 
 .order-details .total {
   display: flex;
-  justify-content: space-between; 
-  align-items: center; 
-  font-weight: bold; 
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
   margin-top: 10px;
 }
 
 .CustomerOrder .order-status ul .completed::marker {
-  color: #4CAF50;
+  color: #4caf50;
 }
 
 .CustomerOrder .order-status ul .active::marker {
-  color: #4CAF50;
+  color: #4caf50;
 }
 
 .CustomerOrder .order-status li::marker {
@@ -1188,7 +1178,7 @@ button:hover {
 }
 
 .call-btn:hover {
-  background: #218838; 
+  background: #218838;
 }
 .CustomerOrder .call-btn:active {
   transform: scale(0.95);
@@ -1329,7 +1319,6 @@ button:hover {
   border-bottom: 2px solid #e0e0e0;
 }
 
-  
 .earnings-table tbody td {
   padding: 15px;
   border-bottom: 1px solid #e0e0e0;
@@ -1489,29 +1478,46 @@ button:hover {
 /* Dark Mode */
 
 .dark .earnings-container,
-.dark .earnings-filters,
-.dark .earnings-filter-group,
 .dark .summary-container,
-.dark .earnings-pagination,
+.dark .earnings-filters,
+.dark .earnings-table tbody tr  {
+  background-color: #1c2739;
+}
+
+.dark .withdraw-btn,
+.dark .earnings-filter-button,
+.dark .earnings-table-customer,
+.dark .earnings-table-BaseRate,
+.dark .earnings-table-DateTime {
+  color: white;
+}
+
+.dark .earnings-filter-group .earnings-filter-input,
+.dark .earnings-filter-group .earnings-filter-select,
+.dark .summary-item{
+background-color: #151D2A;
+color: white;
+}
+
 .dark .earnings-table thead th{
-  background-color: #1C2739;
+  background-color: #1c2739;
+  color: white;
+  opacity: .8;
+}
+
+
+.dark .earnings-table tbody tr:hover {
+  background-color: #151D2A;
+}
+
+.dark .earnings-pagination {
+  background-color: #1c2739;
   color: white;
 }
 
 .dark .earnings-pagination.active{
   background-color: var(--main-color);
 }
-.dark .summary-item,
-.dark .earnings-table tbody td{
-  background-color: #151D2A;
-  color: white;
-}
-
-.dark .withdraw-btn,
-.dark .earnings-filters{
-  color: white;
-}
-
 
 /* Responsive*/
 @media (max-width: 768px) {
