@@ -28,16 +28,16 @@
         <nav>
           <h1>STOREHUB</h1>
           <div class="linkes">
-            <a href="{% url 'index' %}" >
+            <a href="{% url 'index' %}" class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">
               <p>Home</p>
             </a>
-            <a href="{% url 'allproducts' %}">
+            <a href="{% url 'allproducts' %}" class="{% if request.resolver_match.url_name == 'allproducts' %}active{% endif %}">
               <p>All Products</p>
             </a>
-            <a href="{% url 'about' %}">
+            <a href="{% url 'about' %}" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">
               <p>About</p>
             </a>
-            <a href="{% url 'contact' %}">
+            <a href="{% url 'contact' %}" class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">
               <p>Contact</p>
             </a>
           </div>
