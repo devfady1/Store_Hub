@@ -1500,13 +1500,14 @@ color: white;
 }
 
 .dark .earnings-table thead th{
-  background-color: #1c2739;
+  background-color: #151D2A;
   color: white;
   opacity: .8;
 }
 
 
-.dark .earnings-table tbody tr:hover {
+.dark .earnings-table tbody tr:hover,
+.dark .earnings-table {
   background-color: #151D2A;
 }
 
@@ -1519,7 +1520,12 @@ color: white;
   background-color: var(--main-color);
 }
 
+.dark .earnings-filter-input {
+  color-scheme: dark; 
+}
+
 /* Responsive*/
+
 @media (max-width: 768px) {
   .earnings-main-header {
     flex-direction: column;
@@ -1578,6 +1584,7 @@ color: white;
   .earnings-table tbody td span {
     flex: 2;
     text-align: right;
+    text-align: center;
   }
 
   .earnings-pagination {
