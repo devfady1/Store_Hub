@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <title>Store Hub | Delivery Earnings</title>
+  </head>
+
+  <body class="light">
+    <header>
+      <div class="container">
+        <nav>
+          <h1>STOREHUB</h1>
+          <div class="linkes">
+            <a href="index.html" class="active">
+              <p>Home</p>
+            </a>
+            <a href="allproduct.html">
+              <p>All Product</p>
+            </a>
+            <a href="about.html">
+              <p>About</p>
+            </a>
+            <a href="contact.html">
+              <p>Contact</p>
+            </a>
+          </div>
+          <form class="header-form">
+            <input type="search" placeholder="Seacrch" class="seacrch" />
+            <a href="{% url 'wishlist' %}"
+              ><i class="fa-regular fa-heart"></i
+            ></a>
+            <a href="{% url 'cart' %}"
+              ><i class="fa-solid fa-cart-shopping"></i
+            ></a>
+            <a href="#" id="user-icon">
+              <i class="fa-regular fa-user"></i>
+            </a>
+
+            <input type="checkbox" id="toggle" />
+
+            <label class="toggle" for="toggle">
+              <i class="bx bxs-sun"></i>
+              <i class="bx bx-moon"></i>
+              <span class="ball"></span>
+            </label>
+          </form>
+        </nav>
+      </div>
+    </header>
+    <!-- ==> Start Delivary Earnings <== -->
+    <div class="earnings-containar">
+      <div class="earnings-container">
+        <div class="earnings-box">
+          <div class="earnings-content">
+            <div class="earnings-text">Total Earnings</div>
+            <div class="total-earnings">$4,285.50</div>
+            <div class="earnings-text">Available for withdrawal</div>
+          </div>
+          <button class="withdraw-btn">Withdraw Earnings</button>
+        </div>
+      </div>
+
+      <div class="earnings-filters">
+        <div class="earnings-filter-group">
+          <label class="earnings-filter-label">Date Range</label>
+          <select class="earnings-filter-select">
+            <option>Last 7 days</option>
+            <option>Last 30 days</option>
+            <option>Last 90 days</option>
+            <option selected>Custom Range</option>
+          </select>
+        </div>
+        <div class="earnings-filter-group">
+          <label class="earnings-filter-label">From</label>
+          <input type="date" class="earnings-filter-input" value="2024-01-15" />
+        </div>
+        <div class="earnings-filter-group">
+          <label class="earnings-filter-label">To</label>
+          <input type="date" class="earnings-filter-input" value="2024-01-21" />
+        </div>
+        <div class="earnings-filter-group">
+          <label class="earnings-filter-label">Status</label>
+          <select class="earnings-filter-select">
+            <option>All Statuses</option>
+            <option>Completed</option>
+            <option>Pending</option>
+            <option>Cancelled</option>
+          </select>
+        </div>
+        <button class="earnings-filter-button">Apply Filters</button>
+      </div>
+
+      <div class="earnings-table-container">
+        <table class="earnings-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Date & Time</th>
+              <th>Customer</th>
+              <th>Status</th>
+              <th>Distance</th>
+              <th>Base Rate</th>
+              <th>Commission</th>
+              <th>Total Earnings</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Order ID" class="earnings-table-id">#12345</td>
+              <td data-label="Date & Time">Jan 15, 2024 - 14:30</td>
+              <td data-label="Customer" class="earnings-table-customer">
+                John D.
+              </td>
+              <td data-label="Status">
+                <span class="earnings-status-badge earnings-status-completed"
+                  >Completed</span
+                >
+              </td>
+              <td data-label="Distance" class="earnings-table-distance">
+                3.5 km
+              </td>
+              <td data-label="Base Rate">$12.00</td>
+              <td data-label="Commission" class="earnings-table-negative">
+                -$1.80
+              </td>
+              <td data-label="Total Earnings" class="earnings-table-positive">
+                $10.20
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Order ID" class="earnings-table-id">#12346</td>
+              <td data-label="Date & Time">Jan 15, 2024 - 13:15</td>
+              <td data-label="Customer" class="earnings-table-customer">
+                Sarah M.
+              </td>
+              <td data-label="Status">
+                <span class="earnings-status-badge earnings-status-completed"
+                  >Completed</span
+                >
+              </td>
+              <td data-label="Distance" class="earnings-table-distance">
+                4.2 km
+              </td>
+              <td data-label="Base Rate">$14.50</td>
+              <td data-label="Commission" class="earnings-table-negative">
+                -$2.18
+              </td>
+              <td data-label="Total Earnings" class="earnings-table-positive">
+                $12.32
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Order ID" class="earnings-table-id">#12347</td>
+              <td data-label="Date & Time">Jan 15, 2024 - 12:45</td>
+              <td data-label="Customer" class="earnings-table-customer">
+                Mike R.
+              </td>
+              <td data-label="Status">
+                <span class="earnings-status-badge earnings-status-completed"
+                  >Completed</span
+                >
+              </td>
+              <td data-label="Distance" class="earnings-table-distance">
+                2.8 km
+              </td>
+              <td data-label="Base Rate">$10.00</td>
+              <td data-label="Commission" class="earnings-table-negative">
+                -$1.50
+              </td>
+              <td data-label="Total Earnings" class="earnings-table-positive">
+                $8.50
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Order ID" class="earnings-table-id">#12348</td>
+              <td data-label="Date & Time">Jan 15, 2024 - 11:30</td>
+              <td data-label="Customer" class="earnings-table-customer">
+                Emma W.
+              </td>
+              <td data-label="Status">
+                <span class="earnings-status-badge earnings-status-pending"
+                  >Pending</span
+                >
+              </td>
+              <td data-label="Distance" class="earnings-table-distance">
+                5.0 km
+              </td>
+              <td data-label="Base Rate">$16.00</td>
+              <td data-label="Commission" class="earnings-table-negative">
+                -$2.40
+              </td>
+              <td data-label="Total Earnings" class="earnings-table-positive">
+                $13.60
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Order ID" class="earnings-table-id">#12349</td>
+              <td data-label="Date & Time">Jan 15, 2024 - 10:15</td>
+              <td data-label="Customer" class="earnings-table-customer">
+                David L.
+              </td>
+              <td data-label="Status">
+                <span class="earnings-status-badge earnings-status-cancelled"
+                  >Cancelled</span
+                >
+              </td>
+              <td data-label="Distance" class="earnings-table-distance">
+                3.9 km
+              </td>
+              <td data-label="Base Rate">$13.50</td>
+              <td data-label="Commission" class="earnings-table-negative">
+                -$2.03
+              </td>
+              <td data-label="Total Earnings" class="earnings-table-positive">
+                $11.47
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination-containar">
+        <div class="pagination-info">Showing 1-5 of 156 orders</div>
+        <div class="pagination-controls">
+          <button class="earnings-pagination" disabled>
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="earnings-pagination active">1</button>
+          <button class="earnings-pagination">2</button>
+          <button class="earnings-pagination">3</button>
+          <button class="earnings-pagination">4</button>
+          <button class="earnings-pagination">5</button>
+          <button class="earnings-pagination">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+      <div class="summary-container">
+        <div class="summary-box">
+          <div class="summary-item">
+            <p class="summary-title">Total Orders</p>
+            <h3 class="summary-value">156</h3>
+          </div>
+          <div class="summary-item">
+            <p class="summary-title">Average Earning per Order</p>
+            <h3 class="summary-value">$27.47</h3>
+          </div>
+          <div class="summary-item">
+            <p class="summary-title">Commission Rate</p>
+            <h3 class="summary-value">15%</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ==> End Delivary Earnings <== -->
+    <footer>
+      <div class="container">
+        <div class="foot1">
+          <h3>STOREHUB</h3>
+          <a href="#">
+            <p>Subscribe</p>
+          </a>
+          <a href="#">
+            <p>Get 10% off your first order</p>
+          </a>
+          <input
+            type="email"
+            class="seacrch"
+            placeholder="Enter Your Email : "
+          />
+        </div>
+        <div class="foot2">
+          <h3>Support</h3>
+          <a href="#">
+            <p>NATU - NEW ASSUIT</p>
+          </a>
+          <a href="#">
+            <p>StoreHub@gmail.com</p>
+          </a>
+          <a href="#">
+            <p>+201551803645</p>
+          </a>
+          <a href="#">
+            <p>+201551954315</p>
+          </a>
+        </div>
+        <div class="foot3">
+          <h3>Account</h3>
+          <a href="account.html">
+            <p>My Account</p>
+          </a>
+          <a href="#">
+            <p>Login / Register</p>
+          </a>
+          <a href="cart.html">
+            <p>Cart</p>
+          </a>
+          <a href="#">
+            <p>All Product</p>
+          </a>
+          <a href="#">
+            <p>Shop</p>
+          </a>
+        </div>
+        <div class="foot4">
+          <h3>Quick Link</h3>
+          <a href="#">
+            <p>Privacy Policy</p>
+          </a>
+          <a href="#">
+            <p>Terms Of Use</p>
+          </a>
+          <a href="#">
+            <p>FAQ</p>
+          </a>
+          <a href="contact.html">
+            <p>Contact</p>
+          </a>
+        </div>
+      </div>
+      <p style="text-align: center; padding-bottom: 8px">
+        Copyright &copy;<span> STOREHUB </span>all right reserved
+      </p>
+    </footer>
+
+    <script src="mainDelivery.js"></script>
+  </body>
+</html>

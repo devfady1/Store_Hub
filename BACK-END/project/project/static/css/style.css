@@ -1428,6 +1428,7 @@ section#browseCat .container {
   margin-bottom: 45px;
   color: var(--text-color);
   border-radius: 50px;
+  transition: transform 0.3s ease;
 }
 
 .product-info {
@@ -1549,8 +1550,13 @@ section#browseCat .container {
   margin-bottom: 50px;
   color: var(--text-color);
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.132);
+  transition: transform 0.3s ease;
 }
 
+.cart-total:hover,
+.cart-item-row:hover {
+  transform: scale(1.03);
+}
 .cart-total h3 {
   margin-bottom: 20px;
 }
@@ -1607,9 +1613,9 @@ section#browseCat .container {
 
 
 /* Media Queries Cart*/
-@media (max-width: 1000px) {
-  .cart-container {
-    padding: 10px;
+@media (max-width: 900px) {
+  .breadcrumb-cart{
+    margin-left: 30px;
   }
 
   .cart-header {
@@ -1621,6 +1627,7 @@ section#browseCat .container {
   .cart-item-row {
     grid-template-columns: 2fr 1fr 1fr 1fr;
     gap: 10px;
+    transform: scale(1.01);
   }
 
   .product-info {
@@ -1634,9 +1641,13 @@ section#browseCat .container {
   .cart-total {
     width: 100%;
   }
+
+  .cart-total:hover {
+    transform: scale(1.01);
+  }
 }
 
-@media (max-width: 551px) {
+@media (max-width: 650px) {
   .cart-header {
     grid-template-columns: 2fr 1fr 1fr;
   }
@@ -1652,6 +1663,8 @@ section#browseCat .container {
 
   .cart-buttons {
     flex-direction: column;
+    width: 70%;
+    margin-left: 70px;
     gap: 10px;
   }
 
@@ -1659,18 +1672,18 @@ section#browseCat .container {
     width: 100%;
   }
 
-  .coupon-section {
-    flex-direction: column;
+  .coupon-section-cart{
+    margin-left: 70px;
+    gap: 50px;
   }
 
-  .coupon-input {
-    width: 100%;
-  }
 }
 
-@media (max-width: 450px) {
-  .cart-container {
-    padding: 5px;
+@media (max-width: 550px) {
+  .breadcrumb-cart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .cart-header {
@@ -1680,6 +1693,7 @@ section#browseCat .container {
   .cart-item-row {
     grid-template-columns: 2fr 1fr;
     gap: 5px;
+    padding-left: 50px;
   }
 
   .cart-header div:nth-child(3),
@@ -1704,9 +1718,20 @@ section#browseCat .container {
     padding: 15px;
   }
 
+  
   .btn {
     padding: 8px 15px;
     font-size: 14px;
+  }
+
+  .coupon-section-cart {
+    flex-direction: column;
+      width: 70%;
+      margin-left: 70px;
+      gap: 10px;
+  }
+  .coupon-input-cart {
+    width: 100%;
   }
 }
 
