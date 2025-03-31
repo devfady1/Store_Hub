@@ -1525,7 +1525,14 @@ color: white;
 }
 
 /* Responsive*/
+@media (max-width:490){
+  .earnings-container{
+    display: flex;
+    flex-direction: column;
 
+  }
+
+}
 @media (max-width: 768px) {
   .earnings-main-header {
     flex-direction: column;
