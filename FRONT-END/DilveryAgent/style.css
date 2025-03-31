@@ -1193,3 +1193,400 @@ button:hover {
 .CustomerOrder .call-btn:active {
   transform: scale(0.95);
 }
+
+/*  ==> Start Delivary Earnings <== */
+
+.earnings-container {
+  background-color: var(--white-color);
+  padding: 15px 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(175, 171, 171, 0.289);
+  margin: 0 20px 20px 20px;
+}
+
+.earnings-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+}
+
+.earnings-content {
+  text-align: left;
+}
+
+.total-earnings {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--main-color);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.earnings-text {
+  color: #555555;
+  font-size: 14px;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.withdraw-btn {
+  background-color: var(--main-color);
+  color: var(--white-color);
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-weight: 600;
+  margin-left: auto;
+  box-shadow: 0 4px 6px rgba(175, 171, 171, 0.289);
+}
+
+.withdraw-btn:hover {
+  background-color: var(--main-color);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(175, 171, 171, 0.289);
+}
+
+.withdraw-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 6px rgba(175, 171, 171, 0.289);
+}
+
+/* Filter controls */
+.earnings-filters {
+  display: flex;
+  gap: 15px;
+  margin: 0 20px 20px 20px;
+  flex-wrap: wrap;
+  background: var(--white-color);
+  padding: 20px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(175, 171, 171, 0.289);
+}
+
+.earnings-filter-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  flex: 1;
+  padding: 0 5px;
+}
+
+.earnings-filter-label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+.earnings-filter-select,
+.earnings-filter-input {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  background: var(--white-color);
+}
+
+.earnings-filter-button {
+  background: var(--main-color);
+  color: var(--white-color);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  align-self: flex-end;
+}
+
+.earnings-filter-button:hover {
+  background: var(--main-color);
+}
+
+/* Table */
+.earnings-table-container {
+  overflow-x: auto;
+  margin: 0 20px 20px 20px;
+  background: var(--white-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(175, 171, 171, 0.289);
+}
+
+.earnings-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.earnings-table thead th {
+  text-align: left;
+  padding: 15px;
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #2c3e50;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+  
+.earnings-table tbody td {
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  vertical-align: middle;
+}
+
+.earnings-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.earnings-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.earnings-table-id {
+  font-weight: 600;
+  color: var(--main-color);
+}
+
+.earnings-table-customer {
+  font-weight: 500;
+}
+
+.earnings-table-distance {
+  color: #7f8c8d;
+}
+
+.earnings-table-positive {
+  color: #27ae60;
+}
+
+.earnings-table-negative {
+  color: #e74c3c;
+}
+
+.earnings-status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.earnings-status-completed {
+  background: #e3f9ee;
+  color: #27ae60;
+}
+
+.earnings-status-pending {
+  background: #e3f9ee;
+  color: #f39c12;
+}
+
+.earnings-status-cancelled {
+  background: #e3f9ee;
+  color: #e74c3c;
+}
+
+.pagination-containar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  color: #7f8c8d;
+  font-size: 14px;
+  margin: 0 20px 20px 20px;
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.earnings-pagination {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  background: var(--white-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.earnings-pagination:hover {
+  background: #f8f9fa;
+}
+
+.earnings-pagination.active {
+  background: var(--main-color);
+  color: white;
+  border-color: var(--main-color);
+}
+
+.earnings-pagination:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.summary-container {
+  background-color: var(--white-color);
+  padding: 20px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(175, 171, 171, 0.289);
+  margin: 0 20px 20px 20px;
+}
+
+.summary-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  gap: 20px;
+}
+
+.summary-item {
+  flex: 1;
+  padding: 15px 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.summary-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(175, 171, 171, 0.289);
+}
+
+.summary-title {
+  color: #7f8c8d;
+  font-size: 14px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.summary-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.summary-item {
+  flex: 1;
+  padding: 10px 15px;
+}
+
+.summary-title {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.summary-value {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--main-color);
+}
+
+/* Dark Mode */
+
+.dark .earnings-container,
+.dark .earnings-filters,
+.dark .earnings-filter-group,
+.dark .summary-container,
+.dark .earnings-pagination,
+.dark .earnings-table thead th{
+  background-color: #1C2739;
+  color: white;
+}
+
+.dark .earnings-pagination.active{
+  background-color: var(--main-color);
+}
+.dark .summary-item,
+.dark .earnings-table tbody td{
+  background-color: #151D2A;
+  color: white;
+}
+
+.dark .withdraw-btn,
+.dark .earnings-filters{
+  color: white;
+}
+
+
+/* Responsive*/
+@media (max-width: 768px) {
+  .earnings-main-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 0 15px;
+  }
+
+  .earnings-header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .earnings-summary-card {
+    min-width: 100%;
+  }
+
+  .earnings-filters {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .earnings-filter-button {
+    width: 100%;
+  }
+
+  .earnings-table thead {
+    display: none;
+  }
+
+  .earnings-table tbody tr {
+    display: block;
+    margin-bottom: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  .earnings-table tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .earnings-table tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    margin-right: 10px;
+    color: #7f8c8d;
+    flex: 1;
+  }
+
+  .earnings-table tbody td span {
+    flex: 2;
+    text-align: right;
+  }
+
+  .earnings-pagination {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+
+  .earnings-pagination-info {
+    text-align: center;
+  }
+
+  .earnings-pagination-controls {
+    justify-content: center;
+  }
+}
+
+/*  ==> End Delivary Earnings <== */
