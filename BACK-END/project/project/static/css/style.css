@@ -2341,12 +2341,8 @@ input[type="checkbox"]:checked::after {
 }
 
 /*      --End CheckOut--   */
-/*      --Start Account--   */
-.icon-account {
-  color: var(--main-color);
-  font-size: 18px;
-}
 
+/*      --Start Account--   */
 .breadcrumb-account {
   display: flex;
   justify-content: space-between;
@@ -2380,6 +2376,16 @@ input[type="checkbox"]:checked::after {
 
 .sidebar-account {
   width: 250px;
+  height: fit-content;
+  padding: 20px;
+  border-radius: 25px;
+  box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.092);
+  transition: transform 0.3s ease;
+}
+
+.sidebar-account:hover,
+.profile-form:hover {
+  transform: scale(1.02);
 }
 
 .sidebar-account p {
@@ -2410,8 +2416,10 @@ input[type="checkbox"]:checked::after {
 /* Profile Form */
 .profile-form {
   flex: 1;
-  box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.092);
   padding: 35px 80px;
+  border-radius: 25px;
+  transition: transform 0.3s ease;
 }
 
 .form-title {
@@ -2443,7 +2451,8 @@ input[type="checkbox"]:checked::after {
   padding: 12px;
   border-radius: 4px;
   background: #f5f5f5;
-  transition: 0.3s;
+  border-radius: 25px;
+  transition: 0.3s ease;
 }
 
 .form-account input:focus {
@@ -2461,50 +2470,36 @@ input[type="checkbox"]:checked::after {
 .btn-account {
   padding: 12px 25px;
   border: none;
-  border-radius: 4px;
+  border-radius: 25px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: transform 0.3s ease;
 }
 
 .btn-cancel {
   background: transparent;
   color: var(--text-color);
-  overflow: hidden;
-  z-index: 1;
-  position: relative;
+  border: 1px solid var(--text-color);
+  
 }
 
 .btn-cancel:hover {
+  border: 1px solid var(--main-color);
+  background-color: var(--main-color);
   color: white;
-}
-
-.btn-cancel::before {
-  content: "";
-  display: block;
-  padding: 0%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-image: linear-gradient(
-    to right,
-    var(--main-color) 0%,
-    #e07575 100%
-  );
-  transition: 0.9s;
-  z-index: -1;
-}
-
-.btn-cancel:hover::before {
-  padding: 100%;
+  transform: scale(1.1);
 }
 
 .btn-save {
   background: var(--main-color);
   color: white;
+  border: 1px solid var(--main-color);
+  
 }
 
 .btn-save:hover {
-  background: #e07575;
+  color: var(--main-color);
+  background-color: #fafafa;
+  transform: scale(1.09);
 }
 
 /* Dark Mode Account */
@@ -2517,8 +2512,8 @@ input[type="checkbox"]:checked::after {
   color: var(--main-color);
 }
 
-.dark .profile-form {
-  box-shadow: 0px 1px 13px 0px rgba(255, 254, 254, 0.05);
+.dark .profile-form, .dark  .sidebar-account{
+  box-shadow: 0px 1px 13px 0px rgba(255, 254, 254, 0.112);
 }
 
 .dark .form-account input {
@@ -2526,6 +2521,12 @@ input[type="checkbox"]:checked::after {
 }
 
 /* Media Query Account */
+@media  (max-width: 1224px) {
+  .profile-form {
+      padding: 20px;
+  }
+}
+
 @media screen and (max-width: 1000px) {
   .breadcrumb-account {
     padding: 20px 50px;
@@ -2548,10 +2549,6 @@ input[type="checkbox"]:checked::after {
     justify-content: center;
   }
 
-  .profile-form {
-    padding: 0%;
-  }
-
   form.account-forms {
     width: 100%;
   }
@@ -2567,16 +2564,14 @@ input[type="checkbox"]:checked::after {
   }
 }
 
-@media screen and (max-width: 551px) {
+@media screen and (max-width: 650px) {
   aside.sidebar-account {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    display: none;
   }
 
   .form-grid {
     grid-template-columns: none;
+    gap: 0;
   }
 
   .form-actions {
@@ -2584,6 +2579,7 @@ input[type="checkbox"]:checked::after {
     width: 90%;
     margin: auto;
     margin-bottom: 20px;
+    margin-top: 40px;
   }
 
   .btn-account {
