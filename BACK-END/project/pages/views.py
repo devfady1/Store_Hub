@@ -315,6 +315,11 @@ def cart(request):
 from django.http import JsonResponse
 
 
+def chekout(request):  
+
+    return render(request, 'pages/payment/checkout.html')
+    
+
 #@user_passes_test(is_seler)
 def add_product(request):  
     if request.method == 'POST':  
