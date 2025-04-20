@@ -50,6 +50,47 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+let selectStatus = document.getElementById("selectStatus");
+
+selectStatus.addEventListener("change", () => {
+  const selected = selectStatus.value;
+  const rows = document.querySelectorAll(".table table tbody tr");
+
+  rows.forEach((row) => {
+    const statusSpan = row.querySelector(".status");
+
+    if (selected === "all") {
+      row.style.display = "";
+    } else {
+      const rowStatus = statusSpan.classList.contains(selected);
+      row.style.display = rowStatus ? "" : "none";
+    }
+  });
+});
+
+// const selectDays = document.getElementById("SelectDays");
+
+// selectDays.addEventListener("change", () => {
+//   const days = parseInt(selectDays.value);
+//   const today = new Date();
+
+//   const rows = document.querySelectorAll(".table tbody tr");
+
+//   rows.forEach((row) => {
+//     const dateText = row.cells[2].textContent.trim();
+//     const rowDate = new Date(dateText);
+
+//     const timeDiff = today - rowDate;
+//     const dayDiff = timeDiff / (1000 * 60 * 60 * 24);
+
+//     if (dayDiff <= days) {
+//       row.style.display = "";
+//     } else {
+//       row.style.display = "none";
+//     }
+//   });
+// });
+
 // Order History Select
 /* 
   1 - لو عدد العناصر ف عدد الايام دى اقل من 5 اخفى السكشن ال تحت خالص

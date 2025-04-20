@@ -428,32 +428,37 @@ footer .container h5:hover {
 
 .table .container table {
   width: 100%;
-  border-collapse: collapse;
-  background-color: var(--dark-toogle);
-  border-radius: 8px;
-  overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+  color: var(--text-color);
 }
 
-.table .container table th,
-.table .container table td {
+.table .container thead tr {
+  background: transparent;
+  box-shadow: none;
+}
+
+.table .container tbody tr {
+  background-color: var(--white-color);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.table .container tbody tr:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.table .container th,
+.table .container td {
   padding: 15px;
   text-align: left;
-  color: #fff;
-}
-
-.table .container table th {
   font-size: 14px;
 }
 
-.table .container table tr:nth-child(even) {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.table .container table tr:hover {
-  background-color: rgba(255, 255, 255, 0.08);
-}
-
-.table .container table .status {
+.table .container .status {
   padding: 4px 10px;
   border-radius: 12px;
   font-size: 0.85em;
@@ -461,26 +466,26 @@ footer .container h5:hover {
   display: inline-block;
 }
 
-.table .container table .completed {
+.completed {
   background-color: #0f6930;
   color: #33ff7e;
 }
 
-.table .container table .failed {
+.failed {
   background-color: #5c0c0c;
   color: rgb(233, 49, 49);
 }
 
-.table .container table .in-progress {
+.in-progress {
   background-color: #796518;
   color: #facc15;
 }
 
-.table .container table .commission {
+.commission {
   font-weight: bold;
 }
 
-.table .container table .actions svg {
+.actions svg {
   cursor: pointer;
   width: 20px;
   height: 20px;
@@ -489,10 +494,27 @@ footer .container h5:hover {
   transition: 0.3s;
 }
 
-.table .container table .actions svg:hover {
+.actions svg:hover {
   fill: var(--main-color);
 }
 
+@media (max-width: 700px) {
+  .table .container table thead {
+    display: none;
+  }
+
+  .table .container table tbody tr {
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .table .container table tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+  }
+}
 section.container {
   display: flex;
   justify-content: space-evenly;
@@ -508,6 +530,15 @@ section.container .btn {
   background-color: var(--dark-toogle);
   color: #fff;
   transition: 0.3s;
+}
+@media (max-width: 700px) {
+  section.container {
+    width: 50%;
+    margin: auto;
+  }
+  section.container .btn {
+    width: 10%;
+  }
 }
 section.container .btn:hover {
   background-color: var(--main-color);
@@ -1480,7 +1511,7 @@ button:hover {
 .dark .earnings-container,
 .dark .summary-container,
 .dark .earnings-filters,
-.dark .earnings-table tbody tr  {
+.dark .earnings-table tbody tr {
   background-color: #1c2739;
 }
 
@@ -1494,21 +1525,20 @@ button:hover {
 
 .dark .earnings-filter-group .earnings-filter-input,
 .dark .earnings-filter-group .earnings-filter-select,
-.dark .summary-item{
-background-color: #151D2A;
-color: white;
-}
-
-.dark .earnings-table thead th{
-  background-color: #151D2A;
+.dark .summary-item {
+  background-color: #151d2a;
   color: white;
-  opacity: .8;
 }
 
+.dark .earnings-table thead th {
+  background-color: #151d2a;
+  color: white;
+  opacity: 0.8;
+}
 
 .dark .earnings-table tbody tr:hover,
 .dark .earnings-table {
-  background-color: #151D2A;
+  background-color: #151d2a;
 }
 
 .dark .earnings-pagination {
@@ -1516,22 +1546,20 @@ color: white;
   color: white;
 }
 
-.dark .earnings-pagination.active{
+.dark .earnings-pagination.active {
   background-color: var(--main-color);
 }
 
 .dark .earnings-filter-input {
-  color-scheme: dark; 
+  color-scheme: dark;
 }
 
 /* Responsive*/
-@media (max-width:490){
-  .earnings-container{
+@media (max-width: 490) {
+  .earnings-container {
     display: flex;
     flex-direction: column;
-
   }
-
 }
 @media (max-width: 768px) {
   .earnings-main-header {
