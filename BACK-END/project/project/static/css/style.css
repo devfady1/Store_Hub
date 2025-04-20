@@ -2385,7 +2385,7 @@ input[type="checkbox"]:checked::after {
 
 .sidebar-account:hover,
 .profile-form:hover {
-  transform: scale(1.02);
+  transform: translateY(-10px);
 }
 
 .sidebar-account p {
