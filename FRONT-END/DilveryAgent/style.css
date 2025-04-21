@@ -996,7 +996,6 @@ section.container .btn:hover {
 }
 
 .CustomerOrder .containera {
-  background: #f8f8f8;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
@@ -1079,7 +1078,6 @@ section.container .btn:hover {
 .CustomerOrder .order-status,
 .CustomerOrder .order-details,
 .CustomerOrder .driver-info {
-  background: #e1e1e1;
   padding: 20px;
   margin-bottom: 10px;
   border-radius: 12px;
@@ -1092,6 +1090,10 @@ section.container .btn:hover {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   transition: 0.3s ease-in-out;
 }
+.CustomerOrder .containera p,
+.CustomerOrder .containera h3{
+  color: var(--dark-color);
+}
 button:hover {
   transform: scale(1.05);
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
@@ -1099,7 +1101,6 @@ button:hover {
 }
 
 .CustomerOrder .delivery-time {
-  background: #444;
   padding: 10px;
   color: white;
   border-radius: 6px;
@@ -1117,7 +1118,9 @@ button:hover {
   border-radius: 12px;
   position: relative;
 }
-
+.CustomerOrder .driver-info p {
+  color: #222;
+}
 .CustomerOrder .driver-info .call-btn {
   background: #28a745;
   color: white;
@@ -1214,7 +1217,19 @@ button:hover {
 .CustomerOrder .call-btn:active {
   transform: scale(0.95);
 }
-
+@media (max-width: 835px) {
+  .CustomerOrder{
+    display: flex;
+    flex-direction:column-reverse ;
+  }
+  .CustomerOrder .map-container iframe{
+    height: 500px;
+    width: 100%;
+  }
+  .CustomerOrder .content-container {
+    width: 100%;
+  }
+}
 /*  ==> Start Delivary Earnings <== */
 
 .earnings-container {
