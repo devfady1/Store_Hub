@@ -3273,7 +3273,7 @@ input[type="checkbox"]:checked::after {
 
 .allproduct .Product .detailes {
   padding: 15px;
-  position: relative; /* لضمان ترتيب العناصر داخلها */
+  position: relative; 
 }
 
 .allproduct .Product .detailes h5 {
@@ -3332,6 +3332,11 @@ input[type="checkbox"]:checked::after {
 
 .allproduct .Product .Icons i:hover {
   background: #9f1239;
+  padding: 8px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
 .stars i {
@@ -3463,8 +3468,6 @@ body.dark .product-card:hover .product-buttons {
   color: white;
   border-color: var(--main-color);
 }
-
-/* الموبايل*/
 @media (max-width: 480px) {
   .top_page h1 {
     font-size: 28px;
@@ -3478,7 +3481,7 @@ body.dark .product-card:hover .product-buttons {
     gap: 20px;
   }
   .allproduct .products_dev {
-    grid-template-columns: 1fr; /*علشان يبقوا ف عمود واحد*/
+    grid-template-columns: 1fr;
   }
   .product-card {
     width: 100%;
