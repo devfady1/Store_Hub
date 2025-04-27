@@ -3474,176 +3474,159 @@ input[type="checkbox"]:checked::after {
 /* ==> End Sign And Login  <== */
 
 /* ==> Start All Product  <== */
-.top_page {
-  text-align: center;
-  padding: 50px 0;
-}
-
-.top_page h1 {
-  font-size: 40px;
-  color: var(--main-color);
-  margin-bottom: 25px;
-}
-
-.top_page p {
-  font-size: 18px;
-  margin: auto;
-  color: #666666;
-  width: 60%;
-}
-
-.allproduct .container {
+.filters {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 50px;
-  gap: 6%;
-  padding: 15px;
-}
-
-.allproduct .container .filter {
-  background: #fff;
-  color: var(--text-color);
-  width: 250px;
-  text-transform: capitalize;
-  padding: 20px 25px;
-  border: 1px solid #4646462a;
-  border-radius: 5px;
-}
-
-.allproduct .container .filter input:checked {
-  accent-color: var(--main-color);
-}
-
-.allproduct .container .filter h4 {
-  margin-bottom: 10px;
-  margin-top: 25px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #6666662a;
-}
-
-.allproduct .container .filter .filter_item .item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.allproduct .container .filter .filter_item .item .color {
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
-}
-
-.allproduct .products_dev {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.product-card {
-  width: 250px;
-  border: 1px solid #ddd;
+  justify-content: center;
+  gap: 50px;
+  padding: 20px;
+  background: #f8f8f8;
   border-radius: 10px;
-  padding: 15px;
-  text-align: center;
+  margin-top: 20px;
+}
+.filters h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.filter-item {
+  background: white;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.filter-item:hover {
+  background:#9f1239;
+  color: white;
+}
+.color-box {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+.color-box:hover {
+  border: 2px solid #333;
+}
+.allproduct {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 40px 20px;
+}
+
+.allproduct .Product {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
-  background-color: #fff;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
 }
 
-.product-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+.allproduct .Product:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-.product-buttons {
+.allproduct .Product .Icons {
   position: absolute;
-  top: 50%;
+  top: 10px;
   right: 10px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  opacity: 0;
-  transform: translateY(-50%);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  z-index: 2;
+  gap: 8px;
+  z-index: 1;
 }
 
-.product-buttons button {
-  background-color: wheat;
-  color: white;
-  border: none;
-  width: 40px;
-  height: 40px;
+.allproduct .Product .Icons i {
+  background: #f0f0f0;
+  padding: 8px;
   border-radius: 50%;
+  font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease;
-  font-size: 18px;
+  transition: background 0.3s;
+}
+
+.allproduct .Product .Icons i:hover {
+  background: #ddd;
+}
+
+.allproduct .Product .img {
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+}
+
+.allproduct .Product .img img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+}
+
+.allproduct .Product .Add {
+  background: #9f1239; /* لون غامق */
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.allproduct .Product .Add:hover {
+  background: #c52c57; /* لون أفتح شوية عند الـ hover */
+}
+
+.allproduct .Product .detailes {
+  padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.allproduct .Product .detailes h5 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 10px 0;
+  color: var(--dark-color);
+  text-align: center;
+}
+
+.allproduct .Product .detailes .dis {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.allproduct .Product .detailes .dis span.new-sall {
+  font-size: 16px;
+  color: var(--main-color);
+  font-weight: bold;
+}
+
+.allproduct .Product .detailes .dis .stars {
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
-.product-buttons button:hover {
-  background-color: var(--main-color);
-}
-
-.product-card:hover .product-buttons {
-  opacity: 1;
-}
-
-.product-card:hover .product-image {
-  opacity: 0.6;
-  transition: opacity 0.3s;
-}
-
-.discount-badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: var(--main-color);
-  color: white;
-  padding: 5px 10px;
-  border-radius: 5px;
+.allproduct .Product .detailes .dis .stars i {
+  color: gold;
   font-size: 14px;
 }
 
-.product-image {
-  width: 125px;
-  height: 125px;
-  border-radius: 10px;
-}
-
-.product-title {
-  font-size: 15px;
-  margin: 10px 0;
-  color: var(--text-color);
-}
-
-.rating {
-  color: #f5c518;
-  font-size: 16px;
-  margin: 5px 0;
-}
-
-.price {
-  margin: 10px 0;
-}
-
-.current-price {
-  color: #28a745;
-  font-size: 20px;
-  font-weight: bold;
-  margin-right: 10px;
-}
-
-.old-price {
-  color: #6c757d;
-  font-size: 16px;
-  text-decoration: line-through;
+.allproduct .Product .detailes .dis .stars span {
+  font-size: 14px;
+  margin-left: 5px;
+  color: #555;
 }
 
 .pagination {
@@ -3732,18 +3715,18 @@ body.dark .product-card:hover .product-buttons {
 .filter .filter_item .content {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 15px; 
 }
 
 .filter .filter_item .content .item {
-  width: 100%;
+  width: 100%; 
   padding: 12px;
   background-color: transparent;
   border: 2px solid transparent;
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  box-sizing: border-box;
+  box-sizing: border-box; 
   transition: all 0.3s ease;
 }
 
