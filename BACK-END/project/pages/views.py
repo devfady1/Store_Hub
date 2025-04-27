@@ -148,7 +148,7 @@ def user_login(request):
 
     return render(request, 'pages/account/login.html', {'form': form})
 
-
+@csrf_exempt
 def register(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)

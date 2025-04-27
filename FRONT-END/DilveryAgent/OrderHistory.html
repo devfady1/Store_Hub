@@ -91,11 +91,11 @@
           <option>📅 Last 15 Days</option>
           <option>📅 Last 30 Days</option>
         </select>
-        <select>
-          <option>All Status</option>
-          <option>Completed</option>
-          <option>Failed</option>
-          <option>In Progress</option>
+        <select id="selectStatus">
+          <option value="all">All Status</option>
+          <option value="completed">Completed</option>
+          <option value="failed">Failed</option>
+          <option value="in-progress">In Progress</option>
         </select>
         <input type="search" class="seacrch" placeholder="Search Order...." />
       </div>
@@ -122,6 +122,18 @@
                 <small>Naj-Hamadi Qena Egypt</small>
               </td>
               <td>Jan 15, 2024 14:30</td>
+              <td><span class="status completed">Completed</span></td>
+              <td class="commission">$12.50</td>
+              <td class="actions">📝 🗑️</td>
+            </tr>
+
+            <tr>
+              <td>ORD-2024-001</td>
+              <td>
+                Maged Emel<br />
+                <small>Naj-Hamadi Qena Egypt</small>
+              </td>
+              <td>Mar 30, 2025 14:30</td>
               <td><span class="status completed">Completed</span></td>
               <td class="commission">$12.50</td>
               <td class="actions">📝 🗑️</td>
@@ -183,6 +195,54 @@
               </td>
               <td>Jan 15, 2024 18:00</td>
               <td><span class="status completed">Completed</span></td>
+              <td class="commission">$13.75</td>
+              <td class="actions">📝 🗑️</td>
+            </tr>
+
+            <tr>
+              <td>ORD-2024-005</td>
+              <td>
+                Marina Samir<br />
+                <small>Al Qusiyyah Assuit Qena</small>
+              </td>
+              <td>Jan 15, 2024 18:00</td>
+              <td><span class="status in-progress">In Progress</span></td>
+              <td class="commission">$13.75</td>
+              <td class="actions">📝 🗑️</td>
+            </tr>
+
+            <tr>
+              <td>ORD-2024-005</td>
+              <td>
+                Marina Samir<br />
+                <small>Al Qusiyyah Assuit Qena</small>
+              </td>
+              <td>Jan 15, 2024 18:00</td>
+              <td><span class="status completed">Completed</span></td>
+              <td class="commission">$13.75</td>
+              <td class="actions">📝 🗑️</td>
+            </tr>
+
+            <tr>
+              <td>ORD-2024-005</td>
+              <td>
+                Marina Samir<br />
+                <small>Al Qusiyyah Assuit Qena</small>
+              </td>
+              <td>Jan 15, 2024 18:00</td>
+              <td><span class="status completed">Completed</span></td>
+              <td class="commission">$13.75</td>
+              <td class="actions">📝 🗑️</td>
+            </tr>
+
+            <tr>
+              <td>ORD-2024-005</td>
+              <td>
+                Marina Samir<br />
+                <small>Al Qusiyyah Assuit Qena</small>
+              </td>
+              <td>Jan 15, 2024 18:00</td>
+              <td><span class="status failed">Failed</span></td>
               <td class="commission">$13.75</td>
               <td class="actions">📝 🗑️</td>
             </tr>

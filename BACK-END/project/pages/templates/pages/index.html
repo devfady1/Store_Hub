@@ -24,11 +24,11 @@
 <section class="slider">
   <div class="container">
     <div class="side_bar">
-      <div class="welcome-message">
+      <div class="welcome-message" style="color: var(--text-color)">
         {% if user.is_authenticated %}
-          <h3>مرحبًا بك، {{ username }}!</h3>
+          <h3> Welcome , {{ username }}!</h3>
         {% else %}
-          <h3>مرحبًا بك في متجرنا!</h3>
+          <h3>Welcome To Our Store</h3>
         {% endif %}
       </div>
       <a href="#">Men's Fashion</a>
