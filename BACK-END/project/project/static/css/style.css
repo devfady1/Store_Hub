@@ -3332,11 +3332,7 @@ input[type="checkbox"]:checked::after {
 
 .allproduct .Product .Icons i:hover {
   background: #9f1239;
-  padding: 8px;
-  border-radius: 50%;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.3s;
+  
 }
 
 .stars i {
@@ -3382,7 +3378,7 @@ input[type="checkbox"]:checked::after {
 
 .pagination-btn:hover,
 .pagination-number:hover {
-  background-color: var(--main-color);
+  background-color:#9f1239;
   color: var(--text-color);
 }
 
@@ -3391,14 +3387,64 @@ input[type="checkbox"]:checked::after {
   color: var(--text-color);
   pointer-events: none;
 }
+body.dark .filters {
+  background: #151d2a;
+  color: #ddd;
+}
+
+body.dark .filter-item {
+  background: #1e293b;
+  color: #ddd;
+  border: 1px solid #334155;
+}
+
+body.dark .filter-item:hover {
+  background:#9f1239;
+  color: #fff;
+}
+body.dark .allproduct .Product {
+  background: #1e293b;
+  color: #ddd;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+body.dark .allproduct .Product:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
+
+body.dark .allproduct .Product .Icons i {
+  background: #334155;
+  color: #ddd;
+}
+
+body.dark .allproduct .Product .Icons i:hover {
+  background: #9f1239;
+  color: #fff;
+}
+
+body.dark .allproduct .Product .detailes h5,
+body.dark .allproduct .Product .detailes span {
+  color: #eee;
+}
+
+body.dark .filter-item.active,
+body.dark .color-box.active {
+  background: #9f1239;
+  color: white;
+}
+
+body.dark .filters h3 {
+  color: #eee;
+}
+
 
 body.dark .top_page p {
   color: #ddd;
 }
-body.dark .product-card,
+body.dark .Product,
 body.dark .pagination-btn,
 body.dark .pagination-number,
-body.dark .allproduct .filter {
+body.dark .allproduct .filters .filter-options{
   background-color: #151d2a;
 }
 
