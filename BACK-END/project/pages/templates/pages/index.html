@@ -127,15 +127,18 @@
                 <span class="old-sall">${{ pro.old_price }}</span>
               </div>
               <div class="stars">
-                {% for _ in "12345"|make_list %}
-                  {% if forloop.counter <= pro.rating|floatformat:0 %}
-                    <i class="fa-solid fa-star"></i>
-                  {% else %}
-                    <i class="fa-regular fa-star"></i>
-                  {% endif %}
-                {% endfor %}
-                <span>({{ pro.rating|floatformat:1 }})</span>
-              </div>
+                {% with pro.rating|default:0|add:"0" as rating %}
+                    {% for _ in "12345"|make_list %}
+                        {% if forloop.counter <= rating %}
+                            <i class="fa-solid fa-star"></i>
+                        {% else %}
+                            <i class="fa-regular fa-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+                <span>({{ pro.rating|default:"0.0"|floatformat:1 }})</span>
+            </div>
+            
             </div>
           </div>
           {% endfor %}
@@ -247,13 +250,18 @@
                 <span class="new-sall">${{  product.price  }}</span>
               </div>
               <div class="stars">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <span>(88)</span>
-              </div>
+                {% with product.rating|default:0|add:"0" as rating %}
+                    {% for _ in "12345"|make_list %}
+                        {% if forloop.counter <= rating %}
+                            <i class="fa-solid fa-star"></i>
+                        {% else %}
+                            <i class="fa-regular fa-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+                <span>({{ product.rating|default:"0.0"|floatformat:1 }})</span>
+            </div>
+            
             </div>
           </div>{% endfor %}
       </div>
@@ -274,7 +282,6 @@
       </div>
     </section>
 
-    <!--Section Nine-->
     <section class="ourproduct">
       <div class="container">
         <div class="ourprotext">
@@ -282,286 +289,57 @@
           <p>Our Products</p>
         </div>
         <h3>Explore Our Products</h3>
+    
         <div class="products">
-          <div class="pro">
-            <div class="icons">
-              <div class="icon">
-                <i class="fa-regular fa-heart" id="iconheart"></i>
-                <i class="fa-regular fa-eye"></i>
-              </div>
-            </div>
-            <div class="addcart">
-              <div class="text">
-                <p>Add To Cart</p>
-              </div>
-            </div>
-            <div class="img">
-              <a href="#">
-                <img src="images/camera.png" alt="" />
-              </a>
-            </div>
-
-            <div class="detailes">
-              <h5 id="name">S-Series Comfort Chair</h5>
-              <div class="dis">
-                <div class="sallery">
-                  <span class="new-sall">$375</span>
-                </div>
-                <div class="stars">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <span>(88)</span>
+          {% for product in random_products %}
+            <div class="pro">
+              <div class="icons">
+                <div class="icon">
+                  <i class="fa-regular fa-heart" id="iconheart"></i>
+                  <i class="fa-regular fa-eye" onclick="window.location.href='/product/{{ product.id }}/'"></i>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="pro">
-            <div class="icons">
-              <div class="icon">
-                <i class="fa-regular fa-heart" id="iconheart"></i>
-                <i class="fa-regular fa-eye"></i>
-              </div>
-            </div>
-            <div class="addcart">
-              <div class="text">
-                <p>Add To Cart</p>
-              </div>
-            </div>
-            <div class="img">
-              <a href="#">
-                <img src="images/laptop.png" alt="" />
-              </a>
-            </div>
-            <div class="detailes">
-              <h5 id="name">S-Series Comfort Chair</h5>
-              <div class="dis">
-                <div class="sallery">
-                  <span class="new-sall">$375</span>
+              <div class="addcart" data-id="{{ product.id }}">
+                <div class="text">
+                  <p>Add To Cart</p>
                 </div>
-                <div class="stars">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <span>(88)</span>
+              </div>
+              <div class="img">
+                <a href="/product/{{ product.id }}/">
+                  <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+                </a>
+              </div>
+    
+              <div class="detailes">
+                <h5>{{ product.name }}</h5>
+                <div class="dis">
+                  <div class="sallery">
+                    <span class="new-sall">${{ product.price }}</span>
+                  </div>
+                  <div class="stars">
+                    {% with product.rating|default:0|add:"0" as rating %}
+                      {% for _ in "12345"|make_list %}
+                        {% if forloop.counter <= rating %}
+                          <i class="fa-solid fa-star"></i>
+                        {% else %}
+                          <i class="fa-regular fa-star"></i>
+                        {% endif %}
+                      {% endfor %}
+                    {% endwith %}
+                    <span>({{ product.rating|default:"0.0"|floatformat:1 }})</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="pro">
-            <div class="icons">
-              <div class="icon">
-                <i class="fa-regular fa-heart" id="iconheart"></i>
-                <i class="fa-regular fa-eye"></i>
-              </div>
-            </div>
-            <div class="addcart">
-              <div class="text">
-                <p>Add To Cart</p>
-              </div>
-            </div>
-            <div class="img">
-              <a href="#">
-                <img src="images/lcd.png" alt="" />
-              </a>
-            </div>
-            <div class="detailes">
-              <h5 id="name">S-Series Comfort Chair</h5>
-              <div class="dis">
-                <div class="sallery">
-                  <span class="new-sall">$375</span>
-                </div>
-                <div class="stars">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <span>(88)</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="pro">
-            <div class="icons">
-              <div class="icon">
-                <i class="fa-regular fa-heart" id="iconheart"></i>
-                <i class="fa-regular fa-eye"></i>
-              </div>
-            </div>
-            <div class="addcart">
-              <div class="text">
-                <p>Add To Cart</p>
-              </div>
-            </div>
-            <div class="img">
-              <a href="#">
-                <img src="images/car.png" alt="" />
-              </a>
-            </div>
-            <div class="detailes">
-              <h5 id="name">S-Series Comfort Chair</h5>
-              <div class="dis">
-                <div class="sallery">
-                  <span class="new-sall">$375</span>
-                </div>
-                <div class="stars">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <span>(88)</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="pro">
-            <div class="icons">
-              <div class="icon">
-                <i class="fa-regular fa-heart" id="iconheart"></i>
-                <i class="fa-regular fa-eye"></i>
-              </div>
-            </div>
-            <div class="addcart">
-              <div class="text">
-                <p>Add To Cart</p>
-              </div>
-            </div>
-            <div class="img">
-              <a href="#">
-                <img src="images/sports boot.png" alt="" />
-              </a>
-            </div>
-            <div class="detailes">
-              <h5 id="name">S-Series Comfort Chair</h5>
-              <div class="dis">
-                <div class="sallery">
-                  <span class="new-sall">$375</span>
-                </div>
-                <div class="stars">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <span>(88)</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="pro">
-            <div class="icons">
-              <div class="icon">
-                <i class="fa-regular fa-heart" id="iconheart"></i>
-                <i class="fa-regular fa-eye"></i>
-              </div>
-            </div>
-            <div class="addcart">
-              <div class="text">
-                <p>Add To Cart</p>
-              </div>
-            </div>
-            <div class="img">
-              <a href="#">
-                <img src="images/keybad.png" alt="" />
-              </a>
-            </div>
-            <div class="detailes">
-              <h5 id="name">S-Series Comfort Chair</h5>
-              <div class="dis">
-                <div class="sallery">
-                  <span class="new-sall">$375</span>
-                </div>
-                <div class="stars">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <span>(88)</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="pro">
-            <div class="icons">
-              <div class="icon">
-                <i class="fa-regular fa-heart" id="iconheart"></i>
-                <i class="fa-regular fa-eye"></i>
-              </div>
-            </div>
-            <div class="addcart">
-              <div class="text">
-                <p>Add To Cart</p>
-              </div>
-            </div>
-            <div class="img">
-              <a href="#">
-                <img src="images/jacket.png" alt="" />
-              </a>
-            </div>
-            <div class="detailes">
-              <h5 id="name">S-Series Comfort Chair</h5>
-              <div class="dis">
-                <div class="sallery">
-                  <span class="new-sall">$375</span>
-                </div>
-                <div class="stars">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <span>(88)</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="pro">
-            <div class="icons">
-              <div class="icon">
-                <i class="fa-regular fa-heart" id="iconheart"></i>
-                <i class="fa-regular fa-eye"></i>
-              </div>
-            </div>
-            <div class="addcart">
-              <div class="text">
-                <p>Add To Cart</p>
-              </div>
-            </div>
-            <div class="img">
-              <a href="#">
-                <img src="images/laptop.png" alt="" />
-              </a>
-            </div>
-            <div class="detailes">
-              <h5 id="name">S-Series Comfort Chair</h5>
-              <div class="dis">
-                <div class="sallery">
-                  <span class="new-sall">$375</span>
-                </div>
-                <div class="stars">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <span>(88)</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          {% endfor %}
         </div>
+    
         <a href="allproduct.html">
           <button>View All Products</button>
         </a>
       </div>
     </section>
+    
 
     <!--Section Ten-->
     <section class="newArrival">

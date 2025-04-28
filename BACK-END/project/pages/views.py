@@ -15,12 +15,15 @@ from django.contrib.auth.decorators import *
 from django.shortcuts import get_object_or_404
 from decimal import Decimal
 import json
-from django.http import JsonResponse
 from .models import Coupon
 from .models import Order
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-
+from rest_framework.parsers import MultiPartParser, FormParser                
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from random import sample
 
 
 
@@ -28,9 +31,13 @@ from django.shortcuts import render
 def is_seler(user):
     return user.userprofile.role == 'saler'
 
+def is_delevry(user):
+    return user.userprofile.role == 'delivery_agent'
+
 
 
 @login_required
+
 def index(request):
     top_products = Product.objects.filter(name="banner").annotate(likes_count=Count('likes__id')).order_by('-likes_count')[:5]
 
@@ -38,6 +45,9 @@ def index(request):
 
     max_time = flash_sales.aggregate(max_end_time=Max('end_date'))['max_end_time'] if flash_sales else None
 
+    # نجيب 8 منتجات عشوائية
+    all_products = list(Product.objects.all())
+    random_products = sample(all_products, min(len(all_products), 8))  # لو المنتجات أقل من 8 مش يجيب error
 
     username = request.user.username 
 
@@ -45,7 +55,8 @@ def index(request):
         'products': top_products,
         'flash_sales': flash_sales,
         'max_time': max_time,
-        'username': username,  
+        'username': username,
+        'random_products': random_products,  # نبعته للـ HTML
     })
 
 
@@ -399,15 +410,7 @@ def ProductManagement(request):
     
     products = Product.objects.filter(saler=request.user)
     return render(request, 'pages/saler/ProductManagment.html', {'products': products})
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.parsers import MultiPartParser, FormParser                
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
-from .models import Product
 
-from rest_framework.permissions import IsAuthenticated
 
 class UpdateProduct(APIView):
     parser_classes = (MultiPartParser, FormParser)
@@ -433,7 +436,7 @@ class UpdateProduct(APIView):
             return Response({'error': f'Failed to update product: {str(e)}'}, status=400)
 
     parser_classes = (MultiPartParser, FormParser)
-    permission_classes = [IsAuthenticated]  # 🔥 السماح فقط للمستخدمين المسجلين
+    permission_classes = [IsAuthenticated]  
 
     def patch(self, request, id):
         product = get_object_or_404(Product, id=id)
@@ -441,7 +444,6 @@ class UpdateProduct(APIView):
             return JsonResponse({'error': 'You do not have permission to edit this product'}, status=403)
 
         try:
-            # ✅ تحديث البيانات
             product.name = request.data.get('name', product.name)
             product.price = request.data.get('price', product.price)
             product.color = request.data.get('color', product.color)
@@ -512,8 +514,6 @@ def cart_view(request):
         'coupon_code': coupon_code
     })
 
-login_required
-from .models import DeliveryAssignment
 
 def delivery_order_view(request):
     assignments = DeliveryAssignment.objects.filter(DeliveryAgent=request.user)
