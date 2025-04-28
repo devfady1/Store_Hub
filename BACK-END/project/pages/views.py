@@ -599,3 +599,14 @@ def order_detail(request, order_id):
         'driver_lng': order.delivery_agent_lng,
     }
     return render(request, 'delivery agent/Delivery Order Details.html', context)
+
+
+
+def my_orders_view(request):
+    user = request.user
+    orders = Order.objects.filter(customer=user).prefetch_related('items__product')
+
+    context = {
+        'orders': orders,
+    }
+    return render(request, 'delivery agent/my_orders_view.HTML', context) 
