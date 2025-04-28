@@ -1679,3 +1679,189 @@ button:hover {
 }
 
 /*  ==> End Delivary Earnings <== */
+
+/*  ==> Start My Orders <== */
+.container-myOrders {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.myOrders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: linear-gradient(135deg, #b72e2ec8, #9f1239);
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.myOrders-header h1 {
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.myOrders-header .orders-count {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.myOrders-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 50px;
+}
+
+.myOrders-filters .filter-btn {
+  padding: 10px 16px;
+  background-color: #fafafa;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: #555;
+  font-weight: 500;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.myOrders-filters .filter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.myOrders-filters .filter-btn.active {
+  background-color: var(--main-color);
+  color: white;
+}
+
+.myOrders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.myOrders-card {
+  background-color: #fafafa;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.dark .myOrders-card{
+  background-color: #151d2a;
+  border: 1px solid #1c2739;
+}
+
+.myOrders-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.dark .myOrders-card:hover{
+  box-shadow: 0 4px 6px rgba(175, 171, 171, 0.289);
+}
+
+.myOrders-header-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  background-color: #eee;
+}
+
+.dark .myOrders-header-card{
+  background-color: #1c2739;
+}
+.myOrders-number {
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 18px;
+}
+
+.myOrders-date {
+  color: var(--text-color);
+  font-size: 14px;
+}
+
+.myOrders-body {
+  padding: 20px;
+}
+
+.myOrders-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.myOrders-info-label {
+  color: var(--text-color);
+  font-size: 15px;
+}
+
+.myOrders-info-value {
+  font-weight: 400;
+  color: var(--text-color);
+  font-size: 15px;
+}
+
+.myOrders-status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.status-completed {
+  background-color: #e6f7ee;
+  color: #27ae60;
+}
+
+.status-pending {
+  background-color: #fff8e6;
+  color: #f39c12;
+}
+
+.status-processing {
+  background-color: #e6f0ff;
+  color: #3498db;
+}
+
+.status-cancelled {
+  background-color: #ffe6e6;
+  color: #e74c3c;
+}
+
+.myOrders-order-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.myOrders-details-btn {
+  list-style: none;
+  padding: 8px 16px;
+  background-color: var(--main-color);
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition:  0.3s;
+  font-weight: 500;
+}
+
+.myOrders-details-btn i , 
+.myOrders-details-btn a {
+  color: white;
+}
+
+/*  ==> End My Orders <== */
