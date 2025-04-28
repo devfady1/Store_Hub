@@ -34,6 +34,13 @@ body.dark {
 header {
   margin-bottom: 20px;
   border-bottom: 1px solid var(--text-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #fafafa;
+}
+body.dark header{
+  background-color: #151d2a;
 }
 
 /* nav */
