@@ -411,17 +411,14 @@ from rest_framework.permissions import IsAuthenticated
 
 class UpdateProduct(APIView):
     parser_classes = (MultiPartParser, FormParser)
-    permission_classes = [IsAuthenticated]  # 🔥 السماح للمستخدمين المسجلين فقط
+    permission_classes = [IsAuthenticated]  
 
     def patch(self, request, id):
         product = get_object_or_404(Product, id=id)
-
-        # ✅ التحقق من إن المستخدم الحالي هو المالك
         if product.saler != request.user:
             return Response({'error': 'You do not have permission to edit this product'}, status=403)
-
         try:
-            # 👌 تحديث البيانات
+
             product.name = request.data.get('name', product.name)
             product.price = request.data.get('price', product.price)
             product.color = request.data.get('color', product.color)
@@ -440,8 +437,6 @@ class UpdateProduct(APIView):
 
     def patch(self, request, id):
         product = get_object_or_404(Product, id=id)
-
-        # 👌 تأكد إن المستخدم الحالي هو المالك (saler)
         if product.saler != request.user:
             return JsonResponse({'error': 'You do not have permission to edit this product'}, status=403)
 
@@ -472,7 +467,7 @@ class UpdateProduct(APIView):
             print(f"❌ Error updating product: {str(e)}")  # سجل الخطأ
             return JsonResponse({'error': f'Failed to update product: {str(e)}'}, status=400)
 
-# ✅ حذف المنتج
+
 @method_decorator(csrf_exempt, name='dispatch')
 class DeleteProduct(View):
     def delete(self, request, id):
@@ -547,20 +542,60 @@ def place_order(request):
         cart = request.session.get('cart', {})
         user = request.user
 
+        if not cart:
+            return redirect('cart')
+
+
+        order = Order.objects.create(
+            customer=user,
+            status='pending'
+        )
+
         for product_id, item in cart.items():
             try:
                 product = Product.objects.get(id=product_id)
-                Order.objects.create(
+                OrderItem.objects.create(
+                    order=order,
                     product=product,
-                    customer=user,
-                    quantity=item['quantity'],
-                    status='pending'  # ممكن تخليه pending دايماً في البداية
+                    quantity=item['quantity']
                 )
             except Product.DoesNotExist:
-                continue  # لو المنتج اتحذف أو مش موجود، اكمل
+                continue 
 
-        # امسح السلة بعد التسجيل
         request.session['cart'] = {}
         return redirect('order_success')
 
     return redirect('cart')
+
+
+
+
+
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    items = order.items.all()  
+    total_price = sum(item.product.price * item.quantity for item in items)
+
+    delivery_agent_profile = None
+    filled_stars = 0
+    empty_stars = 5
+
+    if order.delivery_agent:
+        delivery_agent_profile = UserProfile.objects.filter(user=order.delivery_agent).first()
+        if delivery_agent_profile and delivery_agent_profile.rating:
+            filled_stars = int(round(delivery_agent_profile.rating))
+            empty_stars = 5 - filled_stars
+
+    context = {
+        'order': order,
+        'items': items,
+        'total_price': total_price,
+        'delivery_agent_profile': delivery_agent_profile,
+        'filled_stars': filled_stars,
+        'empty_stars': empty_stars,
+        'client_lat': order.client_lat,
+        'client_lng': order.client_lng,
+        'driver_lat': order.delivery_agent_lat,
+        'driver_lng': order.delivery_agent_lng,
+    }
+    return render(request, 'delivery agent/Delivery Order Details.html', context)

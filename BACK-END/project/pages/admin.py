@@ -18,8 +18,23 @@ class UserProfileInline(admin.StackedInline):
     get_created_at.short_description = "Created At"
     readonly_fields = ('get_created_at',) 
     
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 1  
+    readonly_fields = ('product', 'quantity')
+    can_delete = False
 
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('id', 'customer', 'order_date', 'status', 'delivery_agent')
+    list_filter = ('status', 'order_date')
+    search_fields = ('customer__username', 'delivery_agent__username')
+    inlines = [OrderItemInline]
 
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'order', 'product', 'quantity')
+    list_filter = ('product',)
 
 class CustomUserAdmin(UserAdmin):
     inlines = (UserProfileInline,) 
