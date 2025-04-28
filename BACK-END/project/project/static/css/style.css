@@ -8,7 +8,7 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* طلع دين امي فيها صفحه التاكيد */
+/*  صفحه التاكيد*/
 .page-wrapper {
   min-height: calc(100vh - 160px);
   display: flex;
@@ -31,6 +31,11 @@
   animation: fadeInUp 1s ease forwards;
   opacity: 0;
   transform: translateY(30px);
+}
+
+.dark .success-card
+{
+  box-shadow: 0px 1px 13px 0px rgba(255, 254, 254, 0.248);
 }
 
 .success-card h1 {
@@ -61,8 +66,10 @@
 
 .success-card .btn-home:hover,
 .success-card .btn-track:hover {
-  background-color: var(--dark-color);
+  background-color: white;
+  border: 1px solid #9f1239;
   transform: scale(1.05);
+  color: var(--main-color);
 }
 
 @keyframes fadeInUp {
@@ -75,7 +82,7 @@
       transform: translateY(0);
   }
 }
-/* طلع دين امي فيها صفحه التاكيد */
+/* صفحه التاكيد */
 
 
 /* Main Class in Any div parent */
@@ -3522,7 +3529,7 @@ body.dark .allproduct .Product {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 body.dark .allproduct .Product:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 1px 13px 0px rgba(255, 254, 254, 0.177);
 }
 body.dark .allproduct .Product .Icons i {
   background: #334155;
@@ -3648,12 +3655,13 @@ body.dark .filters h3 {
 
 .wishlist-row .product {
   padding: 15px;
-  border: 1px solid #ddd;
+  border: 1px solid #eee;
   border-radius: 10px;
   text-align: center;
   width: 100%;
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
 }
 
 .wishlist-row .product:hover {
@@ -3747,15 +3755,14 @@ body.dark .filters h3 {
 }
 
 .wishlist-row .product .add-to-cart {
-  background-color: var(--text-color);
-  color: white;
+  background: #9f1239;
+  color: #fff;
   border: none;
   padding: 10px;
   width: 100%;
   cursor: pointer;
   margin-top: 10px;
   margin-bottom: 15px;
-  border-radius: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -3764,7 +3771,7 @@ body.dark .filters h3 {
 }
 
 .wishlist-row .product .add-to-cart:hover {
-  background-color: var(--main-color);
+  background: #c52c57;
 }
 
 .wishlist-row .product .add-to-cart i {
@@ -3772,6 +3779,11 @@ body.dark .filters h3 {
 }
 
 /* Dark Mode Wishlist */
+.dark .wishlist-row .product{
+   background: #1e293b;
+   border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
 
 .dark .wishlist-header .move-all-btn,
 .dark .just-for-you-section .see-all {
@@ -3782,9 +3794,6 @@ body.dark .filters h3 {
   box-shadow: 0px 1px 13px 0px rgba(255, 254, 254, 0.248);
 }
 
-.dark .wishlist-row .product .add-to-cart {
-  color: black;
-}
 
 /*Responsive */
 @media (max-width: 950px) {
