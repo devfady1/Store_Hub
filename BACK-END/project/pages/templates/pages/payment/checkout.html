@@ -2,142 +2,125 @@
 {% load static %}
 {% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer" />
-    <link
-      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
-      rel="stylesheet" />
-    <title>Store Hub | CheckOut</title>
-  </head>
+<div class="breadcrumb-checkout">
+  <a href="#">Account</a> / <a href="#">My Account</a> / <a href="#">Product</a> / <a href="#">View Cart</a> /
+  <span class="check">/</span> <a href="#" class="check">Checkout</a>
+</div>
 
-  <body class="light">
-    <div class="breadcrumb-checkout">
-      <a href="#">Account</a> / <a href="account.html">My Account</a> /
-      <a href="#">Product</a> / <a href="cart.html">View Cart</a>
-      <span class="check">/</span>
-      <a href="checkout.html" class="check">Checkout</a>
-    </div>
-    
-    <div class="container-checkout">
-      <div class="billing">
-        <h2>Billing Details</h2>
-        <form class="cheakout-form">
-          <div class="form-group">
-            <label>First Name <span>*</span></label>
-            <input type="text" />
-          </div>
-          <div class="form-group">
-            <label>Company Name</label>
-            <input type="text" />
-          </div>
-          <div class="form-group">
-            <label>Street Address <span>*</span></label>
-            <input type="text" />
-          </div>
-          <div class="form-group">
-            <label>Apartment, floor, etc. (optional)</label>
-            <input type="text" />
-          </div>
-          <div class="form-group">
-            <label>Town/City<span>*</span></label>
-            <input type="text" />
-          </div>
-          <div class="form-group">
-            <label>Phone Number<span>*</span></label>
-            <input type="tel" />
-          </div>
-          <div class="form-group">
-            <label>Email Address<span>*</span></label>
-            <input type="email" />
-          </div>
-          <label id="label">
-            <input type="checkbox" checked /> Save this information for faster
-            check-out next time
-          </label>
-        </form>
+<form method="POST" action="{% url 'place_order' %}" class="checkout-form">
+  {% csrf_token %}
+
+  <div class="container-checkout">
+    <div class="billing">
+      <h2>Billing Details</h2>
+
+      <div class="form-group">
+        <label>First Name <span>*</span></label>
+        <input type="text" name="first_name" required />
       </div>
 
-      <div class="order-summary">
+      <div class="form-group">
+        <label>Company Name</label>
+        <input type="text" name="company_name" />
+      </div>
+
+      <div class="form-group">
+        <label>Street Address <span>*</span></label>
+        <input type="text" name="address" required />
+      </div>
+
+      <div class="form-group">
+        <label>Apartment, floor, etc. (optional)</label>
+        <input type="text" name="apartment" />
+      </div>
+
+      <div class="form-group">
+        <label>Town/City<span>*</span></label>
+        <input type="text" name="city" required />
+      </div>
+
+      <div class="form-group">
+        <label>Phone Number<span>*</span></label>
+        <input type="tel" name="phone" required />
+      </div>
+
+      <div class="form-group">
+        <label>Email Address<span>*</span></label>
+        <input type="email" name="email" required />
+      </div>
+
+      <label id="label">
+        <input type="checkbox" name="save_info" checked /> Save this information for faster check-out
+      </label>
+    </div>
+
+    <div class="order-summary">
+      {% for product_id, item in cart.items %}
         <div class="product-item">
           <div class="product-left">
             <div class="product-image">
-              <img src="images/lcd.png" alt="LCD Monitor" />
+              <img src="{{ item.image_url }}" alt="{{ item.name }}">
             </div>
-            <div class="product-name">LCD Monitor</div>
+            <div class="product-name">{{ item.name }}</div>
           </div>
-          <div class="product-price">$650</div>
+          <div class="product-price">${{ item.subtotal|floatformat:2 }}</div>
         </div>
 
-        <div class="product-item">
-          <div class="product-left">
-            <div class="product-image">
-              <img src="images/game.png" alt="H1 Gamepad" />
-            </div>
-            <div class="product-name">H1 Gamepad</div>
-          </div>
-          <div class="product-price">$1100</div>
-        </div>
-        <div class="total-row-check row3">
-          <span>Subtotal:</span>
-          <span>$1750</span>
-        </div>
-        <div class="total-row-check row4">
-          <span>Shipping:</span>
-          <span>Free</span>
-        </div>
-        <div class="total-row-check">
-          <span>Total:</span>
-          <span>$1750</span>
-        </div>
+        <input type="hidden" name="products" value="{{ item.name }}|{{ item.quantity }}|{{ item.price }}">
+      {% endfor %}
 
-        <div class="payment-options">
-          <div class="payment-method">
-            <div class="payment-method-left">
-              <input type="radio" name="payment" id="bank" />
-              <label for="bank">Bank</label>
-            </div>
-            <div class="payment-icons">
-              <div class="payment-icon">
-                <img src="images/Visa.png" alt="Bank Card 1" />
-              </div>
-              <div class="payment-icon">
-                <img src="images/Bkash.png" alt="Bank Card 2" />
-              </div>
-              <div class="payment-icon">
-                <img src="images/Mastercard.png" alt="Bank Card 3" />
-              </div>
-              <div class="payment-icon">
-                <img src="images/Nagad.png" alt="Bank Card 4" />
-              </div>
-            </div>
-          </div>
-          <div class="payment-method">
-            <div class="payment-method-left">
-              <input type="radio" name="payment" id="cod" checked />
-              <label for="cod">Cash on delivery</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="coupon-container">
-          <input type="text" placeholder="Coupon Code" />
-          <button class="apply-btn">Apply Coupon</button>
-        </div>
-
-        <button class="place-order-btn">Place Order</button>
+      <div class="total-row-check row3">
+        <span>Subtotal:</span>
+        <span>${{ total|floatformat:2 }}</span>
       </div>
+      <div class="total-row-check row4">
+        <span>Shipping:</span>
+        <span>Free</span>
+      </div>
+      <div class="total-row-check">
+        <span>Total:</span>
+        <span>${{ total|floatformat:2 }}</span>
+      </div>
+
+      <div class="payment-options">
+        <div class="payment-method">
+          <div class="payment-method-left">
+            <input type="radio" name="payment_method" value="bank" id="bank" />
+            <label for="bank">Bank</label>
+          </div>
+          <div class="payment-icons">
+            <div class="payment-icon">
+              <img src="{% static 'images/Visa.png' %}" alt="Bank Card 1" />
+            </div>
+            <div class="payment-icon">
+              <img src="{% static 'images/Bkash.png' %}" alt="Bank Card 2" />
+            </div>
+            <div class="payment-icon">
+              <img src="{% static 'images/Mastercard.png' %}" alt="Bank Card 3" />
+            </div>
+            <div class="payment-icon">
+              <img src="{% static 'images/Nagad.png' %}" alt="Bank Card 4" />
+            </div>
+          </div>
+        </div>
+
+        <div class="payment-method">
+          <div class="payment-method-left">
+            <input type="radio" name="payment_method" value="cod" id="cod" checked />
+            <label for="cod">Cash on delivery</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="coupon-container">
+        <input type="text" name="coupon" placeholder="Coupon Code" />
+        <button type="button" class="apply-btn">Apply Coupon</button>
+      </div>
+
+      <button type="submit" class="place-order-btn">Place Order</button>
+
     </div>
-    
-  </body>
-</html>
-{% endblock content %}
+  </div>
+</form>
+
+{% endblock %}

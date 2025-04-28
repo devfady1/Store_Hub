@@ -24,8 +24,9 @@ from django.shortcuts import render
 
 
 
+
 def is_seler(user):
-    return user.userprofile.role == 'seller'
+    return user.userprofile.role == 'saler'
 
 
 
@@ -321,18 +322,17 @@ def cart(request):
 
     return render(request, 'pages/payment/cart.html', {'cart': cart, 'total': total})
 
-from django.http import JsonResponse
 
 
-#def checkout(request):  
-
- #   return render(request, 'pages/payment/checkout.html')
 def checkout(request):
-    # استرجاع جميع المنتجات التي تم اختيارها من قبل المستخدم
-    cart_items = CartItem.objects.filter(user=request.user)
-    
-    # إرسال البيانات للقالب
-    return render(request, 'pages/payment/checkout.html', {'cart_items': cart_items})
+    cart = request.session.get('cart', {})
+    total = 0
+
+    for product_id, item in cart.items():
+        item['subtotal'] = float(item['price']) * int(item['quantity'])
+        total += item['subtotal']
+
+    return render(request, 'pages/payment/checkout.html', {'cart': cart, 'total': total})
 
 @user_passes_test(is_seler)
 def add_product(request):  
@@ -527,3 +527,40 @@ def delivery_order_view(request):
     }
     return render(request, 'delivery agent/delivery_order.html', context)
 
+
+
+
+
+
+
+def order_success(request):
+    return render(request, 'pages/payment/order_success.html')
+
+
+from django.shortcuts import render, redirect
+from .models import Order
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def place_order(request):
+    if request.method == 'POST':
+        cart = request.session.get('cart', {})
+        user = request.user
+
+        for product_id, item in cart.items():
+            try:
+                product = Product.objects.get(id=product_id)
+                Order.objects.create(
+                    product=product,
+                    customer=user,
+                    quantity=item['quantity'],
+                    status='pending'  # ممكن تخليه pending دايماً في البداية
+                )
+            except Product.DoesNotExist:
+                continue  # لو المنتج اتحذف أو مش موجود، اكمل
+
+        # امسح السلة بعد التسجيل
+        request.session['cart'] = {}
+        return redirect('order_success')
+
+    return redirect('cart')

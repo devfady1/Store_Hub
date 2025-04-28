@@ -1,0 +1,14 @@
+{% extends 'pages/base.html' %}
+
+{% block content %}
+{% load static %}
+
+<div class="page-wrapper">
+    <div class="success-card">
+        <h1>تم تأكيد الطلب بنجاح! ✅</h1>
+        <p>شكراً لطلبك. سيتم التواصل معك قريباً.</p>
+        <a href="{% url 'index' %}" class="btn-home">الرجوع للصفحة الرئيسية</a>
+        <a href="{% url 'index' %}" class="btn-track">متابعة الطلب</a>
+    </div>
+</div>
+{% endblock %}
