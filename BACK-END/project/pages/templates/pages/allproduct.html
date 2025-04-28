@@ -1,140 +1,151 @@
 {% extends 'pages/base.html' %}
-{% block content %}
-
 {% load static %}
+
+{% block content %}
 <head>
   <meta name="csrf-token" content="{{ csrf_token }}">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+  
   <title>Store Hub | Main</title>
 </head>
-<body class="light">
-    <!-- Hero Section -->
-         <section class="top_page">
-      <div class="container">
-        <h1>Experience the Future of Technology With Our STOREHUB.</h1>
-        <p>
-          Find everything you need to transform your home into a smart, connected space. Our STOREHUB offers a wide
-          range of devices to fit your needs.
-        </p>
-      </div>
-    </section>
-    <section class="allproduct">
-      <div class="container">
-        <div class="filter">
-          <h2>Filter</h2>
-          <!-- Category Filter -->
-          <div class="filter_item">
-              <h4>Category</h4>
-              <div class="content">
-                  {% for category in categories %}
-                      <div class="item"><a href="?category={{ category.name }}">{{ category.name }}</a></div>
-                  {% endfor %}
-              </div>
-          </div>
-      </div>  
-          <!-- Product Cards -->
-          <div id="products-container" class="products_dev">
-            {% for product in products %}
-            <div class="product-card" id="product-{{ product.id }}">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image" onclick="window.location.href='/product/{{ product.id }}/'" />
-                <div class="product-buttons">
-                    <button class="add-to-cart" data-id="{{ product.id }}" title="Add to Cart">
-                        <i class="fas fa-shopping-cart"></i>
-                      </button>
-                    
-          
-                    <button title="Like" class="like-btn" onclick="toggleLike({{ product.id }}, this)">
-                        <i class="fas fa-heart {% if request.user in product.likes.all %}liked{% endif %}"></i>
-                    </button>
-                </div>
-                <h3 class="product-title">{{ product.name }}</h3>
-                <h3 class="product-title">${{ product.price }}</h3>
-                <div class="rating">★★★★★{{ product.rating }}</div>
-            </div>
-        {% endfor %}
-          </div>
-      </div>
 
-        <!-- Pagination -->
-      <div class="pagination">
-        {% if page_obj.has_previous %}
-            <button class="pagination-btn" title="Previous Page" onclick="window.location.href='?page={{ page_obj.previous_page_number }}'">
-                <i class="fas fa-angle-double-left"></i>
-            </button>
-        {% else %}
-            <button class="pagination-btn disabled" title="Previous Page" disabled>
-                <i class="fas fa-angle-double-left"></i>
-            </button>
-        {% endif %}
-    
-        {% for num in page_obj.paginator.page_range %}
-            <button class="pagination-number {% if page_obj.number == num %}active{% endif %}" onclick="window.location.href='?page={{ num }}'">
-                {{ num }}
-            </button>
-        {% endfor %}
-    
-        {% if page_obj.has_next %}
-            <button class="pagination-btn" title="Next Page" onclick="window.location.href='?page={{ page_obj.next_page_number }}'">
-                <i class="fas fa-angle-double-right"></i>
-            </button>
-        {% else %}
-            <button class="pagination-btn disabled" title="Next Page" disabled>
-                <i class="fas fa-angle-double-right"></i>
-            </button>
-        {% endif %}
+<body class="light">
+
+  <!-- Filters Section -->
+  <section class="filters container">
+    <div class="filter-options">
+      <h3>Category</h3>
+      {% for category in categories %}
+        <a href="?category={{ category.name }}">
+          <button class="filter-item">{{ category.name }}</button>
+        </a>
+      {% endfor %}
+    </div>
+
+    <div class="filter-options">
+      <h3>Color</h3>
+      {% for color in colors %}
+        <a href="?color={{ color }}">
+          <button class="color-box" style="background-color: {{ color }}; width: 30px; height: 30px; border: 1px solid #ccc; border-radius: 50%; margin: 5px;"></button>
+        </a>
+      {% endfor %}
     </div>
   </section>
-    <script>
-        document.querySelectorAll(".add-to-cart").forEach(button => {
-            button.addEventListener("click", function() {
-                let productId = this.dataset.id;
 
-                fetch(`/add-to-cart/?product_id=${productId}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("🔍 Response from server:", data);
-                    if (data.status === "success") {
-                        let quantity = data.cart[productId].quantity;
-                        alert(`✅ المنتج تم إضافته بنجاح! الكمية الحالية: ${quantity}`);
-                        window.location.href = "/cart/";
-                        
-                    } else {
-                        alert("❌ حدث خطأ أثناء الإضافة!");
-                    }
-                })
-                .catch(error => console.error('❌ Fetch Error:', error));
-            });
-        });
+  <!-- Products Section -->
+  <section class="allproduct">
+    {% for product in products %}
+    <div class="Product" id="product-{{ product.id }}">
+      <div class="Icons">
+        <i class="fa-regular fa-heart {% if request.user in product.likes.all %}liked{% endif %}" onclick="toggleLike({{ product.id }}, this)"></i>
+        <i class="fa-regular fa-eye" onclick="window.location.href='/product/{{ product.id }}/'"></i>
+      </div>
 
-    </script>
-          <script>
-            function toggleLike(productId, btn) {
-                fetch(`/toggle-like/${productId}/`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': 'c3ymF56RTKcTXiA0DEhfH4BFFCCWGiYW9C1vDYCRirRoLPqmdvOy0jG6nfBD2sSu'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    let heartIcon = btn.querySelector("i");
-                    if (data.liked) {
-                        heartIcon.classList.add("liked"); // إضافة اللون الأحمر عند اللايك
-                    } else {
-                        heartIcon.classList.remove("liked"); // إزالة اللون الأحمر عند إلغاء اللايك
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+      <div class="img">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" onclick="window.location.href='/product/{{ product.id }}/'">
+      </div>
+
+      <div class="Add add-to-cart" data-id="{{ product.id }}">
+        Add to Cart
+      </div>
+
+      <div class="detailes">
+        <h5>{{ product.name }}</h5>
+        <div class="dis">
+          <span class="new-sall">${{ product.price }}</span>
+          <div class="stars">
+            {% for i in "12345" %}
+              {% if product.rating >= forloop.counter %}
+                <i class="fas fa-star"></i> {# نجمة كاملة #}
+              {% elif product.rating >= forloop.counter0|add:"0.5" %}
+                <i class="fas fa-star-half-alt"></i> {# نص نجمة #}
+              {% else %}
+                <i class="far fa-star"></i> {# نجمة فاضية #}
+              {% endif %}
+            {% endfor %}
+            <span>({{ product.rating|floatformat:1 }})</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </section>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    {% if page_obj.has_previous %}
+      <button class="pagination-btn" onclick="window.location.href='?page={{ page_obj.previous_page_number }}'">
+        <i class="fas fa-angle-double-left"></i>
+      </button>
+    {% else %}
+      <button class="pagination-btn disabled" disabled>
+        <i class="fas fa-angle-double-left"></i>
+      </button>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+      <button class="pagination-number {% if page_obj.number == num %}active{% endif %}" onclick="window.location.href='?page={{ num }}'">
+        {{ num }}
+      </button>
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <button class="pagination-btn" onclick="window.location.href='?page={{ page_obj.next_page_number }}'">
+        <i class="fas fa-angle-double-right"></i>
+      </button>
+    {% else %}
+      <button class="pagination-btn disabled" disabled>
+        <i class="fas fa-angle-double-right"></i>
+      </button>
+    {% endif %}
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    document.querySelectorAll(".add-to-cart").forEach(button => {
+      button.addEventListener("click", function() {
+        let productId = this.dataset.id;
+
+        fetch(`/add-to-cart/?product_id=${productId}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === "success") {
+              let quantity = data.cart[productId].quantity;
+              alert(`✅ المنتج تم إضافته بنجاح! الكمية الحالية: ${quantity}`);
+              window.location.href = "/cart/";
+            } else {
+              alert("❌ حدث خطأ أثناء الإضافة!");
             }
-        </script>
+          })
+          .catch(error => console.error('❌ Fetch Error:', error));
+      });
+    });
+
+    function toggleLike(productId, btn) {
+      fetch(`/toggle-like/${productId}/`, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.liked) {
+          btn.classList.add("liked");
+          alert('✅ تم إضافة المنتج إلى المفضلة!');
+        } else {
+          btn.classList.remove("liked");
+          alert('❌ تم إزالة المنتج من المفضلة!');
+        }
+      })
+      .catch(error => console.error('❌ Error:', error));
+    }
+  </script>
+
 </body>
-</html>
-
-
 {% endblock %}

@@ -236,7 +236,7 @@ def allproducts(request):
     if filters:
         products = products.filter(filters)
 
-    paginator = Paginator(products, 9)
+    paginator = Paginator(products, 8)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -245,6 +245,7 @@ def allproducts(request):
         'colors': colors,
         'products': page_obj.object_list,
         'page_obj': page_obj,
+        'stars_range': range(5),
     }
 
     return render(request, 'pages/allproduct.html', context) 
