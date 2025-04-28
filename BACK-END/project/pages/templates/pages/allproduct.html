@@ -137,10 +137,8 @@
       .then(data => {
         if (data.liked) {
           btn.classList.add("liked");
-          alert('✅ تم إضافة المنتج إلى المفضلة!');
         } else {
           btn.classList.remove("liked");
-          alert('❌ تم إزالة المنتج من المفضلة!');
         }
       })
       .catch(error => console.error('❌ Error:', error));
