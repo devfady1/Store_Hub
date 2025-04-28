@@ -2,6 +2,8 @@ from django.contrib import admin
 from .models import *
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
+from .models import Coupon
+
 
 # تسجيل نموذج User
 class UserProfileInline(admin.StackedInline):
@@ -124,3 +126,11 @@ class ContactMessageAdmin(admin.ModelAdmin):
 admin.site.site_header = 'STOREHUB'
 admin.site.site_title = "STOREHUB"
 admin.site.index_title = "Welcome to STOREHUB Admin Panel"
+
+#for coupon
+
+class CouponAdmin(admin.ModelAdmin):
+    list_display = ('code', 'discount_percentage', 'active_from', 'notActve_until', 'is_active')
+    search_fields = ('code',)
+
+admin.site.register(Coupon, CouponAdmin)

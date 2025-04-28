@@ -15,6 +15,14 @@ from django.contrib.auth.decorators import *
 from django.shortcuts import get_object_or_404
 from decimal import Decimal
 import json
+from django.http import JsonResponse
+from .models import Coupon
+from .models import Order
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+
+
 
 def is_seler(user):
     return user.userprofile.role == 'seller'
@@ -316,10 +324,15 @@ def cart(request):
 from django.http import JsonResponse
 
 
-def chekout(request):  
+#def checkout(request):  
 
-    return render(request, 'pages/payment/checkout.html')
+ #   return render(request, 'pages/payment/checkout.html')
+def checkout(request):
+    # استرجاع جميع المنتجات التي تم اختيارها من قبل المستخدم
+    cart_items = CartItem.objects.filter(user=request.user)
     
+    # إرسال البيانات للقالب
+    return render(request, 'pages/payment/checkout.html', {'cart_items': cart_items})
 
 @user_passes_test(is_seler)
 def add_product(request):  
@@ -467,4 +480,50 @@ class DeleteProduct(View):
         product.delete()
         return JsonResponse({'message': 'Product deleted successfully!'})
 
+
+
+def apply_coupon(request):
+    if request.method == 'POST':
+        coupon_code = request.POST.get('coupon_code')  
+
+        try:
+            coupon = Coupon.objects.get(code=coupon_code, is_active=True)
+            
+            if coupon.valid_from <= timezone.now() <= coupon.valid_until:
+                
+                request.session['coupon_code'] = coupon_code
+                request.session['discount_percentage'] = coupon.discount_percentage
+                return redirect('cart')  
+            else:
+                return render(request, 'cart.html', {'error': 'الكوبون غير صالح !'})
+        except Coupon.DoesNotExist:
+            return render(request, 'cart.html', {'error': 'الكوبون غير موجود!'})
+    return redirect('cart')
+
+def cart_view(request):
+    cart = get_cart_from_session(request) 
+    coupon_code = request.session.get('coupon_code', None)
+    discount_percentage = request.session.get('discount_percentage', 0)
+
+    total_price = sum(item['subtotal'] for item in cart)  
+    discount = (discount_percentage / 100) * total_price  
+    final_price = total_price - discount  
+
+    return render(request, 'cart.html', {
+        'cart': cart,
+        'total': total_price,
+        'discount': discount,
+        'final_price': final_price,
+        'coupon_code': coupon_code
+    })
+
+login_required
+from .models import DeliveryAssignment
+
+def delivery_order_view(request):
+    assignments = DeliveryAssignment.objects.filter(DeliveryAgent=request.user)
+    context = {
+        'assignments': assignments
+    }
+    return render(request, 'delivery agent/delivery_order.html', context)
 
