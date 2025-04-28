@@ -1,32 +1,40 @@
 {% extends 'pages/base.html' %}
 {% load static %}
 {% block content %}
-<section class="orderDetails">
+<head>
+    <link rel="stylesheet" href="{% static 'css/style_delivery.css' %}" />
+    title>Orders Details</title>
+</head>
+<section class="orderDiv">
   <div class="container">
-    <h3>تفاصيل الطلب رقم {{ order.id }}</h3>
-    <div class="products">
-      {% for item in order.items.all %}
-        <div class="pro">
-          <div class="img">
-            <a href="/product/{{ item.product.id }}/">
-                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
-            </a>              
+    {% for item in order.items.all %}
+      <div class="pro">
+        <div class="img">
+          <a href="/product/{{ item.product.id }}/">
+            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" />
+          </a>
+        </div>
+        <div class="detailes">
+          <h5 id="name">{{ item.product.name }}</h5>
+          <div class="sallery">
+            <span class="new-sall">${{ item.product.price }}</span>
+            {% if item.product.old_price %}
+              <span class="old-sall">${{ item.product.old_price }}</span>
+            {% endif %}
           </div>
-          <div class="detailes">
-            <h5 id="name">{{ item.product.name }}</h5>
-            <div class="sallery">
-              <span class="new-sall">${{ item.product.price }}</span>
-              {% if item.product.old_price %}
-                <span class="old-sall">${{ item.product.old_price }}</span>
-              {% endif %}
-            </div>
+          <div class="stars">
+            {% for i in "12345"|make_list %}
+              <i class="fa-solid fa-star"></i>
+            {% endfor %}
+            <span>({{ item.product.reviews.count }})</span>
           </div>
         </div>
-      {% endfor %}
-    </div>
+      </div>
+    {% endfor %}
   </div>
-  <style>
-        .orderDiv .container {
+</section>
+<style>
+    .orderDiv .container {
   display: flex;
   flex-wrap: wrap;
 }
@@ -93,7 +101,6 @@
     width: 10%;
   }
 }
+</style>
 
-  </style>
-</section>
 {% endblock %}
