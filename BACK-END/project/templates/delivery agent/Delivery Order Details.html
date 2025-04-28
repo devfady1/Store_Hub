@@ -1,0 +1,203 @@
+{% extends 'pages/base.html' %}
+{% block content %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/style_delivery.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet" />
+    <title>Store Hub | Delivery Order Details</title>
+  </head>
+  <body class="light">
+    <div class="CustomerOrder">
+        <div class="content-container">
+            <div class="containera">
+                <div class="order-status">
+                    <p>Order ID: #{{ order.id }}</p><br>
+                    <h3>
+                        {% if order.status == 'pending' %}
+                            Order Confirmed
+                        {% elif order.status == 'in_progress' %}
+                            Out for Delivery
+                        {% elif order.status == 'completed' %}
+                            Delivered
+                        {% elif order.status == 'cancelled' %}
+                            Cancelled
+                        {% endif %}
+                    </h3>
+                
+                    <div class="progress-bar">
+                        <div class="progress-line"></div>
+                        <div class="progress-completed"></div>
+                
+                        <div class="progress-point {% if order.status in 'pending in_progress completed' %}active{% endif %}"></div>
+                        <div class="progress-point {% if order.status in 'in_progress completed' %}active{% endif %}"></div>
+                        <div class="progress-point {% if order.status == 'completed' %}active{% endif %}"></div>
+                        <div class="progress-point {% if order.status == 'completed' %}active{% endif %}"></div>
+                    </div>                    
+                    <div class="stages">
+                        <div class="stage">
+                            <div class="stage-name">
+                                <div class="stage-dot {% if order.status in 'pending in_progress completed' %}active{% endif %}"></div>
+                                <div><p>Order Confirmed</p></div>
+                            </div>
+                        </div>
+                
+                        <div class="stage">
+                            <div class="stage-name">
+                                <div class="stage-dot {% if order.status in 'in_progress completed' %}active{% endif %}"></div>
+                                <div><p>Preparing</p></div>
+                            </div>
+                        </div>
+                
+                        <div class="stage">
+                            <div class="stage-name">
+                                <div class="stage-dot {% if order.status == 'in_progress' %}active{% endif %}"></div>
+                                <div><p>Out for Delivery</p></div>
+                            </div>
+                        </div>
+                
+                        <div class="stage">
+                            <div class="stage-name">
+                                <div class="stage-dot {% if order.status == 'completed' %}active{% endif %}"></div>
+                                <div><p>Delivered</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="order-details">
+                    <h3>Order Details</h3><br>
+                
+                    {% for item in items %}
+                        <p><span>{{ item.product.name }}</span> <span>x{{ item.quantity }}</span></p><br>
+                    {% endfor %}
+                
+                    <hr class="separator">
+                    <p class="total">
+                        <span>Total Amount:</span>
+                        <span>${{ total_price }}</span>
+                    </p><br>
+                
+                    <div class="delivery-time">
+                        <p>Estimated Delivery Time</p>
+                        <p style="font-size: 20px;">Soon!</p>
+                    </div>
+                </div>
+                
+                
+    
+                <div class="driver-info">
+                    {% if delivery_agent_profile %}
+                        <img src="{{ delivery_agent_profile.profile_image.url }}" alt="Driver" style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%;">
+                        <div>
+                            <h4>{{ delivery_agent_profile.user.first_name }} {{ delivery_agent_profile.user.last_name }}</h4>
+                
+                            <p>
+                                {% for _ in "x"|ljust:filled_stars %}
+                                    ⭐
+                                {% endfor %}
+                                {% for _ in "x"|ljust:empty_stars %}
+                                    ☆
+                                {% endfor %}
+                                {{ delivery_agent_profile.rating|default:"0.0" }}
+                            </p>
+                
+                        </div>
+                    {% else %}
+                        <p>لا يوجد سائق مخصص لهذا الطلب.</p>
+                    {% endif %}
+                </div>
+                
+                <button class="call-btn">📞 Call Driver</button>
+            </div>
+        </div>
+    
+        <div class="map-container">
+            <div id="map" style="height: 100%; width: 100%;"></div>
+          </div>
+          
+          <script>
+          let map, directionsService, directionsRenderer, userMarker;
+          
+          function initMap() {
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer();
+          
+            map = new google.maps.Map(document.getElementById("map"), {
+              center: { lat: 27.1866617, lng: 31.1704269 },
+              zoom: 13,
+            });
+          
+            directionsRenderer.setMap(map);
+            const driverLocation = { lat: {{ driver_lat|default:27.1866 }}, lng: {{ driver_lng|default:31.1704 }} };
+            if (navigator.geolocation) {
+              navigator.geolocation.watchPosition(
+                (position) => {
+                  const userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                  };
+          
+                  if (userMarker) userMarker.setMap(null);
+          
+                  userMarker = new google.maps.Marker({
+                    position: userLocation,
+                    map: map,
+                    label: "U",
+                    title: "Your Live Location"
+                  });
+          
+                  calculateAndDisplayRoute(driverLocation, userLocation);
+                },
+                (error) => {
+                  console.error("Error getting location:", error);
+                },
+                { enableHighAccuracy: true }
+              );
+            } else {
+              alert("Geolocation is not supported by your browser.");
+            }
+          }
+          
+          function calculateAndDisplayRoute(start, end) {
+            directionsService.route(
+              {
+                origin: start,
+                destination: end,
+                travelMode: google.maps.TravelMode.DRIVING, 
+              },
+              (response, status) => {
+                if (status === "OK") {
+                  directionsRenderer.setDirections(response);
+                } else {
+                  window.alert("Directions request failed due to " + status);
+                }
+              }
+            );
+          }
+          </script>
+          
+          <script async defer
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSp3OoxS0lL0wOcEGC-ty8FQutMBqKTLE&callback=initMap">
+          </script>
+          
+    </div>
+    <script src="mainDelivery.js"></script>
+  </body>
+</html>
+{% endblock %}

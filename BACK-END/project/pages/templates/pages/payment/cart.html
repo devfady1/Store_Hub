@@ -46,7 +46,7 @@
         <div class="left-section">
             <div class="coupon-section-cart">
                 <input type="text" class="coupon-input-cart" placeholder="Coupon Code" />
-                <button class="btn btn-primary">Apply Coupon</button>
+                 <button class="btn btn-primary">Apply Coupon</button>
             </div>
         </div>
 
@@ -71,11 +71,19 @@
                     <span>$0.00</span>
                 </div>
             {% endif %}
-            <button class="btn btn-primary" style="width: 100%; margin-top: 20px">
-                Process to checkout
-            </button>
+        
+            <div class="total-row row2">
+                <span>Coupon Discount:</span>
+                <span>$0.00</span> 
+            </div>
+        
+            <a href="{% url 'checkout' %}">
+                <button class="btn btn-primary" style="width: 100%; margin-top: 20px">
+                    Process to checkout
+                </button>
+            </a>
         </div>
-    </div>
+        
 </main>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -165,6 +173,46 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         }
         return cookieValue;
+    }
+});
+document.addEventListener("DOMContentLoaded", function() {
+    const applyCouponButton = document.querySelector(".coupon-section-cart button");
+    const couponInput = document.querySelector(".coupon-input-cart");
+
+    if (applyCouponButton) {
+        applyCouponButton.addEventListener("click", function() {
+            const couponCode = couponInput.value.trim();
+
+            if (couponCode) {
+                fetch('/apply_coupon/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken()
+                    },
+                    body: JSON.stringify({ coupon_code: couponCode })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        
+                        document.querySelector('.cart-total .total-row.row1 span:nth-child(2)').innerText = `$${data.new_total.toFixed(2)}`;
+                        document.querySelector('.cart-total .total-row.row2 span:nth-child(2)').innerText = `$${data.discount_amount.toFixed(2)}`;
+                    } else {
+                        alert('❌ ' + data.message);
+                    }
+                })
+                .catch(error => console.error('❌ Error:', error));
+            } else {
+                alert(' من فضلك أدخل رمز الكوبون');
+            }
+        });
+    }
+
+    function getCSRFToken() {
+        return document.cookie.split('; ')
+            .find(row => row.startsWith('csrftoken='))
+            ?.split('=')[1];
     }
 });
 

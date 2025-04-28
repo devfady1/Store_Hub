@@ -15,9 +15,18 @@ from django.contrib.auth.decorators import *
 from django.shortcuts import get_object_or_404
 from decimal import Decimal
 import json
+from django.http import JsonResponse
+from .models import Coupon
+from .models import Order
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+
+
+
 
 def is_seler(user):
-    return user.userprofile.role == 'seller'
+    return user.userprofile.role == 'saler'
 
 
 
@@ -236,7 +245,7 @@ def allproducts(request):
     if filters:
         products = products.filter(filters)
 
-    paginator = Paginator(products, 9)
+    paginator = Paginator(products, 8)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -245,6 +254,7 @@ def allproducts(request):
         'colors': colors,
         'products': page_obj.object_list,
         'page_obj': page_obj,
+        'stars_range': range(5),
     }
 
     return render(request, 'pages/allproduct.html', context) 
@@ -312,13 +322,17 @@ def cart(request):
 
     return render(request, 'pages/payment/cart.html', {'cart': cart, 'total': total})
 
-from django.http import JsonResponse
 
 
-def chekout(request):  
+def checkout(request):
+    cart = request.session.get('cart', {})
+    total = 0
 
-    return render(request, 'pages/payment/checkout.html')
-    
+    for product_id, item in cart.items():
+        item['subtotal'] = float(item['price']) * int(item['quantity'])
+        total += item['subtotal']
+
+    return render(request, 'pages/payment/checkout.html', {'cart': cart, 'total': total})
 
 @user_passes_test(is_seler)
 def add_product(request):  
@@ -397,17 +411,14 @@ from rest_framework.permissions import IsAuthenticated
 
 class UpdateProduct(APIView):
     parser_classes = (MultiPartParser, FormParser)
-    permission_classes = [IsAuthenticated]  # 🔥 السماح للمستخدمين المسجلين فقط
+    permission_classes = [IsAuthenticated]  
 
     def patch(self, request, id):
         product = get_object_or_404(Product, id=id)
-
-        # ✅ التحقق من إن المستخدم الحالي هو المالك
         if product.saler != request.user:
             return Response({'error': 'You do not have permission to edit this product'}, status=403)
-
         try:
-            # 👌 تحديث البيانات
+
             product.name = request.data.get('name', product.name)
             product.price = request.data.get('price', product.price)
             product.color = request.data.get('color', product.color)
@@ -426,8 +437,6 @@ class UpdateProduct(APIView):
 
     def patch(self, request, id):
         product = get_object_or_404(Product, id=id)
-
-        # 👌 تأكد إن المستخدم الحالي هو المالك (saler)
         if product.saler != request.user:
             return JsonResponse({'error': 'You do not have permission to edit this product'}, status=403)
 
@@ -458,7 +467,7 @@ class UpdateProduct(APIView):
             print(f"❌ Error updating product: {str(e)}")  # سجل الخطأ
             return JsonResponse({'error': f'Failed to update product: {str(e)}'}, status=400)
 
-# ✅ حذف المنتج
+
 @method_decorator(csrf_exempt, name='dispatch')
 class DeleteProduct(View):
     def delete(self, request, id):
@@ -467,3 +476,126 @@ class DeleteProduct(View):
         return JsonResponse({'message': 'Product deleted successfully!'})
 
 
+
+def apply_coupon(request):
+    if request.method == 'POST':
+        coupon_code = request.POST.get('coupon_code')  
+
+        try:
+            coupon = Coupon.objects.get(code=coupon_code, is_active=True)
+            
+            if coupon.valid_from <= timezone.now() <= coupon.valid_until:
+                
+                request.session['coupon_code'] = coupon_code
+                request.session['discount_percentage'] = coupon.discount_percentage
+                return redirect('cart')  
+            else:
+                return render(request, 'cart.html', {'error': 'الكوبون غير صالح !'})
+        except Coupon.DoesNotExist:
+            return render(request, 'cart.html', {'error': 'الكوبون غير موجود!'})
+    return redirect('cart')
+
+def cart_view(request):
+    cart = get_cart_from_session(request) 
+    coupon_code = request.session.get('coupon_code', None)
+    discount_percentage = request.session.get('discount_percentage', 0)
+
+    total_price = sum(item['subtotal'] for item in cart)  
+    discount = (discount_percentage / 100) * total_price  
+    final_price = total_price - discount  
+
+    return render(request, 'cart.html', {
+        'cart': cart,
+        'total': total_price,
+        'discount': discount,
+        'final_price': final_price,
+        'coupon_code': coupon_code
+    })
+
+login_required
+from .models import DeliveryAssignment
+
+def delivery_order_view(request):
+    assignments = DeliveryAssignment.objects.filter(DeliveryAgent=request.user)
+    context = {
+        'assignments': assignments
+    }
+    return render(request, 'delivery agent/delivery_order.html', context)
+
+
+
+
+
+
+
+def order_success(request):
+    return render(request, 'pages/payment/order_success.html')
+
+
+from django.shortcuts import render, redirect
+from .models import Order
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def place_order(request):
+    if request.method == 'POST':
+        cart = request.session.get('cart', {})
+        user = request.user
+
+        if not cart:
+            return redirect('cart')
+
+
+        order = Order.objects.create(
+            customer=user,
+            status='pending'
+        )
+
+        for product_id, item in cart.items():
+            try:
+                product = Product.objects.get(id=product_id)
+                OrderItem.objects.create(
+                    order=order,
+                    product=product,
+                    quantity=item['quantity']
+                )
+            except Product.DoesNotExist:
+                continue 
+
+        request.session['cart'] = {}
+        return redirect('order_success')
+
+    return redirect('cart')
+
+
+
+
+
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    items = order.items.all()  
+    total_price = sum(item.product.price * item.quantity for item in items)
+
+    delivery_agent_profile = None
+    filled_stars = 0
+    empty_stars = 5
+
+    if order.delivery_agent:
+        delivery_agent_profile = UserProfile.objects.filter(user=order.delivery_agent).first()
+        if delivery_agent_profile and delivery_agent_profile.rating:
+            filled_stars = int(round(delivery_agent_profile.rating))
+            empty_stars = 5 - filled_stars
+
+    context = {
+        'order': order,
+        'items': items,
+        'total_price': total_price,
+        'delivery_agent_profile': delivery_agent_profile,
+        'filled_stars': filled_stars,
+        'empty_stars': empty_stars,
+        'client_lat': order.client_lat,
+        'client_lng': order.client_lng,
+        'driver_lat': order.delivery_agent_lat,
+        'driver_lng': order.delivery_agent_lng,
+    }
+    return render(request, 'delivery agent/Delivery Order Details.html', context)

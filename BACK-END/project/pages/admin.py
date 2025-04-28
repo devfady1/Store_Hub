@@ -2,6 +2,8 @@ from django.contrib import admin
 from .models import *
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
+from .models import Coupon
+
 
 # تسجيل نموذج User
 class UserProfileInline(admin.StackedInline):
@@ -16,8 +18,23 @@ class UserProfileInline(admin.StackedInline):
     get_created_at.short_description = "Created At"
     readonly_fields = ('get_created_at',) 
     
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 1  
+    readonly_fields = ('product', 'quantity')
+    can_delete = False
 
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('id', 'customer', 'order_date', 'status', 'delivery_agent')
+    list_filter = ('status', 'order_date')
+    search_fields = ('customer__username', 'delivery_agent__username')
+    inlines = [OrderItemInline]
 
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'order', 'product', 'quantity')
+    list_filter = ('product',)
 
 class CustomUserAdmin(UserAdmin):
     inlines = (UserProfileInline,) 
@@ -124,3 +141,11 @@ class ContactMessageAdmin(admin.ModelAdmin):
 admin.site.site_header = 'STOREHUB'
 admin.site.site_title = "STOREHUB"
 admin.site.index_title = "Welcome to STOREHUB Admin Panel"
+
+#for coupon
+
+class CouponAdmin(admin.ModelAdmin):
+    list_display = ('code', 'discount_percentage', 'active_from', 'notActve_until', 'is_active')
+    search_fields = ('code',)
+
+admin.site.register(Coupon, CouponAdmin)

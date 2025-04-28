@@ -12,7 +12,7 @@ urlpatterns = [
     path('toggle-like/<int:product_id>/', toggle_like, name='toggle_like'),
     path('product/<int:pk>/', views.product, name='product'),
     path('cart/', views.cart, name='cart'),
-    path('chekout/', views.chekout, name='chekout'),
+    path('checkout/', views.checkout, name='checkout'),
     path('add-to-cart/', add_to_cart, name='add_to_cart'),
     path("remove_from_cart/<str:product_id>/", remove_from_cart, name="remove_from_cart"),
     path("update-cart/", update_cart, name="update_cart"),
@@ -22,5 +22,12 @@ urlpatterns = [
     path('products/', ProductManagement, name='product-management'),
     path('products/<int:id>/', UpdateProduct.as_view(), name='update-product'),
     path('products/<int:id>/delete/', DeleteProduct.as_view(), name='delete-product'),
+    path('apply_coupon/', views.apply_coupon, name='apply_coupon'),
+    path('delivery-orders/', views.delivery_order_view, name='delivery_orders'),
+    path('place_order/', views.place_order, name='place_order'),
+    path('order_success/', views.order_success, name='order_success'),
+    path('order/<int:order_id>/', views.order_detail, name='order_detail'),
+
+
 
 ]

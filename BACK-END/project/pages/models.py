@@ -9,7 +9,8 @@ class UserProfile(models.Model):
         ('saler', 'Saler'),
         ('admin', 'Admin'), 
     ]
-    
+    profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True, default='default_driver.jpg')
+    rating = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)  # من 5 نجوم
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # ارتباط كل مستخدم ببروفايل خاص بيه
     role = models.CharField(max_length=50, choices=ROLE_CHOICES, default='user')
     phone_number = models.CharField(max_length=15, blank=True, null=True)
@@ -134,6 +135,7 @@ class Report(models.Model):
         verbose_name_plural = "تقارير"
 
 
+
 class Order(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),
@@ -141,19 +143,33 @@ class Order(models.Model):
         ('completed', 'Completed'),
         ('cancelled', 'Cancelled'),
     ]
-    product = models.ForeignKey(Product, verbose_name="المنتج", on_delete=models.CASCADE, related_name='orders')
-    customer = models.ForeignKey(User, verbose_name="العميل", on_delete=models.CASCADE, related_name='customer_orders')
-    quantity = models.IntegerField(verbose_name="كمية", default=1)
+    client_lat = models.FloatField(null=True, blank=True)
+    client_lng = models.FloatField(null=True, blank=True)
+    delivery_agent_lat = models.FloatField(null=True, blank=True)
+    delivery_agent_lng = models.FloatField(null=True, blank=True)
+    customer = models.ForeignKey(User, verbose_name="العميل", on_delete=models.CASCADE, related_name='orders')
     order_date = models.DateTimeField(verbose_name="تاريخ الطلب", auto_now_add=True)
     status = models.CharField(verbose_name="حالة الطلب", max_length=20, choices=STATUS_CHOICES, default='pending')
-    delivery_agent = models.ForeignKey(User, verbose_name="وكيل التوصيل", on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_orders')
+    delivery_agent = models.ForeignKey(User, verbose_name="وكيل التوصيل", on_delete=models.SET_NULL, null=True, blank=True, related_name='delivery_orders')
 
     def __str__(self):
-        return f"Order {self.id} - {self.status}"
+        return f"Order {self.id} by {self.customer.username}"
 
     class Meta:
         verbose_name = "طلب"
         verbose_name_plural = "طلبات"
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
+    product = models.ForeignKey('Product', verbose_name="المنتج", on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(verbose_name="كمية", default=1)
+
+    def __str__(self):
+        return f"{self.product.name} x {self.quantity}"
+
+    class Meta:
+        verbose_name = "عنصر طلب"
+        verbose_name_plural = "عناصر الطلب"
 
 
 # نموذج DeliveryAssignment
@@ -205,4 +221,20 @@ class ContactMessage(models.Model):
     class Meta:
         verbose_name = "رسالة"
         verbose_name_plural = "رسائل"
+
+#this for cuopn
+
+# models.py
+from django.db import models
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=20, unique=True) 
+    discount_percentage = models.PositiveIntegerField() 
+    active_from = models.DateTimeField() 
+    notActve_until = models.DateTimeField()  
+    is_active = models.BooleanField(default=True) 
+
+    def __str__(self):
+        return f"{self.code} - {self.discount_percentage}%"
+
 
