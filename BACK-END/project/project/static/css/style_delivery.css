@@ -991,6 +991,10 @@ section.container .btn:hover {
   border-radius: 8px;
 }
 
+.dark .CustomerOrder .content-container{
+  background-color: #1c2739;
+}
+
 .CustomerOrder .map-container {
   flex: 2;
   width: 820.8px;
@@ -1096,11 +1100,18 @@ section.container .btn:hover {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   background-color: #f5f5f5;
 }
+
+.dark .CustomerOrder .order-status,
+.dark .CustomerOrder .order-details,
+.dark .CustomerOrder .driver-info{
+  background-color: #151d2a;
+  box-shadow: 0px 2px 5px rgba(255, 255, 255, 0.1);
+}
+
 .CustomerOrder .order-status:hover,
 .CustomerOrder .order-details:hover,
 .CustomerOrder .driver-info:hover {
   transform: translateY(-3px);
-
   transition: 0.3s ease-in-out;
 }
 .CustomerOrder .containera p,
@@ -1131,9 +1142,11 @@ button:hover {
   border-radius: 12px;
   position: relative;
 }
-.CustomerOrder .driver-info p {
-  color: #222;
+
+.CustomerOrder .driver-info p , .CustomerOrder .driver-info h4 {
+  color: var(--text-color);
 }
+
 .CustomerOrder .driver-info .call-btn {
   background: #28a745;
   color: white;
