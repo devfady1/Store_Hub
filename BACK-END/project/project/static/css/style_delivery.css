@@ -30,10 +30,16 @@ body.dark {
   --white-color: #222;
   --dark-color: #fff;
 }
-
 header {
   margin-bottom: 20px;
   border-bottom: 1px solid var(--text-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #fafafa;
+}
+body.dark header {
+  background-color: #151d2a;
 }
 
 /* nav */
@@ -1094,11 +1100,11 @@ section.container .btn:hover {
 .CustomerOrder .order-details:hover,
 .CustomerOrder .driver-info:hover {
   transform: translateY(-3px);
-  
+
   transition: 0.3s ease-in-out;
 }
 .CustomerOrder .containera p,
-.CustomerOrder .containera h3{
+.CustomerOrder .containera h3 {
   color: var(--dark-color);
 }
 button:hover {
@@ -1225,11 +1231,11 @@ button:hover {
   transform: scale(0.95);
 }
 @media (max-width: 835px) {
-  .CustomerOrder{
+  .CustomerOrder {
     display: flex;
-    flex-direction:column-reverse ;
+    flex-direction: column-reverse;
   }
-  .CustomerOrder .map-container iframe{
+  .CustomerOrder .map-container iframe {
     height: 500px;
     width: 100%;
   }

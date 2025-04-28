@@ -610,3 +610,9 @@ def my_orders_view(request):
         'orders': orders,
     }
     return render(request, 'delivery agent/my_orders_view.HTML', context) 
+
+
+def order_details(request, order_id):
+    order = get_object_or_404(Order, id=order_id, customer=request.user)
+    
+    return render(request, 'delivery agent/order_detail.html', {'order': order})
