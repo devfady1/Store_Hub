@@ -1657,6 +1657,7 @@ button:hover {
 /* Start Delev */
 .orderDiv .container {
   display: flex;
+  flex-wrap: wrap;
 }
 .orderDiv .container .pro {
   display: flex;
@@ -1664,7 +1665,7 @@ button:hover {
   justify-content: space-between;
   flex-direction: column;
   position: relative;
-  width: 100%;
+  width: 20%;
 }
 
 .orderDiv .container .pro .img {
