@@ -7,6 +7,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -31,14 +32,11 @@
           <h3>Welcome To Our Store</h3>
         {% endif %}
       </div>
-      <a href="#">Men's Fashion</a>
-      <a href="#">Woman's Fashion</a>
-      <a href="#">Electronics</a>
-      <a href="#">Medicine</a>
-      <a href="#">Phone & Tablet</a>
-      <a href="#">Sportes & Outdoor</a>
-      <a href="#">Fashion & Clothings</a>
-      <a href="#">TV & Audio</a>
+      {% for category in categories %}
+          <a href="/allproducts/?category={{ category.name }}">
+            {{ category.name }}
+          </a>
+        {% endfor %}
     </div>
     <div class="swiper">
       <div class="swiper-wrapper">
@@ -97,51 +95,93 @@
       <div class="products mySwiper">
         <div class="product swiper-wrapper">
           {% for pro in flash_sales %}
-          <div class="swiper-slide pro">
-            <div class="icons">
-              <div class="sall">
-                <span class="discount"></span>
+            <div class="swiper-slide pro">
+              <div class="icons">
+                <div class="sall">
+                  <span class="discount"></span>
+                </div>
+                <div class="icon">
+                  <i class="fa-regular fa-heart" id="iconheart-{{ pro.product.id }}" data-id="{{ pro.product.id }}" onclick="toggleLike({{ pro.product.id }}, this, event)">
+                  </i>
+                                    
+                  <i class="fa-regular fa-eye" onclick="window.location.href='/product/{{ pro.product.id }}/'; return false;"></i>
+                </div>
               </div>
-              <div class="icon">
-                <i class="fa-regular fa-heart" id="iconheart"></i>
-                <i class="fa-regular fa-eye" onclick="window.location.href='/product/{{ pro.product.id }}/'; return false;" ></i>
-              </div>
-            </div>
 
-            <div class="addcart" data-id="{{ pro.product.id }}">
-              <div class="text">
-                <p>Add To Cart</p>
+              <div class="addcart" data-id="{{ pro.product.id }}" onclick="addToCart({{ pro.product.id }})">
+                <div class="text">
+                  <p>Add To Cart</p>
+                </div>
+              </div>
+
+              <div class="img">
+                <a href="/product/{{ pro.product.id }}/" onclick="window.location.href='/product/{{ pro.product.id }}/'; return false;">
+                  <img src="{{ pro.product.image.url }}" alt="{{ pro.product.name }}" />
+                </a>
+              </div>
+
+              <div class="detailes">
+                <h5>{{ pro.product.name }} </h5>
+                <div class="sallery">
+                  <span class="new-sall">${{ pro.new_price }}</span>
+                  <span class="old-sall">${{ pro.old_price }}</span>
+                </div>
+                <div class="stars">
+                  {% with pro.rating|default:0|add:"0" as rating %}
+                      {% for _ in "12345"|make_list %}
+                          {% if forloop.counter <= rating %}
+                              <i class="fa-solid fa-star"></i>
+                          {% else %}
+                              <i class="fa-regular fa-star"></i>
+                          {% endif %}
+                      {% endfor %}
+                  {% endwith %}
+                  <span>({{ pro.rating|default:"0.0"|floatformat:1 }})</span>
+                </div>
               </div>
             </div>
-            
-            <div class="img">
-              <a href="/product/{{ pro.product.id }}/" onclick="window.location.href='/product/{{ pro.product.id }}/'; return false;">
-                <img src="{{ pro.product.image.url }}" alt="{{ pro.product.name }}" />
-              </a>
-            </div>
-            
-            <div class="detailes">
-              <h5>{{ pro.product.name }} </h5>
-              <div class="sallery">
-                <span class="new-sall">${{ pro.new_price }}  </span>
-                <span class="old-sall">${{ pro.old_price }}</span>
-              </div>
-              <div class="stars">
-                {% with pro.rating|default:0|add:"0" as rating %}
-                    {% for _ in "12345"|make_list %}
-                        {% if forloop.counter <= rating %}
-                            <i class="fa-solid fa-star"></i>
-                        {% else %}
-                            <i class="fa-regular fa-star"></i>
-                        {% endif %}
-                    {% endfor %}
-                {% endwith %}
-                <span>({{ pro.rating|default:"0.0"|floatformat:1 }})</span>
-            </div>
-            
-            </div>
-          </div>
-          {% endfor %}
+            {% endfor %}
+
+
+<script>
+  function addToCart(productId) {
+    fetch(`/add-to-cart/?product_id=${productId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === "success") {
+          let quantity = data.cart[productId].quantity;
+          alert(`✅ المنتج تم إضافته بنجاح! الكمية الحالية: ${quantity}`);
+          window.location.href = "/cart/";
+        } else {
+          alert("❌ حدث خطأ أثناء الإضافة!");
+        }
+      })
+      .catch(error => console.error('❌ Fetch Error:', error));
+  }
+  
+  function toggleLike(productId, btn, event) {
+    event.preventDefault(); // 🛑 مهم جدا
+  
+    fetch(`/toggle-like/${productId}/`, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.liked) {
+        btn.classList.add("liked");
+      } else {
+        btn.classList.remove("liked");
+      }
+    })
+    .catch(error => console.error('❌ Error:', error));
+  }
+  </script>
+  
+
+
         </div>
       </div>
     </div>
@@ -223,64 +263,55 @@
             </a>
           </div>
         </div>
-        
+    
         <div class="bttom">
           {% for product in products %}
-          <div class="pro"  >
+          <div class="pro">
             <div class="icons">
               <div class="icon">
-                <i class="fa-regular fa-heart" id="iconheart"></i>
-                <i class="fa-regular fa-eye" onclick="window.location.href='/product/{{ product.id }}/'" ></i>
+                <i class="fa-regular fa-heart iconheart" onclick="toggleLike({{ product.id }}, this, event)"></i>
+                <a href="/product/{{ product.id }}/">
+                  <i class="fa-regular fa-eye"></i>
+                </a>
               </div>
             </div>
-            <div class="addcart" data-id="{{ product.id }}">
+    
+            <div class="addcart" data-id="{{ product.id }}" onclick="addToCart({{ product.id }})">
               <div class="text">
                 <p>Add To Cart</p>
               </div>
             </div>
-            
-            <div class="img"  >
+    
+            <div class="img">
               <a href="/product/{{ product.id }}/">
-                <img src="{{ product.image.url }}" alt=""  onclick="window.location.href='/product/{{ product.id }}/'"  />
+                <img src="{{ product.image.url }}" alt="" />
               </a>
             </div>
+    
             <div class="detailes">
-              <h5>{{  product.name  }}</h5>
+              <h5>{{ product.name }}</h5>
               <div class="sallery">
-                <span class="new-sall">${{  product.price  }}</span>
+                <span class="new-sall">${{ product.price }}</span>
               </div>
               <div class="stars">
                 {% with product.rating|default:0|add:"0" as rating %}
-                    {% for _ in "12345"|make_list %}
-                        {% if forloop.counter <= rating %}
-                            <i class="fa-solid fa-star"></i>
-                        {% else %}
-                            <i class="fa-regular fa-star"></i>
-                        {% endif %}
-                    {% endfor %}
+                  {% for _ in "12345"|make_list %}
+                    {% if forloop.counter <= rating %}
+                      <i class="fa-solid fa-star"></i>
+                    {% else %}
+                      <i class="fa-regular fa-star"></i>
+                    {% endif %}
+                  {% endfor %}
                 {% endwith %}
                 <span>({{ product.rating|default:"0.0"|floatformat:1 }})</span>
+              </div>
             </div>
-            
-            </div>
-          </div>{% endfor %}
+          </div>
+          {% endfor %}
+        </div>
       </div>
     </section>
     
-    <!--Section Eghit-->
-    <section class="banner-section">
-      <div class="container">
-        <div class="banner-text">
-          <h5>Categories</h5>
-          <h1>Enhance Your <br />Music Experience</h1>
-          <button>Buy Now!</button>
-        </div>
-        <div class="image-container">
-          <div class="glow-effect"></div>
-          <img src="{% static 'images/jblSpeacker.png' %}" alt="Speaker" />
-        </div>
-      </div>
-    </section>
 
     <section class="ourproduct">
       <div class="container">
@@ -295,21 +326,25 @@
             <div class="pro">
               <div class="icons">
                 <div class="icon">
-                  <i class="fa-regular fa-heart" id="iconheart"></i>
-                  <i class="fa-regular fa-eye" onclick="window.location.href='/product/{{ product.id }}/'"></i>
+                  <i class="fa-regular fa-heart iconheart" onclick="toggleLike({{ product.id }}, this, event)"></i>
+                  <a href="/product/{{ product.id }}/">
+                    <i class="fa-regular fa-eye"></i>
+                  </a>
                 </div>
               </div>
-              <div class="addcart" data-id="{{ product.id }}">
+        
+              <div class="addcart" onclick="addToCart({{ product.id }})" data-id="{{ product.id }}">
                 <div class="text">
                   <p>Add To Cart</p>
                 </div>
               </div>
+        
               <div class="img">
                 <a href="/product/{{ product.id }}/">
                   <img src="{{ product.image.url }}" alt="{{ product.name }}" />
                 </a>
               </div>
-    
+        
               <div class="detailes">
                 <h5>{{ product.name }}</h5>
                 <div class="dis">
@@ -333,8 +368,7 @@
             </div>
           {% endfor %}
         </div>
-    
-        <a href="allproduct.html">
+        <a href="{% url 'allproducts' %}">
           <button>View All Products</button>
         </a>
       </div>

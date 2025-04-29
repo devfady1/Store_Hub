@@ -37,28 +37,32 @@ def is_delevry(user):
 
 
 @login_required
-
 def index(request):
+    categories = Category.objects.all()
     top_products = Product.objects.filter(name="banner").annotate(likes_count=Count('likes__id')).order_by('-likes_count')[:5]
 
     flash_sales = FlashSale.objects.all()
-
     max_time = flash_sales.aggregate(max_end_time=Max('end_date'))['max_end_time'] if flash_sales else None
 
     # نجيب 8 منتجات عشوائية
     all_products = list(Product.objects.all())
-    random_products = sample(all_products, min(len(all_products), 8))  # لو المنتجات أقل من 8 مش يجيب error
+    random_products = sample(all_products, min(len(all_products), 8))  #
 
     username = request.user.username 
 
+    liked_products = []
+    if request.user.is_authenticated:
+        liked_products = request.user.product_likes.values_list('id', flat=True)
+
     return render(request, 'pages/index.html', {
+        'categories': categories,
         'products': top_products,
         'flash_sales': flash_sales,
         'max_time': max_time,
         'username': username,
-        'random_products': random_products,  # نبعته للـ HTML
+        'random_products': random_products,
+        'liked_products': liked_products,  
     })
-
 
 def logout_view(request):
     logout(request)
@@ -604,12 +608,24 @@ def order_detail(request, order_id):
 
 def my_orders_view(request):
     user = request.user
-    orders = Order.objects.filter(customer=user).prefetch_related('items__product')
+    status_filter = request.GET.get('status')  # نجيب الفلتر لو موجود
+
+    orders = Order.objects.filter(customer=user).prefetch_related('items__product').order_by('-order_date')
+
+    if status_filter and status_filter != 'all':
+        orders = orders.filter(status=status_filter)
+
+    for order in orders:
+        total_price = sum(item.quantity * item.product.price for item in order.items.all())
+        order.total_price = total_price
 
     context = {
         'orders': orders,
+        'status_filter': status_filter or 'all',  # نبعته عشان نخلي الزر اللي عليه active
     }
-    return render(request, 'delivery agent/my_orders_view.HTML', context) 
+    return render(request, 'delivery agent/my_orders_view.html', context)
+
+
 
 
 def order_details(request, order_id):

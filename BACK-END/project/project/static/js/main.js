@@ -108,13 +108,3 @@ var x = new Swiper(".categs", {
     },
   },
 });
-document.querySelectorAll(".pro").forEach((div) => {
-  div.addEventListener("click", function () {
-    let img = this.querySelector("img");
-    if (img) {
-      let imgSrc = img.getAttribute("src");
-      localStorage.setItem("imgsrc", imgSrc);
-      window.location.href = "onepro.html";
-    }
-  });
-});

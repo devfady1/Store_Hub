@@ -57,8 +57,11 @@
                         <li><a href="{% url 'add_product' %}"> <i class="fa-solid fa-plus"></i> Add Product</a></li>
                         <li><a href="{% url 'product-management' %}"> <i class="fa-solid fa-pen-to-square"></i> Manage Product</a></li>
                     {% endif %}
-                    <li><a href="#"> <i class="fa-solid fa-box"></i> My Order</a></li>
-                    <li><a href="#"> <i class="fa-solid fa-ban"></i> My Cancellations</a></li>
+                    <li><a href="{% url 'my_orders' %}"> <i class="fa-solid fa-box"></i> My Order</a></li>
+                    <li><a href="{% url 'my_orders' %}?status=cancelled"> 
+                      <i class="fa-solid fa-ban"></i> My Cancellations
+                    </a></li>
+                    
                     <li><a href="#"> <i class="fa-regular fa-star"></i> My Reviews</a></li>
                     <li><a href="{% url 'account_logout' %}"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
                 {% else %}
