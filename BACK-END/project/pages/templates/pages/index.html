@@ -90,7 +90,7 @@
   </section>
 
   <!--Swiper Section Four-->
-  <section class="pro-div">
+  <section class="pro-div" id="fady">
     <div class="container">
       <div class="products mySwiper">
         <div class="product swiper-wrapper">
@@ -141,47 +141,6 @@
               </div>
             </div>
             {% endfor %}
-
-
-<script>
-  function addToCart(productId) {
-    fetch(`/add-to-cart/?product_id=${productId}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === "success") {
-          let quantity = data.cart[productId].quantity;
-          alert(`✅ المنتج تم إضافته بنجاح! الكمية الحالية: ${quantity}`);
-          window.location.href = "/cart/";
-        } else {
-          alert("❌ حدث خطأ أثناء الإضافة!");
-        }
-      })
-      .catch(error => console.error('❌ Fetch Error:', error));
-  }
-  
-  function toggleLike(productId, btn, event) {
-    event.preventDefault(); // 🛑 مهم جدا
-  
-    fetch(`/toggle-like/${productId}/`, {
-      method: 'POST',
-      headers: {
-        'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.liked) {
-        btn.classList.add("liked");
-      } else {
-        btn.classList.remove("liked");
-      }
-    })
-    .catch(error => console.error('❌ Error:', error));
-  }
-  </script>
-  
-
-
         </div>
       </div>
     </div>
@@ -308,6 +267,19 @@
             </div>
           </div>
           {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="banner-section">
+      <div class="container">
+        <div class="banner-text">
+          <h5>Categories</h5>
+          <h1>Enhance Your <br />Music Experience</h1>
+        </div>
+        <div class="image-container">
+          <div class="glow-effect"></div>
+          <img src="{% static 'images/jblSpeacker.png' %}" alt="Speaker" />
         </div>
       </div>
     </section>
@@ -452,7 +424,7 @@
         </div>
       </div>
     </section>
-
+    <!--دا للتايمر بيسحب من الباك-->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         let endTime = "{{ max_time|date:'Y-m-d H:i:s' }}";
@@ -483,9 +455,48 @@
           updateTimer();
         } else {
           document.querySelector(".timer").innerHTML = "<h2>No Flash Sales Available</h2>";
+          document.getElementById("fady").innerHTML = "";
+
         }
       });
     </script>
+    <!--دا للايك و الكارت-->
+    <script>
+      function addToCart(productId) {
+        fetch(`/add-to-cart/?product_id=${productId}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === "success") {
+              let quantity = data.cart[productId].quantity;
+              alert(`✅ المنتج تم إضافته بنجاح! الكمية الحالية: ${quantity}`);
+              window.location.href = "/cart/";
+            } else {
+              alert("❌ حدث خطأ أثناء الإضافة!");
+            }
+          })
+          .catch(error => console.error('❌ Fetch Error:', error));
+      }
+      
+      function toggleLike(productId, btn, event) {
+        event.preventDefault(); // 🛑 مهم جدا
+      
+        fetch(`/toggle-like/${productId}/`, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.liked) {
+            btn.classList.add("liked");
+          } else {
+            btn.classList.remove("liked");
+          }
+        })
+        .catch(error => console.error('❌ Error:', error));
+      }
+      </script>
   </body>
   
 </html>
