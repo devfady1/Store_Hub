@@ -2986,6 +2986,64 @@ input[type="checkbox"]:checked::after {
   font-weight: 500;
 }
 
+/* .cover-photo {
+  position: relative;
+} */
+
+.profile-form .profile-header {
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    text-align: center;
+}
+
+.profile-form .profile-pic {
+  width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid #fafafa;
+    background-color: #eee;
+    object-fit: cover;
+    margin-top: -75px;
+    position: relative;
+    top: 50%;
+    left: 38%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 15px;
+}
+
+.dark .profile-form .profile-pic {
+  box-shadow: 0px 1px 13px 0px rgba(255, 254, 254, 0.177);
+}
+
+.profile-form .profile-pic:hover {
+  transform: scale(1.05);
+}
+
+.upload-icon {
+  position: absolute;
+  bottom: 5%;
+  right: 43%;
+  background: var(--main-color);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.upload-icon:hover {
+  background: #c52c57;
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -4155,10 +4213,16 @@ body.dark .filters h3 {
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.111);
 }
 
-.wishlist-row .product img {
-  width: 70%;
-  height: auto;
-  border-radius: 5px;
+.wishlist-row .product .img {
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+}
+
+.wishlist-row .product .img img{
+  width: 190px;
+  height: 160px;
+  object-fit: contain;
 }
 
 .wishlist-row .discount-badge {

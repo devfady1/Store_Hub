@@ -24,7 +24,9 @@
         <div class="product" id="product-{{ product.id }}">
           <span class="discount-badge">-35%</span>
           <i class="wishlist-icon fa fa-trash" onclick="removeFromWishlist( {{ product.id }} )"></i>
-          <img src="{{ product.image.url }}" alt="{{ product.name }}" onclick="window.location.href='/product/{{ product.id }}/'" >
+          <div class="img">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" onclick="window.location.href='/product/{{ product.id }}/'" >
+          </div>
           <button class="add-to-cart"><i class="fas fa-shopping-cart"></i> Add To Cart</button>
           <p class="detail">{{ product.name }}</p>
           <p class="price">${{ product.price }} <span class="old-price">${{ product.old_price|floatformat:2 }}</span></p>
@@ -43,7 +45,9 @@
           <div class="product">
               <span class="discount-badge">{{ product.discount }}%</span>
               <i class="view-icon fa fa-eye"></i>
-              <img src="{{ product.image.url }}" alt="{{ product.name }}" onclick="window.location.href='/product/{{ product.id }}/'">
+              <div class="img">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" onclick="window.location.href='/product/{{ product.id }}/'">
+              </div>
               <button class="add-to-cart"> <i class="fas fa-shopping-cart"></i> Add To Cart</button>
               <p class="detail">{{ product.name }}</p>
               <p class="price">${{ product.price }} <span class="old-price">${{ product.old_price|floatformat:2 }}</span></p>
