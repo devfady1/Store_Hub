@@ -31,62 +31,94 @@
     <div class="container-account">
       <aside class="sidebar-account">
         <p>Manage My Account</p>
-        <p></p>
         <ul class="sidebar-menu-account">
-          <li class="active">My Profile</li>
-          <li>Address Book</li>
+          <li class="active" onclick="window.location.href='{% url 'account' %}'">My Profile</li>
+          <li onclick="window.location.href='#'">Address Book</li>
           <li onclick="window.location.href='{% url 'cart' %}'">My Payment Options</li>
+          <li onclick="window.location.href='#'">Saved Cards</li>
+          <li onclick="window.location.href='#'">Security Settings</li>
         </ul>
+      
         <p>My Orders</p>
         <ul class="sidebar-menu-account">
-          <li>My Returns</li>
-          <li>My Cancellations </li>
+          <li onclick="window.location.href='{% url 'my_orders' %}'">Order History</li>
+          <li onclick="window.location.href='#'">Track My Order</li>
+          <li onclick="window.location.href='#'">My Returns</li>
+          <li onclick="window.location.href='#'">My Cancellations</li>
         </ul>
-        <p>My Wishlist</p>
+      
+        <p>My Activity</p>
+        <ul class="sidebar-menu-account">
+          <li onclick="window.location.href='{% url 'wishlist' %}'">Wishlist</li>
+          <li onclick="window.location.href='#'">Recently Viewed</li>
+          <li onclick="window.location.href='#'">Product Reviews</li>
+        </ul>
+      
+        <p>Support</p>
+        <ul class="sidebar-menu-account">
+          <li onclick="window.location.href='{% url 'contact' %}'">Help & Support</li>
+          <li onclick="window.location.href='#'">FAQs</li>
+          <li onclick="window.location.href='#'">Live Chat</li>
+        </ul>
+      
+        <p>Account Actions</p>
+        <ul class="sidebar-menu-account">
+          <li onclick="window.location.href='{% url 'logout' %}'">Logout</li>
+          <li onclick="window.location.href='#'">Delete My Account</li>
+        </ul>
       </aside>
+      
 
       <div class="profile-form">
         <p class="form-title">Edit Your Profile</p>
-        <form class="account-forms">
+        <form class="account-forms" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
           <div class="form-grid">
             <div class="form-account">
               <label>First Name</label>
-              <input type="text" placeholder="StoreHub" required />
+              <input type="text" name="first_name" value="{{ user.first_name }}" placeholder="StoreHub" required />
             </div>
             <div class="form-account">
               <label>Last Name</label>
-              <input type="text" placeholder="Team" required />
+              <input type="text" name="last_name" value="{{ user.last_name }}" placeholder="Team" required />
             </div>
             <div class="form-account">
               <label>Email</label>
-              <input type="email" placeholder="StoreHub@gmail.com" required />
+              <input type="email" name="email" value="{{ user.email }}" placeholder="StoreHub@gmail.com" required />
             </div>
             <div class="form-account">
               <label>Address</label>
-              <input type="text" placeholder="ASSUIT" required />
+              <input type="text" name="address" placeholder="ASSUIT" required />
+            </div>
+            <div class="form-account">
+              <label>Phone</label>
+              <input type="text" name="phone" value="{{ profile.phone_number }}" placeholder="+20100000000" />
+            </div>
+            <div class="form-account">
+              <label>Profile Image</label>
+              <input type="file" name="profile_image" />
+              {% if profile.profile_image %}
+                <img src="{{ profile.profile_image.url }}" alt="Profile Image" style="width: 100px; margin-top: 10px;" />
+              {% endif %}
             </div>
           </div>
+        
           <div class="form-account">
             <label>Password Changes</label>
-            <input type="password" placeholder="Current Password" required />
+            <input type="password" name="current_password" placeholder="Current Password" />
           </div>
           <div class="form-account">
-            <input type="password" placeholder="New Password" required />
+            <input type="password" name="new_password" placeholder="New Password" />
           </div>
           <div class="form-account">
-            <input
-              type="password"
-              placeholder="Confirm New Password"
-              required />
+            <input type="password" name="confirm_password" placeholder="Confirm New Password" />
           </div>
-
+        
           <div class="form-actions">
             <button type="button" class="btn-account btn-cancel">Cancel</button>
-            <button type="submit" class="btn-account btn-save">
-              Save Changes
-            </button>
+            <button type="submit" class="btn-account btn-save">Save Changes</button>
           </div>
-        </form>
+        </form>    
       </div>
     </div>
     </body>

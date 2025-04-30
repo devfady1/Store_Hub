@@ -458,10 +458,8 @@
           setInterval(updateTimer, 1000);
           updateTimer();
         } else {
+          document.querySelector(".timer").innerHTML = "<h2>No Flash Sales Available</h2>";
           document.getElementById("fady").innerHTML = "";
-          document.getElementById("btnAfterPro").innerHTML = "";
-          document.querySelector(".offer").innerHTML = "";
-          document.querySelector(".timer").innerHTML = "";
         }
       });
     </script>

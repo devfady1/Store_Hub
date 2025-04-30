@@ -212,8 +212,48 @@ def register(request):
 
 
 
+@login_required
 def account(request):
-    return render(request, 'pages/account/account.html')
+    user = request.user
+    profile, created = UserProfile.objects.get_or_create(user=user)
+
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+        phone = request.POST.get('phone')
+        profile_image = request.FILES.get('profile_image')
+
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+        user.save()
+
+        profile.phone_number = phone
+        if profile_image:
+            profile.profile_image = profile_image
+        profile.save()
+
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if current_password and new_password == confirm_password:
+            if user.check_password(current_password):
+                user.set_password(new_password)
+                user.save()
+                messages.success(request, 'Password updated successfully.')
+            else:
+                messages.error(request, 'Current password is incorrect.')
+
+        messages.success(request, 'Profile updated successfully.')
+        return redirect('account')  
+
+    return render(request, 'pages/account/account.html', {
+        'user': user,
+        'profile': profile,
+    })
 
 
 def contact_view(request):
