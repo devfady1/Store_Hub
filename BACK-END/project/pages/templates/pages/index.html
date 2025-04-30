@@ -53,7 +53,7 @@
 
 
     <!--Section Two-->
-    <section class="offer">
+    <section class="offer" id="fady">
       <div class="container">
         <div class="dayOffers">
           <span class="shape">.</span>
@@ -63,7 +63,7 @@
     </section>
 
   <!--Section There-->
-  <section class="timer">
+  <section class="timer" id="fady">
     <div class="container">
       <div class="flex">
         <h2>FLASH SALES</h2>
@@ -448,6 +448,7 @@
               document.querySelector(".second").innerHTML = (seconds < 10 ? "0" : "") + seconds;
             } else {
               document.querySelector(".timer").innerHTML = "<h2>FLASH SALES ENDED</h2>";
+              document.getElementById("fady").innerHTML = "";
             }
           }
     
@@ -456,7 +457,6 @@
         } else {
           document.querySelector(".timer").innerHTML = "<h2>No Flash Sales Available</h2>";
           document.getElementById("fady").innerHTML = "";
-
         }
       });
     </script>
