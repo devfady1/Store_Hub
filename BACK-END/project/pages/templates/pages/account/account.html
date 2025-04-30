@@ -70,7 +70,15 @@
       
 
       <div class="profile-form">
+        
         <p class="form-title">Edit Your Profile</p>
+        {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+            <div class="alert {{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
         <form class="account-forms" method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="form-grid">
