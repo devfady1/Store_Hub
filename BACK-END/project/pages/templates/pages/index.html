@@ -53,7 +53,7 @@
 
 
     <!--Section Two-->
-    <section class="offer" id="fady">
+    <section class="offer">
       <div class="container">
         <div class="dayOffers">
           <span class="shape">.</span>
@@ -63,7 +63,7 @@
     </section>
 
   <!--Section There-->
-  <section class="timer" id="fady">
+  <section class="timer">
     <div class="container">
       <div class="flex">
         <h2>FLASH SALES</h2>
@@ -146,7 +146,7 @@
     </div>
   </section>
     <!--Section Five-->
-    <section>
+    <section class="btnAfterPro">
       <div class="container">
         <div class="bttnAllProduct">
           <a href="{% url 'allproducts' %}">
@@ -426,6 +426,14 @@
     </section>
     <!--دا للتايمر بيسحب من الباك-->
     <script>
+            let product = document.querySelectorAll(".swiper-slide.pro");
+      product.forEach((pro) => {
+        let oldP = parseInt(pro.querySelector(".old-sall").textContent.replace("$", ""))
+        let newP = parseInt(pro.querySelector(".new-sall").textContent.replace("$", ""));
+        let disSpan = pro.querySelector(".sall span");
+        let discount = ((oldP - newP) / oldP) * 100;
+        disSpan.textContent = `${Math.round(discount)}%`;
+      });
       document.addEventListener("DOMContentLoaded", function () {
         let endTime = "{{ max_time|date:'Y-m-d H:i:s' }}";
     
@@ -448,20 +456,19 @@
               document.querySelector(".second").innerHTML = (seconds < 10 ? "0" : "") + seconds;
             } else {
               document.getElementById("fady").innerHTML = "";
-              document.getElementById("btnAfterPro").innerHTML = "";
+              document.querySelector(".btnAfterPro").innerHTML = "";
               document.querySelector(".offer").innerHTML = "";
               document.querySelector(".timer").innerHTML = "";
-
             }
           }
     
           setInterval(updateTimer, 1000);
           updateTimer();
         } else {
-          document.getElementById("fady").innerHTML = "";
-          document.getElementById("btnAfterPro").innerHTML = "";
-          document.querySelector(".offer").innerHTML = "";
-          document.querySelector(".timer").innerHTML = "";
+            document.getElementById("fady").innerHTML = "";
+            document.querySelector(".btnAfterPro").innerHTML = "";
+            document.querySelector(".offer").innerHTML = "";
+            document.querySelector(".timer").innerHTML = "";
         }
       });
     </script>
