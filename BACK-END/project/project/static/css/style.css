@@ -3804,6 +3804,7 @@ input[type="checkbox"]:checked::after {
   position: relative;
   display: flex;
   flex-direction: column;
+  max-width: 300px;
 }
 
 .allproduct .Product:hover {
@@ -3853,8 +3854,8 @@ input[type="checkbox"]:checked::after {
 }
 
 .allproduct .Product .img img {
-  width: 100%;
-  max-height: 200px;
+  width: 180px;
+  height: 160px;
   object-fit: contain;
 }
 
