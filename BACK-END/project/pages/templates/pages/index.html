@@ -478,7 +478,7 @@
       }
       
       function toggleLike(productId, btn, event) {
-        event.preventDefault(); // 🛑 مهم جدا
+        event.preventDefault();
       
         fetch(`/toggle-like/${productId}/`, {
           method: 'POST',
