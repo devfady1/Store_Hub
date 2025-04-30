@@ -40,16 +40,11 @@ def is_delevry(user):
 def index(request):
     categories = Category.objects.all()
     top_products = Product.objects.filter(name="banner").annotate(likes_count=Count('likes__id')).order_by('-likes_count')[:5]
-
     flash_sales = FlashSale.objects.all()
     max_time = flash_sales.aggregate(max_end_time=Max('end_date'))['max_end_time'] if flash_sales else None
-
-    # نجيب 8 منتجات عشوائية
     all_products = list(Product.objects.all())
     random_products = sample(all_products, min(len(all_products), 8))  #
-
     username = request.user.username 
-
     liked_products = []
     if request.user.is_authenticated:
         liked_products = request.user.product_likes.values_list('id', flat=True)
@@ -63,6 +58,7 @@ def index(request):
         'random_products': random_products,
         'liked_products': liked_products,  
     })
+
 
 def logout_view(request):
     logout(request)

@@ -574,7 +574,17 @@ body.dark header {
 nav h1 {
   letter-spacing: 2px;
   color: var(--text-color);
+  position: relative;
+  min-width: 12ch;
+  display: inline-block;
+  min-height: 1.5em;
+  background-color: transparent;
+  text-shadow:
+  0 0 2px #00f7ff,
+  0 0 4px #00f7ff,
+  0 0 6px #00e0ff;
 }
+
 
 nav {
   display: flex;
