@@ -573,16 +573,16 @@ body.dark header {
 /* nav */
 nav h1 {
   letter-spacing: 2px;
-  color: var(--text-color);
+  color: var(--white-color);
   position: relative;
   min-width: 12ch;
   display: inline-block;
   min-height: 1.5em;
   background-color: transparent;
   text-shadow:
-  0 0 2px #00f7ff,
-  0 0 4px #00f7ff,
-  0 0 6px #00e0ff;
+  0 0 2px var(--main-color),
+  0 0 4px var(--main-color),
+  0 0 6px var(--main-color);
 }
 
 
@@ -1108,7 +1108,6 @@ footer .container h5:hover {
     text-align: center;
   }
 }
-
 /* start swipper*/
 .pro-div .products .product {
   display: flex;

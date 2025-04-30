@@ -146,7 +146,7 @@
     </div>
   </section>
     <!--Section Five-->
-    <section>
+    <section id="btnAfterPro">
       <div class="container">
         <div class="bttnAllProduct">
           <a href="{% url 'allproducts' %}">
@@ -447,7 +447,10 @@
               document.querySelector(".minut").innerHTML = (minutes < 10 ? "0" : "") + minutes + ":";
               document.querySelector(".second").innerHTML = (seconds < 10 ? "0" : "") + seconds;
             } else {
-              document.querySelector(".timer").innerHTML = "<h2>FLASH SALES ENDED</h2>";
+              document.getElementById("fady").innerHTML = "";
+              document.getElementById("btnAfterPro").innerHTML = "";
+              document.querySelector(".offer").innerHTML = "";
+              document.querySelector(".timer").innerHTML = "";
             }
           }
     
@@ -455,8 +458,6 @@
           updateTimer();
         } else {
           document.querySelector(".timer").innerHTML = "<h2>No Flash Sales Available</h2>";
-          document.getElementById("fady").innerHTML = "";
-
         }
       });
     </script>
