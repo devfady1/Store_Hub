@@ -113,9 +113,7 @@ body.dark header {
 /* nav */
 nav h1 {
   letter-spacing: 2px;
-  margin: 5px;
-  font-size: 35px;
-  color: #fff;
+  color: var(--text-color);
 }
 
 nav {
@@ -344,6 +342,11 @@ footer .container h5:hover {
   nav {
     flex-direction: column;
     align-items: center;
+  }
+
+  nav h1 {
+    margin: 5px;
+    font-size: 35px;
   }
 
   nav .linkes {

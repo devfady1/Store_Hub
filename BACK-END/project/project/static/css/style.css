@@ -573,7 +573,7 @@ body.dark header {
 /* nav */
 nav h1 {
   letter-spacing: 2px;
-  color: #fff;
+  color: #fff !important;
   position: relative;
   min-width: 12ch;
   display: inline-block;
