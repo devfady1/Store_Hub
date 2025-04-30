@@ -146,7 +146,7 @@
     </div>
   </section>
     <!--Section Five-->
-    <section>
+    <section id="btnAfterPro">
       <div class="container">
         <div class="bttnAllProduct">
           <a href="{% url 'allproducts' %}">
@@ -299,9 +299,7 @@
               <div class="icons">
                 <div class="icon">
                   <i class="fa-regular fa-heart iconheart" onclick="toggleLike({{ product.id }}, this, event)"></i>
-                  <a href="/product/{{ product.id }}/">
                     <i class="fa-regular fa-eye"></i>
-                  </a>
                 </div>
               </div>
         
@@ -448,7 +446,6 @@
               document.querySelector(".second").innerHTML = (seconds < 10 ? "0" : "") + seconds;
             } else {
               document.querySelector(".timer").innerHTML = "<h2>FLASH SALES ENDED</h2>";
-              document.getElementById("fady").innerHTML = "";
             }
           }
     
@@ -457,6 +454,7 @@
         } else {
           document.querySelector(".timer").innerHTML = "<h2>No Flash Sales Available</h2>";
           document.getElementById("fady").innerHTML = "";
+
         }
       });
     </script>
