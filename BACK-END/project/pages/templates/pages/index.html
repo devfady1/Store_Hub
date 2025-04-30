@@ -445,28 +445,28 @@
               document.querySelector(".minut").innerHTML = (minutes < 10 ? "0" : "") + minutes + ":";
               document.querySelector(".second").innerHTML = (seconds < 10 ? "0" : "") + seconds;
             } else {
-              document.querySelector(".timer").innerHTML = "<h2>FLASH SALES ENDED</h2>";
+              document.getElementById("fady").innerHTML = "";
+              document.getElementById("btnAfterPro").innerHTML = "";
+              document.querySelector(".offer").innerHTML = "";
+              document.querySelector(".timer").innerHTML = "";
             }
           }
-    
           setInterval(updateTimer, 1000);
           updateTimer();
         } else {
           document.querySelector(".timer").innerHTML = "<h2>No Flash Sales Available</h2>";
-          document.getElementById("fady").innerHTML = "";
-
         }
       });
     </script>
     <!--دا للايك و الكارت-->
     <script>
       function addToCart(productId) {
-        fetch(`/add-to-cart/?product_id=${productId}`)
+        fetch(/add-to-cart/?product_id=${productId})
           .then(response => response.json())
           .then(data => {
             if (data.status === "success") {
               let quantity = data.cart[productId].quantity;
-              alert(`✅ المنتج تم إضافته بنجاح! الكمية الحالية: ${quantity}`);
+              alert(✅ المنتج تم إضافته بنجاح! الكمية الحالية: ${quantity});
               window.location.href = "/cart/";
             } else {
               alert("❌ حدث خطأ أثناء الإضافة!");
@@ -476,9 +476,9 @@
       }
       
       function toggleLike(productId, btn, event) {
-        event.preventDefault();
+        event.preventDefault(); // 🛑 مهم جدا
       
-        fetch(`/toggle-like/${productId}/`, {
+        fetch(/toggle-like/${productId}/, {
           method: 'POST',
           headers: {
             'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -494,6 +494,7 @@
         })
         .catch(error => console.error('❌ Error:', error));
       }
+
       </script>
   </body>
   
