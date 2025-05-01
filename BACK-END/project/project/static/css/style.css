@@ -1378,7 +1378,8 @@ section .container .browseCat .categText .shape,
 .offer .container .dayOffers .shape,
 .BestSellingProducts .container .top .shape-text .shape,
 .ourproduct .container .ourprotext .shape,
-.RelatedItem .container .RelatedItemtext .shape {
+.RelatedItem .container .RelatedItemtext .shape,
+.newArrival  .container .featured .shape{
   width: 20px;
   height: 40px;
   background-color: var(--main-color);
