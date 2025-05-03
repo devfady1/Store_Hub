@@ -211,7 +211,6 @@ def register(request):
 
 
 
-
 @login_required
 def account(request):
     user = request.user
@@ -225,30 +224,37 @@ def account(request):
         phone = request.POST.get('phone')
         profile_image = request.FILES.get('profile_image')
 
+        # تحديث بيانات المستخدم
         user.first_name = first_name
         user.last_name = last_name
         user.email = email
         user.save()
 
+        # تحديث بروفايل
         profile.phone_number = phone
         if profile_image:
             profile.profile_image = profile_image
         profile.save()
 
+        # التعامل مع تغيير كلمة المرور
         current_password = request.POST.get('current_password')
         new_password = request.POST.get('new_password')
         confirm_password = request.POST.get('confirm_password')
 
-        if current_password and new_password == confirm_password:
-            if user.check_password(current_password):
+        if current_password or new_password or confirm_password:
+            if not (current_password and new_password and confirm_password):
+                messages.error(request, "Please fill in all password fields.")
+            elif new_password != confirm_password:
+                messages.error(request, "New passwords do not match.")
+            elif not user.check_password(current_password):
+                messages.error(request, "Current password is incorrect.")
+            else:
                 user.set_password(new_password)
                 user.save()
-                messages.success(request, 'Password updated successfully.')
-            else:
-                messages.error(request, 'Current password is incorrect.')
+                messages.success(request, "Password updated successfully.")
 
-        messages.success(request, 'Profile updated successfully.')
-        return redirect('account')  
+        messages.success(request, "Profile updated successfully.")
+        return redirect('account')
 
     return render(request, 'pages/account/account.html', {
         'user': user,
@@ -657,7 +663,7 @@ def my_orders_view(request):
 
     context = {
         'orders': orders,
-        'status_filter': status_filter or 'all',  # نبعته عشان نخلي الزر اللي عليه active
+        'status_filter': status_filter or 'all',
     }
     return render(request, 'delivery agent/my_orders_view.html', context)
 

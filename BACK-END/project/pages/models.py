@@ -19,21 +19,20 @@ class UserProfile(models.Model):
     def save(self, *args, **kwargs):
         """
         إذا كان المستخدم أدمن، يتم جعله سوبر يوزر تلقائيًا.
+        لباقي الأدوار، لا يتم تعديل صلاحيات الـ user.
         """
-        print(f"Saving UserProfile: User={self.user.username}, Role={self.role}, Phone={self.phone_number}")
+        print(f"Saving UserProfile: User={self.user.username}, Role={self.role}, Phone={self.phone_number}, First Name={self.user.first_name}, Last Name={self.user.last_name}")
 
         if self.role == 'admin':
             self.user.is_superuser = True
             self.user.is_staff = True
-        else:
-            self.user.is_superuser = False
-            self.user.is_staff = False
 
         self.user.save()  
         super().save(*args, **kwargs)  
 
     def __str__(self):
         return f"{self.user.username} - {self.role}"
+
 
 #نموذج Product
 class Category(models.Model):

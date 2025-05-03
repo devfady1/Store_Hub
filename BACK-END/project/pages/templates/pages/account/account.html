@@ -1,160 +1,153 @@
 {% extends 'pages/base.html' %}
 {% block content %}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer" />
-    <link
-      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
-      rel="stylesheet" />
-    <title>Store Hub | Account</title>
-  </head>
-  <body class="light">
-    <div class="breadcrumb-account">
-      <div class="bread">
-        <a href="index.html" class="a1">Home</a>
-        <span class="check">/</span>
-        <a href="account.html" class="check">My Account</a>
-      </div>
-      <div class="check">Welcome! <span>StoreHub Team!</span></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer" />
+  <link
+    href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+    rel="stylesheet" />
+  <title>Store Hub | Account</title>
+</head>
+<body class="light">
+  <div class="breadcrumb-account">
+    <div class="bread">
+      <a href="index.html" class="a1">Home</a>
+      <span class="check">/</span>
+      <a href="account.html" class="check">My Account</a>
     </div>
+    <div class="check">Welcome! <span>StoreHub Team!</span></div>
+  </div>
 
-    <div class="container-account">
-      <aside class="sidebar-account">
-        <p>Manage My Account</p>
-        <ul class="sidebar-menu-account">
-          <li class="active" onclick="window.location.href='{% url 'account' %}'">My Profile</li>
-          <li onclick="window.location.href='#'">Address Book</li>
-          <li onclick="window.location.href='{% url 'cart' %}'">My Payment Options</li>
-          <li onclick="window.location.href='#'">Saved Cards</li>
-          <li onclick="window.location.href='#'">Security Settings</li>
-        </ul>
-      
-        <p>My Orders</p>
-        <ul class="sidebar-menu-account">
-          <li onclick="window.location.href='{% url 'my_orders' %}'">Order History</li>
-          <li onclick="window.location.href='#'">Track My Order</li>
-          <li onclick="window.location.href='#'">My Returns</li>
-          <li onclick="window.location.href='#'">My Cancellations</li>
-        </ul>
-      
-        <p>My Activity</p>
-        <ul class="sidebar-menu-account">
-          <li onclick="window.location.href='{% url 'wishlist' %}'">Wishlist</li>
-          <li onclick="window.location.href='#'">Recently Viewed</li>
-          <li onclick="window.location.href='#'">Product Reviews</li>
-        </ul>
-      
-        <p>Support</p>
-        <ul class="sidebar-menu-account">
-          <li onclick="window.location.href='{% url 'contact' %}'">Help & Support</li>
-          <li onclick="window.location.href='#'">FAQs</li>
-          <li onclick="window.location.href='#'">Live Chat</li>
-        </ul>
-      
-        <p>Account Actions</p>
-        <ul class="sidebar-menu-account">
-          <li onclick="window.location.href='{% url 'logout' %}'">Logout</li>
-          <li onclick="window.location.href='#'">Delete My Account</li>
-        </ul>
-      </aside>
-      
+  <div class="container-account">
+    <aside class="sidebar-account">
+      <p>Manage My Account</p>
+      <ul class="sidebar-menu-account">
+        <li class="active" onclick="window.location.href='{% url 'account' %}'">My Profile</li>
+        <li onclick="window.location.href='#'">Address Book</li>
+        <li onclick="window.location.href='{% url 'cart' %}'">My Payment Options</li>
+        <li onclick="window.location.href='#'">Saved Cards</li>
+        <li onclick="window.location.href='#'">Security Settings</li>
+      </ul>
+    
+      <p>My Orders</p>
+      <ul class="sidebar-menu-account">
+        <li onclick="window.location.href='{% url 'my_orders' %}'">Order History</li>
+        <li onclick="window.location.href='#'">Track My Order</li>
+        <li onclick="window.location.href='#'">My Returns</li>
+        <li onclick="window.location.href='#'">My Cancellations</li>
+      </ul>
+    
+      <p>My Activity</p>
+      <ul class="sidebar-menu-account">
+        <li onclick="window.location.href='{% url 'wishlist' %}'">Wishlist</li>
+        <li onclick="window.location.href='#'">Recently Viewed</li>
+        <li onclick="window.location.href='#'">Product Reviews</li>
+      </ul>
+    
+      <p>Support</p>
+      <ul class="sidebar-menu-account">
+        <li onclick="window.location.href='{% url 'contact' %}'">Help & Support</li>
+        <li onclick="window.location.href='#'">FAQs</li>
+        <li onclick="window.location.href='#'">Live Chat</li>
+      </ul>
+    
+      <p>Account Actions</p>
+      <ul class="sidebar-menu-account">
+        <li onclick="window.location.href='{% url 'logout' %}'">Logout</li>
+        <li onclick="window.location.href='#'">Delete My Account</li>
+      </ul>
+    </aside>
 
-      <div class="profile-form">
-        <div class="cover-photo"></div>
-        <div style="position: relative;">
-          <img src=""  class="profile-pic" id="profile-pic">
-          <div class="upload-icon" >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="17 8 12 3 7 8"></polyline>
-              <line x1="12" y1="3" x2="12" y2="15"></line>
-            </svg>
-          </div>
-          <input type="file" id="file-input" style="display: none;">
+    <div class="profile-form">
+      <div class="cover-photo"></div>
+      <div style="position: relative;">
+        <img src="{{ profile.profile_image.url }}" class="profile-pic" id="profile-pic">
+        <div class="upload-icon" onclick="document.getElementById('form-profile-image').click()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
         </div>
-        <p class="form-title">Edit Your Profile</p>
-        {% if messages %}
-        <div class="messages">
-          {% for message in messages %}
-            <div class="alert {{ message.tags }}">{{ message }}</div>
-          {% endfor %}
-        </div>
+      </div>
+      <p class="form-title">Edit Your Profile</p>
+      {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="alert {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
       {% endif %}
-        <form class="account-forms" method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="form-grid">
-            <div class="form-account">
-              <label>First Name</label>
-              <input type="text" name="first_name" value="{{ user.first_name }}" placeholder="StoreHub" required />
-            </div>
-            <div class="form-account">
-              <label>Last Name</label>
-              <input type="text" name="last_name" value="{{ user.last_name }}" placeholder="Team" required />
-            </div>
-            <div class="form-account">
-              <label>Email</label>
-              <input type="email" name="email" value="{{ user.email }}" placeholder="StoreHub@gmail.com" required />
-            </div>
-            <div class="form-account">
-              <label>Address</label>
-              <input type="text" name="address" placeholder="ASSUIT" required />
-            </div>
-            <div class="form-account">
-              <label>Phone</label>
-              <input type="text" name="phone" value="{{ profile.phone_number }}" placeholder="+20100000000" />
-            </div>
-            <!-- <div class="form-account">
-              <label>Profile Image</label>
-              <input type="file" name="profile_image" />
-              {% if profile.profile_image %}
-                <img src="{{ profile.profile_image.url }}" alt="Profile Image" style="width: 100px; margin-top: 10px;" />
-              {% endif %}
-            </div> -->
-          </div>
-        
+      <form class="account-forms" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-grid">
           <div class="form-account">
-            <label>Password Changes</label>
-            <input type="password" name="current_password" placeholder="Current Password" />
+            <label>First Name</label>
+            <input type="text" name="first_name" value="{{ user.first_name }}" placeholder="StoreHub" required />
           </div>
           <div class="form-account">
-            <input type="password" name="new_password" placeholder="New Password" />
+            <label>Last Name</label>
+            <input type="text" name="last_name" value="{{ user.last_name }}" placeholder="Team" required />
           </div>
           <div class="form-account">
-            <input type="password" name="confirm_password" placeholder="Confirm New Password" />
+            <label>Email</label>
+            <input type="email" name="email" value="{{ user.email }}" placeholder="StoreHub@gmail.com" required />
           </div>
-        
-          <div class="form-actions">
-            <button type="button" class="btn-account btn-cancel">Cancel</button>
-            <button type="submit" class="btn-account btn-save">Save Changes</button>
+          <div class="form-account">
+            <label>Address</label>
+            <input type="text" name="address" placeholder="ASSUIT" required />
           </div>
-        </form>    
-      </div>
+          <div class="form-account">
+            <label>Phone</label>
+            <input type="text" name="phone" value="{{ profile.phone_number }}" placeholder="+20100000000" />
+          </div>
+          <input type="file" name="profile_image" id="form-profile-image" style="display: none;">
+        </div>
+
+        <div class="form-account">
+          <label>Password Changes</label>
+          <input type="password" name="current_password" placeholder="Current Password" />
+        </div>
+        <div class="form-account">
+          <input type="password" name="new_password" placeholder="New Password" />
+        </div>
+        <div class="form-account">
+          <input type="password" name="confirm_password" placeholder="Confirm New Password" />
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-account btn-cancel">Cancel</button>
+          <button type="submit" class="btn-account btn-save">Save Changes</button>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <script>
-      document.getElementById('file-input').addEventListener('change', function (event) {
-        const file = event.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            document.getElementById('profile-pic').src = e.target.result;
-          }
-          reader.readAsDataURL(file);
+  <script>
+    document.getElementById('form-profile-image').addEventListener('change', function (event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById('profile-pic').src = e.target.result;
         }
-      });
-
-    </script>
-    </body>
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+</body>
 </html>
+
 {% endblock content %}
