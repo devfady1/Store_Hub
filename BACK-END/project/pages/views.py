@@ -262,6 +262,7 @@ def account(request):
     })
 
 
+
 def contact_view(request):
     if request.method == "POST":
         name = request.POST.get('name')
