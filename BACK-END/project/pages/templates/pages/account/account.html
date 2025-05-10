@@ -1,9 +1,9 @@
 {% extends 'pages/base.html' %}
 {% block content %}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,7 +14,6 @@
   <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
   <title>Store Hub | Account</title>
 </head>
-
 <body class="light">
   <div class="breadcrumb-account">
     <div class="bread">
@@ -35,7 +34,8 @@
         <li onclick="window.location.href='#'">Saved Cards</li>
         <li onclick="window.location.href='#'">Security Settings</li>
       </ul>
-
+<<<<<<< HEAD
+    
       <p>My Orders</p>
       <ul class="sidebar-menu-account">
         <li onclick="window.location.href='{% url 'my_orders' %}'">Order History</li>
@@ -43,36 +43,34 @@
         <li onclick="window.location.href='#'">My Returns</li>
         <li onclick="window.location.href='#'">My Cancellations</li>
       </ul>
-
+    
       <p>My Activity</p>
       <ul class="sidebar-menu-account">
         <li onclick="window.location.href='{% url 'wishlist' %}'">Wishlist</li>
         <li onclick="window.location.href='#'">Recently Viewed</li>
         <li onclick="window.location.href='#'">Product Reviews</li>
       </ul>
-
+    
       <p>Support</p>
       <ul class="sidebar-menu-account">
         <li onclick="window.location.href='{% url 'contact' %}'">Help & Support</li>
         <li onclick="window.location.href='#'">FAQs</li>
         <li onclick="window.location.href='#'">Live Chat</li>
       </ul>
-
+    
       <p>Account Actions</p>
       <ul class="sidebar-menu-account">
         <li onclick="window.location.href='{% url 'logout' %}'">Logout</li>
         <li onclick="window.location.href='#'">Delete My Account</li>
       </ul>
     </aside>
-
-
     <div class="profile-form">
       <div class="cover-photo"></div>
       <div style="position: relative;">
         <img src="{{ profile.profile_image.url }}" class="profile-pic" id="profile-pic">
         <div class="upload-icon" onclick="document.getElementById('form-profile-image').click()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
             <polyline points="17 8 12 3 7 8"></polyline>
             <line x1="12" y1="3" x2="12" y2="15"></line>
@@ -83,7 +81,7 @@
       {% if messages %}
       <div class="messages">
         {% for message in messages %}
-        <div class="alert {{ message.tags }}">{{ message }}</div>
+          <div class="alert {{ message.tags }}">{{ message }}</div>
         {% endfor %}
       </div>
       {% endif %}
@@ -131,8 +129,6 @@
       </form>
     </div>
   </div>
-
-
   <script>
     document.getElementById('form-profile-image').addEventListener('change', function (event) {
       const file = event.target.files[0];
@@ -145,8 +141,7 @@
       }
     });
   </script>
-
 </body>
-
 </html>
+
 {% endblock content %}

@@ -211,7 +211,6 @@ def register(request):
 
 
 
-
 @login_required
 def account(request):
     user = request.user
@@ -652,8 +651,7 @@ def order_detail(request, order_id):
 
 def my_orders_view(request):
     user = request.user
-    status_filter = request.GET.get('status')  # نجيب الفلتر لو موجود
-
+    status_filter = request.GET.get('status')  
     orders = Order.objects.filter(customer=user).prefetch_related('items__product').order_by('-order_date')
 
     if status_filter and status_filter != 'all':
@@ -665,7 +663,7 @@ def my_orders_view(request):
 
     context = {
         'orders': orders,
-        'status_filter': status_filter or 'all',  # نبعته عشان نخلي الزر اللي عليه active
+        'status_filter': status_filter or 'all',
     }
     return render(request, 'delivery agent/my_orders_view.html', context)
 
