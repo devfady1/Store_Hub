@@ -2985,7 +2985,7 @@ input[type="checkbox"]:checked::after {
 .form-title {
   color: var(--main-color);
   margin-bottom: 20px;
-  font-size: 23px;
+  font-size: 25px;
   font-weight: 500;
   display: flex;
   align-items: center;
@@ -3002,8 +3002,8 @@ input[type="checkbox"]:checked::after {
 }
 
 .profile-form .profile-pic {
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     border: 4px solid #fafafa;
     background-color: #eee;
@@ -3030,7 +3030,7 @@ input[type="checkbox"]:checked::after {
 .upload-icon {
   position: absolute;
   bottom: 5%;
-  right: 43%;
+  right: 42%;
   background: var(--main-color);
   color: white;
   width: 35px;

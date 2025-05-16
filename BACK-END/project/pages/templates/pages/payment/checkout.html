@@ -3,8 +3,8 @@
 {% block content %}
 
 <div class="breadcrumb-checkout">
-  <a href="#">Account</a> / <a href="#">My Account</a> / <a href="#">Product</a> / <a href="#">View Cart</a> /
-  <span class="check">/</span> <a href="#" class="check">Checkout</a>
+  <a href="{% url 'account' %}">My Account</a> / <a href="{% url 'allproducts' %}">Product</a> / <a href="{% url 'cart' %}">View Cart</a> /
+  <a href="{% url 'checkout' %}" class="check">Checkout</a>
 </div>
 
 <form method="POST" action="{% url 'place_order' %}" class="checkout-form">

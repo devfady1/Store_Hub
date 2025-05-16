@@ -1943,6 +1943,7 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   padding: 2rem;
   background-color: var(--background-color);
   transition: background-color 0.5s;
