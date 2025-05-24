@@ -11,4 +11,23 @@
         <a href="{% url 'my_orders' %}" class="btn-track">متابعة الطلب</a>
     </div>
 </div>
+<audio id="order-audio" hidden autoplay>
+  <source src="{% static 'sounds/ch.m4a' %}" type="audio/mp4">
+</audio>
+
+<script>
+  window.addEventListener("load", function () {
+    const audio = document.getElementById("order-audio");
+    const playPromise = audio.play();
+
+    if (playPromise !== undefined) {
+      playPromise.catch((error) => {
+        console.log("Autoplay blocked. Waiting for click...");
+        document.body.addEventListener("click", function () {
+          audio.play();
+        }, { once: true });
+      });
+    }
+  });
+</script>
 {% endblock %}

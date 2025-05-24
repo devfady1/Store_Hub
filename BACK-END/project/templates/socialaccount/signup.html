@@ -1,0 +1,34 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="sign">
+  <div class="sign-container">
+    <div class="sign-image">
+      <img src="{% static 'images/login.png' %}" alt="Login Image">
+    </div>
+    <div class="sign-form">
+      <h6>Create an account</h6>
+      <p>Enter your details below</p>
+
+      {% if form.errors %}
+        <div class="error-message">
+          {{ form.errors }}
+        </div>
+      {% endif %}
+
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="input-box">
+          <button type="submit"><span>Continue</span></button>
+        </div>
+      </form>
+
+      <div class="already-account">
+        Already have an account? <a href="{% url 'account_login' %}">Login</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
