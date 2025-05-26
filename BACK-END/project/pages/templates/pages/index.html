@@ -21,23 +21,18 @@
   </head>
 
   <body class="light">
-   <!-- Section One -->
-<section class="slider">
-  <div class="container">
-    <div class="side_bar">
-      <div class="welcome-message" style="color: var(--text-color)">
+      <div class="container">
+        <div class="welcome-message" style="color: var(--text-color)">
         {% if user.is_authenticated %}
           <h3> Welcome , {{ username }}!</h3>
         {% else %}
           <h3>Welcome To Our Store</h3>
         {% endif %}
       </div>
-      {% for category in categories %}
-          <a href="/allproducts/?category={{ category.name }}">
-            {{ category.name }}
-          </a>
-        {% endfor %}
-    </div>
+      </div>
+   <!-- Section One -->
+<section class="slider">
+  <div class="container">
     <div class="swiper">
       <div class="swiper-wrapper">
         {% for product in products %}
@@ -172,36 +167,15 @@
         </div>
         <div class="categs mySwiper">
           <div class="categ swiper-wrapper">
-            <div class="categ swiper-slide">
+          {% for category in categories %}
+          <div class="categ swiper-slide">
               <div class="cat">
-                <h2>Phones</h2>
-                <i class="fa-solid fa-mobile"></i>
+                <a href="/allproducts/?category={{ category.name }}">
+                    {{ category.name }}
+                </a>
               </div>
             </div>
-            <div class="categ swiper-slide">
-              <div class="cat">
-                <h2>Computers</h2>
-                <i class="fa-solid fa-tv"></i>
-              </div>
-            </div>
-            <div class="categ swiper-slide">
-              <div class="cat">
-                <h2>Camera</h2>
-                <i class="fa-solid fa-camera"></i>
-              </div>
-            </div>
-            <div class="categ swiper-slide">
-              <div class="cat">
-                <h2>HeadPhones</h2>
-                <i class="fa-solid fa-headphones"></i>
-              </div>
-            </div>
-            <div class="categ swiper-slide">
-              <div class="cat">
-                <h2>Gaming</h2>
-                <i class="fa-solid fa-keyboard"></i>
-              </div>
-            </div>
+            {% endfor %}
           </div>
         </div>
       </div>
