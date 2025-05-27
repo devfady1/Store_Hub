@@ -152,34 +152,55 @@
     </section>
 
     <!--Section Six-->
-    <section id="browseCat">
-      <div class="container">
-        <div class="browseCat">
-          <div class="categText">
-            <span class="shape">.</span>
-            <h3>Categories</h3>
-          </div>
-          <div class="catbtnswap mySwiper">
-            <h3>Browse By Category</h3>
-            <div class="swiper-button-next btn_swip btnSwapNext"></div>
-            <div class="swiper-button-prev btn_swip BtnSwapPrev"></div>
-          </div>
-        </div>
-        <div class="categs mySwiper">
-          <div class="categ swiper-wrapper">
-          {% for category in categories %}
-          <div class="categ swiper-slide">
-              <div class="cat">
-                <a href="/allproducts/?category={{ category.name }}">
-                    {{ category.name }}
-                </a>
-              </div>
-            </div>
-            {% endfor %}
-          </div>
-        </div>
+<section id="browseCat">
+  <div class="container">
+    <div class="browseCat">
+      <div class="categText">
+        <span class="shape">.</span>
+        <h3>Categories</h3>
       </div>
-    </section>
+      <div class="catbtnswap mySwiper">
+        <h3>Browse By Category</h3>
+        <div class="swiper-button-next btn_swip btnSwapNext"></div>
+        <div class="swiper-button-prev btn_swip BtnSwapPrev"></div>
+      </div>
+    </div>
+
+    <div class="categs mySwiper">
+      <div class="categ swiper-wrapper">
+        {% for category in categories %}
+          <div class="categ swiper-slide">
+            <div class="cat">
+              <a href="/allproducts/?category={{ category.name }}">
+                {% if category.name == "Men's Fashion" %}
+                  <i class="fa-solid fa-person-dress"></i>
+                {% elif category.name == "Women's Fashion" %}
+                  <i class="fa-solid fa-person"></i>
+                {% elif category.name == "Electronics" %}
+                  <i class="fa-solid fa-microchip"></i>
+                {% elif category.name == "Medicine" %}
+                  <i class="fa-solid fa-capsules"></i>
+                {% elif category.name == "Phone - Tablet" %}
+                  <i class="fa-solid fa-mobile-screen-button"></i>
+                {% elif category.name == "Sports - Outdoor" %}
+                  <i class="fa-solid fa-futbol"></i>
+                {% elif category.name == "Fashion - Clothing" %}
+                  <i class="fa-solid fa-shirt"></i>
+                {% elif category.name == "TV - Audio" %}
+                  <i class="fa-solid fa-tv"></i>
+                {% else %}
+                  <i class="fa-solid fa-tags"></i>
+                {% endif %}
+                {{ category.name }}
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
 
     <!--Section Seven-->
     <section class="BestSellingProducts">
