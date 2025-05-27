@@ -5,10 +5,13 @@
 
 <div class="page-wrapper">
     <div class="success-card">
-        <h1>تم تأكيد الطلب بنجاح! ✅</h1>
-        <p>شكراً لطلبك. سيتم التواصل معك قريباً.</p>
-        <a href="{% url 'index' %}" class="btn-home">الرجوع للصفحة الرئيسية</a>
-        <a href="{% url 'my_orders' %}" class="btn-track">متابعة الطلب</a>
+        <div class="checkmark"></div>
+        <h1 class="title">Order Confirmed Successfully!</h1>
+        <p class="subtitle">
+            Thank you for your request. We will contact you soon.
+        </p>
+        <a href="{% url 'index' %}" class="btn-home">Back to Home</a>
+        <a href="{% url 'my_orders' %}" class="btn-track">Track Order</a>
     </div>
 </div>
 <audio id="order-audio" hidden autoplay>

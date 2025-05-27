@@ -34,7 +34,6 @@
         <li onclick="window.location.href='#'">Saved Cards</li>
         <li onclick="window.location.href='#'">Security Settings</li>
       </ul>
-<<<<<<< HEAD
     
       <p>My Orders</p>
       <ul class="sidebar-menu-account">
@@ -65,8 +64,7 @@
       </ul>
     </aside>
     <div class="profile-form">
-      <div class="cover-photo"></div>
-      <div style="position: relative;">
+      <form style="position: relative;">
         <img src="{{ profile.profile_image.url }}" class="profile-pic" id="profile-pic">
         <div class="upload-icon" onclick="document.getElementById('form-profile-image').click()">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -76,7 +74,8 @@
             <line x1="12" y1="3" x2="12" y2="15"></line>
           </svg>
         </div>
-      </div>
+      </form>
+
       <p class="form-title">Edit Your Profile</p>
       {% if messages %}
       <div class="messages">
@@ -110,7 +109,9 @@
           </div>
           <input type="file" name="profile_image" id="form-profile-image" style="display: none;">
         </div>
+      </form>
 
+      <form>
         <div class="form-account">
           <label>Password Changes</label>
           <input type="password" name="current_password" placeholder="Current Password" />

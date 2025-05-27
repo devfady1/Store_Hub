@@ -41,7 +41,6 @@ body.dark header {
   background-color: #151d2a;
 }
 
-
 /* nav */
 nav h1 {
   letter-spacing: 2px;
@@ -414,32 +413,8 @@ footer .container h5:hover {
   justify-content: space-between;
 }
 
-.side_bar {
-  background-color: var(--white-color);
-  display: flex;
-  flex-direction: column;
-  padding: 40px;
-  border: 1px solid var(--text-color);
-  box-shadow: 2px 3px 5px #777;
-}
-
-.side_bar a {
-  margin: 10px 0;
-  border-bottom: 1px solid var(--text-color);
-  color: var(--text-color);
-  transition: 0.3s;
-}
-
-.side_bar h2 {
-  color: var(--main-color);
-}
-
-.side_bar a:hover {
-  color: var(--main-color);
-}
-
 .swiper {
-  width: 70%;
+  width: 90%;
   border: 2px solid var(--white-color);
   box-shadow: 2px 3px 5px #777;
 }
@@ -825,7 +800,7 @@ section .bttnAllProduct button:hover,
   transform: translateY(10px);
 }
 
-#browseCat .container {
+#browseeg .container {
   padding-bottom: 30px;
   border-bottom: 2px solid var(--main-color);
 }
@@ -903,26 +878,9 @@ section#browseCat .container {
   transition: 0.3s;
 }
 
-#browseCat .container .categ .cat h2 {
-  font-size: 30px;
-  color: var(--text-color);
-  transition: 0.3s;
-}
-
-#browseCat .container .categ .cat i {
-  color: var(--text-color);
-  font-size: 30px;
-  transition: 0.3s;
-}
-
 #browseCat .container .categ .cat:hover {
   transform: translateY(-10px);
   background-color: var(--main-color);
-}
-
-#browseCat .container .categ .cat:hover h2,
-#browseCat .container .categ .cat:hover i {
-  color: var(--white-color);
 }
 
 .BestSellingProducts .container .top .shape-text {
@@ -1298,7 +1256,7 @@ section#browseCat .container {
   color: #fff;
   border-radius: 10px;
 }
-.imgAndDetailes .container .detailes .buyLove button:hover{
+.imgAndDetailes .container .detailes .buyLove button:hover {
   cursor: pointer;
 }
 .imgAndDetailes .container .detailes .buyLove .ico {
@@ -1311,7 +1269,7 @@ section#browseCat .container {
   color: var(--dark-color);
   transition: 0.3s;
 }
-.imgAndDetailes .container .detailes .buyLove div i:hover{
+.imgAndDetailes .container .detailes .buyLove div i:hover {
   background-color: var(--main-color);
   cursor: pointer;
 }
@@ -1342,37 +1300,37 @@ section#browseCat .container {
   color: var(--main-color);
   font-weight: bold;
 }
-.RelatedItem .container .products{
+.RelatedItem .container .products {
   padding-top: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
 }
-.RelatedItem .container .products .pro{
+.RelatedItem .container .products .pro {
   width: 22%;
   padding: 15px 0;
 }
-.RelatedItem .container .products .pro .icons{
+.RelatedItem .container .products .pro .icons {
   position: absolute;
   right: 0;
 }
-.RelatedItem .container .products .pro .icons .icon{
+.RelatedItem .container .products .pro .icons .icon {
   width: 100%;
 }
-.RelatedItem .container .products .pro .detailes{
+.RelatedItem .container .products .pro .detailes {
   width: 100%;
 }
-@media (max-width:700px) {
-  .RelatedItem .container .products{
+@media (max-width: 700px) {
+  .RelatedItem .container .products {
     flex-wrap: wrap;
   }
-  .RelatedItem .container .products .pro{
+  .RelatedItem .container .products .pro {
     width: 35%;
   }
 }
-@media (max-width:450px) {
-  .RelatedItem .container .products .pro{
+@media (max-width: 450px) {
+  .RelatedItem .container .products .pro {
     width: 70%;
     margin: 0 auto;
   }
@@ -1421,7 +1379,6 @@ section#browseCat .container {
   padding-left: 25px;
   margin-bottom: 45px;
   color: var(--text-color);
-
 }
 
 .cart-item-row {
@@ -3563,8 +3520,8 @@ body.dark .filters h3 {
   padding: 3%;
 }
 
-.wishlist-header , 
-.just-for-you-section{
+.wishlist-header,
+.just-for-you-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -3577,8 +3534,8 @@ body.dark .filters h3 {
   color: var(--text-color);
 }
 
-.wishlist-header .move-all-btn , 
-.just-for-you-section .see-all{
+.wishlist-header .move-all-btn,
+.just-for-you-section .see-all {
   color: var(--white-color);
   background-color: var(--main-color);
   padding: 15px 45px;
@@ -3696,13 +3653,13 @@ body.dark .filters h3 {
 
 .wishlist-row .product .new-badge {
   position: absolute;
-  background-color: #00FF66;
-    width: 51;
-      height: 26;
-      top: 10px;
-      left: 10px;
-      border-radius: 4px;
-      padding: 4px 12px;
+  background-color: #00ff66;
+  width: 51;
+  height: 26;
+  top: 10px;
+  left: 10px;
+  border-radius: 4px;
+  padding: 4px 12px;
 }
 
 .wishlist-row .product .add-to-cart {
@@ -3734,7 +3691,7 @@ body.dark .filters h3 {
 
 .dark .wishlist-header .move-all-btn,
 .dark .just-for-you-section .see-all {
-  color: var(--dark-color); 
+  color: var(--dark-color);
 }
 
 .dark .wishlist-row .product:hover {
@@ -4313,4 +4270,3 @@ body.dark .filters h3 {
 }
 
 /* ==> End Seller <== */
-
