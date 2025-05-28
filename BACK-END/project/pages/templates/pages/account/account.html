@@ -63,7 +63,7 @@
         <li onclick="window.location.href='#'">Delete My Account</li>
       </ul>
     </aside>
-    <div class="profile-form">
+    <form class="profile-form">
       <form style="position: relative;">
         <img src="{{ profile.profile_image.url }}" class="profile-pic" id="profile-pic">
         <div class="upload-icon" onclick="document.getElementById('form-profile-image').click()">
@@ -122,13 +122,12 @@
         <div class="form-account">
           <input type="password" name="confirm_password" placeholder="Confirm New Password" />
         </div>
-
-        <div class="form-actions">
-          <button type="button" class="btn-account btn-cancel">Cancel</button>
-          <button type="submit" class="btn-account btn-save">Save Changes</button>
-        </div>
       </form>
-    </div>
+      <div class="form-actions">
+        <button type="button" class="btn-account btn-cancel">Cancel</button>
+        <button type="submit" class="btn-account btn-save">Save Changes</button>
+      </div>
+    </form>
   </div>
   <script>
     document.getElementById('form-profile-image').addEventListener('change', function (event) {
