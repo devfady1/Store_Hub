@@ -1698,9 +1698,7 @@ section#browseCat .container {
 .address .container {
   padding: 30px 0;
 }
-.address .container p {
-  color: var(--text-color);
-}
+
 .address .container p #proName {
   color: var(--main-color);
 }
