@@ -46,6 +46,82 @@
             {% endfor %}
     
             <span>({{ rating }})</span>  
+            
+<button id="openRatingBtn" style="margin-bottom: 20px;">قيّم المنتج</button>
+
+<div id="ratingModal" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right:0; bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+">
+  <div style="
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+  ">
+    <button id="closeModalBtn" style="float: right;">✖️</button>
+    
+    <form method="POST" action="{% url 'rate_product' product.id %}">
+      {% csrf_token %}
+      <div class="stars" style="font-size: 2rem; direction: rtl; user-select: none; cursor: pointer;">
+        {% for i in "54321" %}
+          <i class="fa-regular fa-star" data-value="{{ i }}"></i>
+        {% endfor %}
+      </div>
+      <input type="hidden" name="stars" id="stars_input" value="0">
+      <button type="submit" style="margin-top: 15px;">إرسال</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  const openBtn = document.getElementById('openRatingBtn');
+  const modal = document.getElementById('ratingModal');
+  const closeBtn = document.getElementById('closeModalBtn');
+  const stars = modal.querySelectorAll('.stars i');
+  const starsInput = modal.querySelector('#stars_input');
+
+  openBtn.addEventListener('click', () => {
+    modal.style.display = 'flex';
+  });
+
+  closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      const val = parseInt(star.getAttribute('data-value'));
+      starsInput.value = val;
+      updateStars(val);
+    });
+  });
+
+  function updateStars(rating) {
+    stars.forEach(star => {
+      const starVal = parseInt(star.getAttribute('data-value'));
+      if (starVal <= rating) {
+        star.classList.remove('fa-regular');
+        star.classList.add('fa-solid');
+      } else {
+        star.classList.remove('fa-solid');
+        star.classList.add('fa-regular');
+      }
+    });
+  }
+
+  const initialRating = {{ user_rating|default:"0" }};
+  if (initialRating > 0) {
+    starsInput.value = initialRating;
+    updateStars(initialRating);
+  }
+</script>
         </div>
           <h3 id="sallery">${{ product.price }}</h3>
           <p id="caption">

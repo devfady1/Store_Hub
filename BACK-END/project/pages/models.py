@@ -53,8 +53,6 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField(verbose_name="الكمية", default=0)
     saler = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products', null=True, blank=True)
     image = models.ImageField(upload_to='products/', default='default.jpg', verbose_name="صورة المنتج", blank=True, null=True,max_length=255)
-    color = models.CharField(max_length=50, verbose_name="اللون", blank=True, null=True)
-    likes = models.ManyToManyField(User, related_name='product_likes', blank=True, verbose_name="اللايكات")
     color = models.CharField(max_length=50, choices=[
         ('red', 'Red'),
         ('green', 'Green'),
@@ -63,6 +61,7 @@ class Product(models.Model):
         ('orangered', 'OrangeRed'),
         ('black', 'Black')],
         default="black", verbose_name="اللون")
+    likes = models.ManyToManyField(User, related_name='product_likes', blank=True, verbose_name="اللايكات")
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="التصنيف")
     rating = models.FloatField(default=0, verbose_name="التقييم")
 
@@ -72,14 +71,33 @@ class Product(models.Model):
     def total_likes(self):
         return self.likes.count()
 
-    def update_rating(self, new_rating):
-        self.rating = new_rating
+    def update_rating(self):
+        ratings = self.ratings.all().values_list('stars', flat=True)
+        count = ratings.count()
+        if count > 0:
+            avg_rating = sum(ratings) / count
+            self.rating = round(avg_rating, 2)
+        else:
+            self.rating = 0
         self.save()
 
     class Meta:
         verbose_name = "منتج"
         verbose_name_plural = "منتجات"
 
+
+#النجوم و المستخدم يقدر يعمل تقييم        
+class ProductRating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ratings")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="ratings")
+    stars = models.IntegerField(verbose_name="عدد النجوم", choices=[(i, i) for i in range(1, 6)])
+
+    class Meta:
+        unique_together = ('user', 'product')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.product.name}: {self.stars} نجوم"
+    
 # all checkout
 class Checkout(models.Model):
     PAYMENT_METHOD_CHOICES = [

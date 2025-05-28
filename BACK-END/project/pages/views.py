@@ -675,3 +675,26 @@ def order_details(request, order_id):
     order = get_object_or_404(Order, id=order_id, customer=request.user)
     
     return render(request, 'delivery agent/order_detail.html', {'order': order})
+
+
+@login_required
+def rate_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    if request.method == 'POST':
+        stars = int(request.POST.get('stars', 0))
+        if 1 <= stars <= 5:
+            rating, created = ProductRating.objects.update_or_create(
+                user=request.user, product=product,
+                defaults={'stars': stars}
+            )
+            product.update_rating()
+            messages.success(request, 'تم حفظ تقييمك بنجاح.')
+        else:
+            messages.error(request, 'يرجى اختيار تقييم من 1 إلى 5 نجوم.')
+
+    referer = request.META.get('HTTP_REFERER')
+    if referer:
+        return redirect(referer)
+    else:
+        return redirect('product', pk=product.id)
