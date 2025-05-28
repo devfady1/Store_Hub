@@ -47,7 +47,7 @@
     
             <span>({{ rating }})</span>  
             
-<button id="openRatingBtn" style="margin-bottom: 20px;">قيّم المنتج</button>
+<button id="openRatingBtn" class="rate-product">Rate Product</button>
 
 <div id="ratingModal" style="
   display: none;
@@ -65,7 +65,7 @@
     width: 300px;
     text-align: center;
   ">
-    <button id="closeModalBtn" style="float: right;">✖️</button>
+    <button id="closeModalBtn" style="float: right; background-color: transparent ;"><i class="fa-solid fa-circle-xmark remove" style="color: red; font-size: 22px; cursor: pointer; "></i></button>
     
     <form method="POST" action="{% url 'rate_product' product.id %}">
       {% csrf_token %}
@@ -75,7 +75,7 @@
         {% endfor %}
       </div>
       <input type="hidden" name="stars" id="stars_input" value="0">
-      <button type="submit" style="margin-top: 15px;">إرسال</button>
+      <button type="submit" style="margin-top: 15px;" id="submitProduct">submit</button>
     </form>
   </div>
 </div>
