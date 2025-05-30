@@ -3749,8 +3749,9 @@ input[type="checkbox"]:checked::after {
 
 /* Dark Error Message  */
 
-.dark .error-message {
-  color: var(--text-color);
+.error-message {
+  color: var(--main-color);
+  font-size: 20px;
 }
 
 /* Responsive */
