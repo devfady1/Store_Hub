@@ -128,15 +128,6 @@
             {{ product.description }}
           </p>
 
-          <div class="size">
-            <h3>Size :</h3>
-            <div><p>XS</p></div>
-            <div><p>S</p></div>
-            <div><p>M</p></div>
-            <div><p>L</p></div>
-            <div><p>XL</p></div>
-          </div>
-
           <div class="buyLove">
             <div class="Number">
               <div class="dec">-</div>
@@ -203,7 +194,22 @@
       </div>
     </section>
     <script src="{% static 'js/darkmode.js' %}"></script>
-
+    <script>
+      let x = 0;
+      let Num = document.querySelector(".buyLove #Num");
+      let dec = document.querySelector(".buyLove .dec");
+      let inc = document.querySelector(".buyLove .inc");
+      inc.addEventListener("click", () => {
+        x++;
+        Num.textContent = x;
+      });
+      dec.addEventListener("click", () => {
+        if(x > 0){
+          x--;
+          Num.textContent = x;
+        }
+      });
+    </script>
   </body>
 </html>
 {% endblock content %} 

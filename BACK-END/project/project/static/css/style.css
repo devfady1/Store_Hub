@@ -1430,7 +1430,7 @@ section#browseCat .container {
 }
 
 #browseCat .container .categ .cat a {
-  font-size: 30px;
+  font-size: 25px;
   color: var(--text-color);
   font-weight: bold;
 }
