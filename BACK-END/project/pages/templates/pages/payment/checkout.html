@@ -1,9 +1,8 @@
-{% extends 'pages/base.html' %}
-{% load static %}
-{% block content %}
+{% extends 'pages/base.html' %} {% load static %} {% block content %}
 
 <div class="breadcrumb-checkout">
-  <a href="#">Account</a> / <a href="#">My Account</a> / <a href="#">Product</a> / <a href="#">View Cart</a> /
+  <a href="#">Account</a> / <a href="#">My Account</a> /
+  <a href="#">Product</a> / <a href="#">View Cart</a> /
   <span class="check">/</span> <a href="#" class="check">Checkout</a>
 </div>
 
@@ -41,7 +40,7 @@
 
       <div class="form-group">
         <label>Phone Number<span>*</span></label>
-        <input type="tel" name="phone" required />
+        <input type="tel" name="phone" required id="phoneNum" />
       </div>
 
       <div class="form-group">
@@ -50,23 +49,28 @@
       </div>
 
       <label id="label">
-        <input type="checkbox" name="save_info" checked /> Save this information for faster check-out
+        <input type="checkbox" name="save_info" checked /> Save this information
+        for faster check-out
       </label>
     </div>
 
     <div class="order-summary">
       {% for product_id, item in cart.items %}
-        <div class="product-item">
-          <div class="product-left">
-            <div class="product-image">
-              <img src="{{ item.image_url }}" alt="{{ item.name }}">
-            </div>
-            <div class="product-name">{{ item.name }}</div>
+      <div class="product-item">
+        <div class="product-left">
+          <div class="product-image">
+            <img src="{{ item.image_url }}" alt="{{ item.name }}" />
           </div>
-          <div class="product-price">${{ item.subtotal|floatformat:2 }}</div>
+          <div class="product-name">{{ item.name }}</div>
         </div>
+        <div class="product-price">${{ item.subtotal|floatformat:2 }}</div>
+      </div>
 
-        <input type="hidden" name="products" value="{{ item.name }}|{{ item.quantity }}|{{ item.price }}">
+      <input
+        type="hidden"
+        name="products"
+        value="{{ item.name }}|{{ item.quantity }}|{{ item.price }}"
+      />
       {% endfor %}
 
       <div class="total-row-check row3">
@@ -96,7 +100,10 @@
               <img src="{% static 'images/Bkash.png' %}" alt="Bank Card 2" />
             </div>
             <div class="payment-icon">
-              <img src="{% static 'images/Mastercard.png' %}" alt="Bank Card 3" />
+              <img
+                src="{% static 'images/Mastercard.png' %}"
+                alt="Bank Card 3"
+              />
             </div>
             <div class="payment-icon">
               <img src="{% static 'images/Nagad.png' %}" alt="Bank Card 4" />
@@ -106,7 +113,13 @@
 
         <div class="payment-method">
           <div class="payment-method-left">
-            <input type="radio" name="payment_method" value="cod" id="cod" checked />
+            <input
+              type="radio"
+              name="payment_method"
+              value="cod"
+              id="cod"
+              checked
+            />
             <label for="cod">Cash on delivery</label>
           </div>
         </div>
@@ -118,9 +131,22 @@
       </div>
 
       <button type="submit" class="place-order-btn">Place Order</button>
-
     </div>
   </div>
 </form>
 
+<script>
+  let phoneNum = document.getElementById("phoneNum");
+  let submit = document.querySelector("button.place-order-btn");
+
+  submit.addEventListener("click", () => {
+    let phoneNumValue = phoneNum.value;
+    if (phoneNumValue.length != 11)
+      window.alert("Your Number Less than Or More Than 11 digit");
+    if (phoneNumValue[0] != "0" || phoneNumValue[1] != "1")
+      window.alert("Your Number Must be Start is 01");
+    if (!["0", "1", "2", "5"].includes(phoneNumValue[2]))
+      window.alert("Your Number is Invalid ");
+  });
+</script>
 {% endblock %}
