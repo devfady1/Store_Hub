@@ -22,10 +22,10 @@
   </head>
   <body class="light">
     <!-- Start Logout Page -->
-    <div class="login">
-      <div class="login-container">
+    <div class="login" style="min-height: 100vh;">
+      <div class="login-container" >
         <div class="login-image">
-          <img src="{% static 'images/login.png' %}" alt="Logout Image">
+          <img src="{% static 'images/Login.png' %}" alt="Logout Image">
         </div>
         <div class="login-form">
           <h6>Logout</h6>
@@ -49,7 +49,6 @@
             {% csrf_token %}
             <div class="input-box">
               <button type="submit" class="btn btn-danger">
-                <i class="fa-solid fa-right-from-bracket"></i>
                 <span>Logout</span>
               </button>
             </div>
