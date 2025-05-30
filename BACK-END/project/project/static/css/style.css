@@ -2962,7 +2962,6 @@ input[type="checkbox"]:checked::after {
   color: var(--main-color);
 }
 
-/* Profile Form */
 .profile-form {
   flex: 1;
   box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.092);
@@ -2971,88 +2970,69 @@ input[type="checkbox"]:checked::after {
   transition: transform 0.3s ease;
 }
 
-.form-title {
-  color: var(--main-color);
-  margin-bottom: 20px;
-  font-size: 23px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.profile-form .profile-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  position: relative;
+/* Profile Picture  */
+.profile-picture-container {
   text-align: center;
 }
 
-.profile-form .profile-pic {
-  width: 120px;
-  height: 120px;
+.form-content {
+  padding: 20px;
+}
+
+.profile-picture {
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
-  border: 4px solid #fafafa;
-  background-color: #eee;
-  object-fit: cover;
+  background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+  margin: 0 auto 20px;
   position: relative;
-  top: 42%;
-  left: 42%;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: all 0.3s;
-  margin-bottom: 15px;
-}
-
-.dark .profile-form .profile-pic {
-  box-shadow: 0px 1px 13px 0px rgba(255, 254, 254, 0.177);
-  background: #1e293b;
-  border: 4px solid #ddddddc7;
-}
-
-.profile-form .profile-pic:hover {
-  transform: scale(1.05);
-}
-
-.upload-icon {
-  position: absolute;
-  bottom: 5%;
-  right: 43%;
-  background: var(--main-color);
-  color: white;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.upload-btn {
+  background: var(--main-color);
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 25px;
   cursor: pointer;
-  transition: all 0.3s;
+  font-size: 14px;
+  transition: background 0.3s ease;
+  margin-top: 10px;
 }
 
-.upload-icon:hover {
-  background: #c52c57;
+.upload-icon {
+  margin-right: 8px;
 }
 
-.form-grid {
+/* Form Groups */
+.profile-form .form-group {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.profile-form .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
-.form-account {
-  margin-bottom: 20px;
-}
-
-.form-account label {
+.profile-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
   color: var(--text-color);
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 14px;
 }
 
-.form-account input {
+.profile-form input[type="text"],
+.profile-form input[type="email"],
+.profile-form input[type="password"],
+.profile-form input[type="tel"] {
   width: 100%;
   margin-top: 10px;
   padding: 12px;
@@ -3060,53 +3040,72 @@ input[type="checkbox"]:checked::after {
   background: #f5f5f5;
   border-radius: 25px;
   transition: 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.078);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.104);
   color: var(--text-color);
 }
 
-.form-account input:focus {
+.profile-form .form-account input:focus {
   scale: 1.05;
   border: 1px solid var(--main-color);
 }
 
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 15px;
-  margin-top: 20px;
+
+/* Password Section  */
+.profile-form .password-field {
+  position: relative;
 }
 
-.btn-account {
+.profile-form .current-password {
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  color: #6c757d;
+  text-align: center;
+  letter-spacing: 3px;
+  font-size: 16px;
+}
+
+/* Buttons */
+.profile-form .form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.profile-form .btn {
   padding: 12px 25px;
   border: none;
   border-radius: 25px;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  flex: 1;
 }
 
-.btn-cancel {
+.profile-form .btn-cancel {
   background: transparent;
   color: var(--text-color);
   border: 1px solid var(--text-color);
 }
 
-.btn-cancel:hover {
+.profile-form .btn-cancel:hover {
   border: 1px solid var(--main-color);
   background-color: var(--main-color);
   color: white;
-  transform: scale(1.1);
+  transform: scale(1.02);
 }
 
-.btn-save {
+.profile-form .btn-save {
   background: var(--main-color);
   color: white;
   border: 1px solid var(--main-color);
 }
 
-.btn-save:hover {
+.profile-form .btn-save:hover {
   color: var(--main-color);
   background-color: #fafafa;
-  transform: scale(1.09);
+  transform: scale(1.02);
 }
 
 /* Dark Mode Account */
@@ -3119,12 +3118,20 @@ input[type="checkbox"]:checked::after {
   color: var(--main-color);
 }
 
+.dark .profile-picture {
+  background: #151d2a;
+  box-shadow: 0 4px 15px rgba(193, 191, 191, 0.348);
+}
+
 .dark .profile-form,
 .dark .sidebar-account {
   box-shadow: 0px 1px 13px 0px rgba(255, 254, 254, 0.112);
 }
 
-.dark .form-account input {
+.dark .profile-form input[type="text"],
+.dark .profile-form input[type="email"],
+.dark .profile-form input[type="password"],
+.dark .profile-form input[type="tel"] {
   background: #1e293b;
   box-shadow: 0 4px 6px rgba(255, 255, 255, 0.147);
 }
@@ -3147,13 +3154,6 @@ input[type="checkbox"]:checked::after {
 
   aside.sidebar-account {
     display: none;
-  }
-
-  .form-title {
-    padding: 20px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   form.account-forms {
@@ -3181,7 +3181,8 @@ input[type="checkbox"]:checked::after {
     bottom: 3%;
     right: 38%;
   }
-  .form-grid {
+
+  .profile-form .form-row {
     grid-template-columns: none;
     gap: 0;
   }
