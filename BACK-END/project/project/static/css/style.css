@@ -3549,6 +3549,7 @@ input[type="checkbox"]:checked::after {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  margin-left: 60px;
 }
 
 .sign-image img {
