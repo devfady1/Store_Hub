@@ -142,6 +142,41 @@
         </div>
       </div>
     </section>
+    <section>
+      <h3>التعليقات الحلوة ❤️</h3>
+{% for comment in product.comments.all %}
+  {% if comment.sentiment == "positive" %}
+    <p>{{ comment.comment_text }}</p>
+  {% endif %}
+{% endfor %}
+
+<h3>التعليقات العادية 😐</h3>
+{% for comment in product.comments.all %}
+  {% if comment.sentiment == "neutral" %}
+    <p>{{ comment.comment_text }}</p>
+  {% endif %}
+{% endfor %}
+
+<h3>التعليقات الوحشة 💔</h3>
+{% for comment in product.comments.all %}
+  {% if comment.sentiment == "negative" %}
+    <p>{{ comment.comment_text }}</p>
+  {% endif %}
+{% endfor %}
+
+{% if user.is_authenticated %}
+  <h3>اكتب تعليقك ✍️</h3>
+  <form method="POST" action="{% url 'add_comment' product.id %}">
+    {% csrf_token %}
+    <textarea name="comment" rows="4" cols="50" placeholder="اكتب تعليقك هنا..." required></textarea><br>
+    <button type="submit">أضف التعليق</button>
+  </form>
+{% else %}
+  <p>يرجى <a href="{% url 'login' %}">تسجيل الدخول</a> لكتابة تعليق.</p>
+{% endif %}
+
+
+    </section>
 
     <section class="RelatedItem">
       <div class="container">
