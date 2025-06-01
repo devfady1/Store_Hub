@@ -63,83 +63,120 @@
         <li onclick="window.location.href='#'">Delete My Account</li>
       </ul>
     </aside>
-    <form class="profile-form">
-      <form style="position: relative;">
-        <img src="{{ profile.profile_image.url }}" class="profile-pic" id="profile-pic">
-        <div class="upload-icon" onclick="document.getElementById('form-profile-image').click()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="17 8 12 3 7 8"></polyline>
-            <line x1="12" y1="3" x2="12" y2="15"></line>
-          </svg>
-        </div>
-      </form>
-
-      <p class="form-title">Edit Your Profile</p>
-      {% if messages %}
-      <div class="messages">
-        {% for message in messages %}
+    <div class="profile-form" enctype="multipart/form-data">
+      <!-- Profile Picture Section -->
+      <div class="form-section">
+        {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
           <div class="alert {{ message.tags }}">{{ message }}</div>
-        {% endfor %}
+          {% endfor %}
+        </div>
+        {% endif %}
+        <form class="form-content">
+          <div class="profile-picture-container" id="profile-picture-container">
+            <div class="profile-picture" id="profile-picture"></div>
+            <button type="button" class="upload-btn">
+              <span class="upload-icon" onclick="document.getElementById('').click()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg></span>
+              Upload Picture
+            </button>
+          </div>
+        </form>
       </div>
-      {% endif %}
-      <form class="account-forms" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="form-grid">
-          <div class="form-account">
-            <label>First Name</label>
-            <input type="text" name="first_name" value="{{ user.first_name }}" placeholder="StoreHub" required />
+    
+      <!-- Personal Information Section -->
+      <div class="form-section">
+        <form class="form-content">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" name="firstName" placeholder="StoreHub">
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" name="lastName" placeholder="Team">
+            </div>
           </div>
-          <div class="form-account">
-            <label>Last Name</label>
-            <input type="text" name="last_name" value="{{ user.last_name }}" placeholder="Team" required />
+    
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="StoreHub@gmail.com">
+            </div>
+            <div class="form-group">
+              <label for="address">Address</label>
+              <input type="text" id="address" name="address" placeholder="ASSUIT">
+            </div>
           </div>
-          <div class="form-account">
-            <label>Email</label>
-            <input type="email" name="email" value="{{ user.email }}" placeholder="StoreHub@gmail.com" required />
+    
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone">
           </div>
-          <div class="form-account">
-            <label>Address</label>
-            <input type="text" name="address" placeholder="ASSUIT" required />
+        </form>
+      </div>
+      <!-- Password Section -->
+      <div class="form-section">
+        <form class="form-content">
+          <div class="form-group">
+            <label for="currentPassword">Current Password</label>
+            <input type="text" id="currentPassword" name="currentPassword" class="current-password">
           </div>
-          <div class="form-account">
-            <label>Phone</label>
-            <input type="text" name="phone" value="{{ profile.phone_number }}" placeholder="+20100000000" />
+    
+          <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password">
           </div>
-          <input type="file" name="profile_image" id="form-profile-image" style="display: none;">
-        </div>
-      </form>
-
-      <form>
-        <div class="form-account">
-          <label>Password Changes</label>
-          <input type="password" name="current_password" placeholder="Current Password" />
-        </div>
-        <div class="form-account">
-          <input type="password" name="new_password" placeholder="New Password" />
-        </div>
-        <div class="form-account">
-          <input type="password" name="confirm_password" placeholder="Confirm New Password" />
-        </div>
-      </form>
+    
+          <div class="form-group">
+            <label for="confirmPassword">Confirm New Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm new password">
+          </div>
+        </form>
+      </div>
+    
+      <!-- Form Actions -->
       <div class="form-actions">
-        <button type="button" class="btn-account btn-cancel">Cancel</button>
-        <button type="submit" class="btn-account btn-save">Save Changes</button>
+        <button type="button" class="btn btn-cancel">Cancel</button>
+        <button type="submit" class="btn btn-save">Save Changes</button>
       </div>
-    </form>
+    
+    </div>
   </div>
   <script>
-    document.getElementById('form-profile-image').addEventListener('change', function (event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          document.getElementById('profile-pic').src = e.target.result;
-        }
-        reader.readAsDataURL(file);
-      }
-    });
+        // Upload button functionality
+        const uploadBtn = document.querySelector('.upload-btn');
+        uploadBtn.addEventListener('click', function () {
+          // Create file input
+          const fileInput = document.createElement('input');
+          fileInput.type = 'file';
+          fileInput.accept = 'image/*';
+          fileInput.style.display = 'none';
+
+          fileInput.addEventListener('change', function (e) {
+            if (e.target.files && e.target.files[0]) {
+              const reader = new FileReader();
+              reader.onload = function (e) {
+                const profilePic = document.querySelector('.profile-picture');
+                profilePic.style.backgroundImage = `url(${e.target.result})`;
+                profilePic.style.backgroundSize = 'cover';
+                profilePic.style.backgroundPosition = 'center';
+                profilePic.innerHTML = '';
+              };
+              reader.readAsDataURL(e.target.files[0]);
+            }
+          });
+
+          document.body.appendChild(fileInput);
+          fileInput.click();
+          document.body.removeChild(fileInput);
+        })
   </script>
 </body>
 </html>
