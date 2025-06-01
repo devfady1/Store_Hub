@@ -149,3 +149,11 @@ class CouponAdmin(admin.ModelAdmin):
     search_fields = ('code',)
 
 admin.site.register(Coupon, CouponAdmin)
+
+@admin.register(ProductComment)
+class ProductCommentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'product', 'sentiment', 'comment_text', 'created_at')
+    list_filter = ('sentiment', 'created_at')
+    search_fields = ('user__username', 'product__name', 'comment_text')
+    ordering = ('-created_at',)
+    readonly_fields = ('created_at',)

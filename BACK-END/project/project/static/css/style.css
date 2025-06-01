@@ -8,6 +8,24 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.welcome-message{
+  animation: scaleIn 0.5s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-message h3 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 2px var(--main-color), 0 0 4px var(--main-color), 0 0 6px var(--main-color);
+  position: relative;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+  animation: fadeInUp 1s ease forwards;
+  text-align: center;
+}
+
 .banner-section .container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1233,8 +1251,22 @@ footer .container h5:hover {
   cursor: pointer;
 }
 
+.ourproduct .container .products .pro .icons .icon i{
+  background-color: var(--white-color);
+  color: var(--dark-color);
+  margin: 10px;
+  width: 80%;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 20px;
+  border-radius: 50%;
+  position: relative;
+  bottom: 8px;
+  right: 2px;
+  transition: 0.3s;
+}
 .pro-div .container .pro .icons .icon,
-.ourproduct .container .products .pro .icons .icon,
 .RelatedItem .container .products .pro .icons .icon {
   display: flex;
   align-items: center;
@@ -1244,7 +1276,6 @@ footer .container h5:hover {
 
 .pro-div .container .pro .icons .icon i,
 .BestSellingProducts .container .bttom .pro .icons .icon i,
-.ourproduct .container .products .pro .icons .icon i,
 .RelatedItem .container .products .pro .icons .icon i {
   background-color: var(--white-color);
   color: var(--dark-color);
@@ -1267,6 +1298,7 @@ footer .container h5:hover {
 .RelatedItem .container .products .pro .icons .icon i:hover {
   background-color: var(--main-color);
   cursor: pointer;
+  color: white;
 }
 
 .pro-div .container .pro .icons .icon i.active,
@@ -1286,10 +1318,22 @@ footer .container h5:hover {
   position: relative;
   bottom: 35px;
 }
-
 .pro-div .container .pro .addcart,
+.RelatedItem .container .products .pro .addcart{
+    position: absolute;
+    bottom: 36%;
+    background-color: var(--dark-color);
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: var(--white-color);
+    font-weight: bold;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+}
 .BestSellingProducts .container .bttom .pro .addcart,
-.RelatedItem .container .products .pro .addcart,
 .ourproduct .container .products .pro .addcart {
   position: absolute;
   bottom: 36%;
@@ -2642,7 +2686,7 @@ body.dark .breadcrumb .a2 {
   margin-bottom: 10px;
   transition: 0.3s;
   width: 100%;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.078);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.119);
 }
 
 .form-group input:focus {
@@ -3530,7 +3574,7 @@ input[type="checkbox"]:checked::after {
 
 .sign,
 .login {
-  min-height: 150vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3550,7 +3594,6 @@ input[type="checkbox"]:checked::after {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  margin-left: 60px;
 }
 
 .sign-image img {
@@ -3753,9 +3796,8 @@ input[type="checkbox"]:checked::after {
 
 /* Dark Error Message  */
 
-.error-message {
-  color: var(--main-color);
-  font-size: 20px;
+.dark .error-message {
+  color: var(--text-color);
 }
 
 /* Responsive */
@@ -4022,6 +4064,7 @@ input[type="checkbox"]:checked::after {
 body.dark .top_page p {
   color: #ddd;
 }
+
 body.dark .product-card,
 body.dark .pagination-btn,
 body.dark .pagination-number,
@@ -4031,7 +4074,7 @@ body.dark .allproduct .filter {
 body.dark .product-card:hover,
 body.dark .product-buttons button {
   transform: scale(1.05);
-  box-shadow: 0 4px 20px rgba(69, 68, 68, 0.225);
+  box-shadow: 0 4px 20px rgba(69, 68, 68, 0.353);
 }
 body.dark .product-card:hover .product-image {
   opacity: 0.6;
@@ -4199,7 +4242,7 @@ body.dark .filters h3 {
 }
 
 .wishlist-row .product {
-  padding: 15px;
+  padding: 15px 0;
   border: 1px solid #eee;
   border-radius: 10px;
   text-align: center;
@@ -4220,7 +4263,7 @@ body.dark .filters h3 {
 }
 
 .wishlist-row .product .img img {
-  width: 190px;
+  width: 180px;
   height: 160px;
   object-fit: contain;
 }

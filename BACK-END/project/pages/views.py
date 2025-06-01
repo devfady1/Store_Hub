@@ -24,7 +24,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from random import sample
-
+from .sentiment_utils import analyze_sentiment
 
 
 
@@ -571,17 +571,10 @@ def delivery_order_view(request):
 
 
 
-
-
-
-
 def order_success(request):
     return render(request, 'pages/payment/order_success.html')
 
 
-from django.shortcuts import render, redirect
-from .models import Order
-from django.contrib.auth.decorators import login_required
 
 @login_required
 def place_order(request):
@@ -651,7 +644,7 @@ def order_detail(request, order_id):
 
 def my_orders_view(request):
     user = request.user
-    status_filter = request.GET.get('status')  # نجيب الفلتر لو موجود
+    status_filter = request.GET.get('status')  
 
     orders = Order.objects.filter(customer=user).prefetch_related('items__product').order_by('-order_date')
 
@@ -692,6 +685,29 @@ def rate_product(request, product_id):
             messages.success(request, 'تم حفظ تقييمك بنجاح.')
         else:
             messages.error(request, 'يرجى اختيار تقييم من 1 إلى 5 نجوم.')
+
+    referer = request.META.get('HTTP_REFERER')
+    if referer:
+        return redirect(referer)
+    else:
+        return redirect('product', pk=product.id)
+    
+def add_comment(request, product_id):
+    if request.method == 'POST':
+        product = get_object_or_404(Product, id=product_id)
+        comment_text = request.POST.get('comment')
+
+        sentiment = analyze_sentiment(comment_text)  
+
+        ProductComment.objects.create(
+            product=product,
+            user=request.user,
+            comment_text=comment_text,
+            sentiment=sentiment
+        )
+
+        print("Comment Text:", comment_text)
+        print("Detected Sentiment:", sentiment) 
 
     referer = request.META.get('HTTP_REFERER')
     if referer:
