@@ -31,6 +31,12 @@ urlpatterns = [
     path('orders/<int:order_id>/', views.order_details, name='order_detail'),
     path('rate/<int:product_id>/', views.rate_product, name='rate_product'),
     path('product/<int:product_id>/add_comment/', views.add_comment, name='add_comment'),
+    path('delivery/orders/available/', views.available_order_view, name='available_order'),
+    path('delivery/orders/assign/<int:order_id>/', views.assign_order, name='assign_order'),
+    path('live-location/<int:order_id>/', views.live_location_view, name='live_location'),
+
+
+
 
 
 
