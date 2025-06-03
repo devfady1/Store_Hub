@@ -177,6 +177,29 @@
           fileInput.click();
           document.body.removeChild(fileInput);
         })
+        let phonenum = document.getElementById("phone");
+        let submit = document.querySelector(".btn-save");
+
+submit.addEventListener("click", (e) => {
+  let phoneNumValue = phonenum.value.trim();
+  let errorMessage = "";
+
+  if (phoneNumValue.length !== 11) {
+    errorMessage = "Your number must be exactly 11 digits.";
+  } else if (!phoneNumValue.startsWith("01")) {
+    errorMessage = "Your number must start with 01.";
+  } else if (!["0", "1", "2", "5"].includes(phoneNumValue[2])) {
+    errorMessage = "Your number is invalid.";
+  }
+
+  if (errorMessage !== "") {
+    e.prevent(); 
+    alert(errorMessage);
+  } else {
+    alert("Phone number is valid!"); 
+  }
+});
+
   </script>
 </body>
 </html>
