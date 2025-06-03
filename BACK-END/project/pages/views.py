@@ -593,10 +593,14 @@ def place_order(request):
         if not cart:
             return redirect('cart')
 
+        client_lat = request.POST.get('client_lat')
+        client_lng = request.POST.get('client_lng')
 
         order = Order.objects.create(
             customer=user,
-            status='pending'
+            status='pending',
+            client_lat=client_lat,
+            client_lng=client_lng
         )
 
         for product_id, item in cart.items():
@@ -608,12 +612,13 @@ def place_order(request):
                     quantity=item['quantity']
                 )
             except Product.DoesNotExist:
-                continue 
+                continue
 
         request.session['cart'] = {}
         return redirect('order_success')
 
     return redirect('cart')
+
 
 
 

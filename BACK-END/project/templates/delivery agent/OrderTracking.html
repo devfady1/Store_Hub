@@ -1,0 +1,85 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+{% block content %}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{% static 'css/style_delivery.css' %}" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <title>Store Hub | Nearest Order</title>
+</head>
+
+<body class="light">
+  <div class="order-Trick">
+    <div class="container">
+
+      {% if orders_data %}
+        {% with data=orders_data.0 %}
+          <div class="order-block" style="margin-bottom: 50px; border: 1px solid #ccc; padding: 15px; border-radius: 10px;">
+            <h2>Order ID: {{ data.order.id }}</h2>
+            <p><strong>Client:</strong> {{ data.order.customer.username }}</p>
+            <p><strong>Status:</strong> {{ data.order.status }}</p>
+            <p><strong>Total:</strong> ${{ data.total_price }}</p>
+
+            <div id="map" style="height: 300px; width: 100%; border-radius: 12px; margin-bottom: 20px;"></div>
+
+            <form method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="order_id" value="{{ data.order.id }}">
+              <button type="submit" name="action" value="accept" class="btn btn-success">✅ Accept</button>
+              <button type="submit" name="action" value="decline" class="btn btn-danger">❌ Decline</button>
+            </form>
+          </div>
+
+          <script>
+            const driverLat = {{ driver_lat|default:27.1866 }};
+            const driverLng = {{ driver_lng|default:31.1704 }};
+            const clientLat = {{ data.client_lat }};
+            const clientLng = {{ data.client_lng }};
+            const sellerLat = {{ data.seller_lat }};
+            const sellerLng = {{ data.seller_lng }};
+
+            const map = L.map("map").setView([driverLat, driverLng], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            L.marker([driverLat, driverLng]).addTo(map).bindPopup("🚚 Driver").openPopup();
+            L.marker([sellerLat, sellerLng]).addTo(map).bindPopup("🏪 Seller");
+            L.marker([clientLat, clientLng]).addTo(map).bindPopup("📍 Customer");
+
+            const routeCoordinates = [
+              [driverLng, driverLat],
+              [sellerLng, sellerLat],
+              [clientLng, clientLat]
+            ];
+
+            fetch("https://api.openrouteservice.org/v2/directions/driving-car/geojson", {
+              method: "POST",
+              headers: {
+                'Authorization': '5b3ce3597851110001cf624849ee31d7612e44018effded422136ba4',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ coordinates: routeCoordinates })
+            })
+            .then(res => res.json())
+            .then(data => {
+              const coords = data.features[0].geometry.coordinates.map(c => [c[1], c[0]]);
+              L.polyline(coords, { color: 'blue', weight: 5 }).addTo(map);
+              map.fitBounds(L.polyline(coords).getBounds());
+            })
+            .catch(err => {
+              console.error("Route Error:", err);
+            });
+          </script>
+        {% endwith %}
+      {% else %}
+        <h2 style="text-align:center; margin-top: 50px;">No available orders right now 🚫</h2>
+      {% endif %}
+
+    </div>
+  </div>
+</body>
+{% endblock content %}
