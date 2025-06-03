@@ -142,41 +142,50 @@
         </div>
       </div>
     </section>
-    <section>
-      <h3>التعليقات الحلوة ❤️</h3>
-{% for comment in product.comments.all %}
-  {% if comment.sentiment == "positive" %}
-    <p>{{ comment.comment_text }}</p>
-  {% endif %}
-{% endfor %}
+<section class="comment" style="padding: 20px;">
+  <div class="comments" style="margin-left: 60px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px;">
+    
+    <div class="comment-block" style=" padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+      <h3 class="comment_H" style="color: #15803d;">Positive Comments</h3>
+      {% for comment in product.comments.all %}
+        {% if comment.sentiment == "positive" %}
+          <p style="margin: 10px 0; color: #065f46;">{{ comment.comment_text }}</p>
+        {% endif %}
+      {% endfor %}
+    </div>
 
-<h3>التعليقات العادية 😐</h3>
-{% for comment in product.comments.all %}
-  {% if comment.sentiment == "neutral" %}
-    <p>{{ comment.comment_text }}</p>
-  {% endif %}
-{% endfor %}
+    <div class="comment-block" style="background-color: #fefce8; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+      <h3 class="comment_H" style="color: #ee8e08;">Neutral Comments</h3>
+      {% for comment in product.comments.all %}
+        {% if comment.sentiment == "neutral" %}
+          <p style="margin: 10px 0; color: #713f12;">{{ comment.comment_text }}</p>
+        {% endif %}
+      {% endfor %}
+    </div>
 
-<h3>التعليقات الوحشة 💔</h3>
-{% for comment in product.comments.all %}
-  {% if comment.sentiment == "negative" %}
-    <p>{{ comment.comment_text }}</p>
-  {% endif %}
-{% endfor %}
+    <div class="comment-block" style="background-color: #fef2f2; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+      <h3 class="comment_H" style="color: #b91c1c;">Negative Comments</h3>
+      {% for comment in product.comments.all %}
+        {% if comment.sentiment == "negative" %}
+          <p style="margin: 10px 0; color: #7f1d1d;">{{ comment.comment_text }}</p>
+        {% endif %}
+      {% endfor %}
+    </div>
 
-{% if user.is_authenticated %}
-  <h3>اكتب تعليقك ✍️</h3>
-  <form method="POST" action="{% url 'add_comment' product.id %}">
-    {% csrf_token %}
-    <textarea name="comment" rows="4" cols="50" placeholder="اكتب تعليقك هنا..." required></textarea><br>
-    <button type="submit">أضف التعليق</button>
-  </form>
-{% else %}
-  <p>يرجى <a href="{% url 'login' %}">تسجيل الدخول</a> لكتابة تعليق.</p>
-{% endif %}
+  </div>
 
-
-    </section>
+  <div class="com" style="margin-top: 40px;">
+    {% if user.is_authenticated %}
+      <form method="POST" action="{% url 'add_comment' product.id %}" style="display: flex; flex-direction: column; align-items: center;">
+        {% csrf_token %}
+        <textarea name="comment" rows="4" cols="60" style="border-radius: 8px; padding: 10px; border: 1px solid #ccc;" placeholder="Write Your Comment..." required></textarea>
+        <button type="submit" style="margin-top: 20px; background-color:#9f1239 ; color: white; border:none; border-radius: 8px; width: 200px; height: 40px;">Add Comment</button>
+      </form>
+    {% else %}
+      <p style="text-align: center;">يرجى <a href="{% url 'login' %}" style="color: #9f1239; text-decoration: underline;">تسجيل الدخول</a> لكتابة تعليق.</p>
+    {% endif %}
+  </div>
+</section>
 
     <section class="RelatedItem">
       <div class="container">
