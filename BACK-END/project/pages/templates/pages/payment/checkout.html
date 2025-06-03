@@ -8,6 +8,8 @@
 
 <form method="POST" action="{% url 'place_order' %}" class="checkout-form">
   {% csrf_token %}
+  <input type="hidden" name="client_lat" id="client_lat">
+  <input type="hidden" name="client_lng" id="client_lng">
 
   <div class="container-checkout">
     <div class="billing">
@@ -149,4 +151,20 @@
       window.alert("Your Number is Invalid ");
   });
 </script>
+<script>
+  // جلب إحداثيات المستخدم تلقائيًا
+  window.onload = function () {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        document.getElementById('client_lat').value = position.coords.latitude;
+        document.getElementById('client_lng').value = position.coords.longitude;
+      }, function (error) {
+        console.error("Location Error:", error.message);
+      });
+    } else {
+      alert("Geolocation not supported by this browser.");
+    }
+  };
+</script>
+
 {% endblock %}
