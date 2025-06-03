@@ -3679,10 +3679,13 @@ input[type="checkbox"]:checked::after {
   transform: translateY(-50%);
   transition: 0.5s;
 }
-
+.sign-form .input-box select ~ label,
+.sign-form .input-box select ~ i{
+  top: -5px;
+  color: var(--main-color);
+}
 .sign-form .input-box input:focus ~ label,
 .sign-form .input-box input:valid ~ label,
-.sign-form .input-box select:focus ~ label,
 .login-form .input-box input:focus ~ label,
 .login-form .input-box input:valid ~ label {
   top: -5px;
@@ -3692,7 +3695,6 @@ input[type="checkbox"]:checked::after {
 
 .sign-form .input-box input:focus ~ i,
 .sign-form .input-box input:valid ~ i,
-.sign-form .input-box select:focus ~ i,
 .login-form .input-box input:focus ~ i,
 .login-form .input-box input:valid ~ i {
   top: -5px;
