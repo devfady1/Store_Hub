@@ -27,53 +27,191 @@
 
   <body class="light">
     <div class="order-Trick">
-      <div class="container">
-        <div id="map-container">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d110573.72684610262!2d31.133333!3d27.166667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x144ff8f5e1b9e5d1%3A0x3e5f0e8f0738f71e!2z2KfZhNmB2YrYqSDYp9mE2LTYsdmD2Kk!5e0!3m2!1sar!2seg!4v1709387586276!5m2!1sar!2seg"
-            style="border: 0"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade">
-          </iframe>
+        <div class="header">
+          <h1><i class="fas fa-car" style=" margin-right: 6px ;"></i> Driver Dashboard</h1>
+          <div class="status-badge"><i class="fas fa-check-circle" style=" margin-right: 6px ;"></i> Available for Delivery</div>
         </div>
 
-        <div class="orders-panel">
-          <h2>New Orders</h2>
-          <div class="order">
-            <p><strong>Sarah Johnson</strong></p>
-            <p>456 Park Avenue, New York</p>
-            <p>
-              <span class="time">15-20 min</span> |
-              <span class="distance">1.2 km</span>
-            </p>
-            <p class="price">$12.50</p>
-            <button class="accept">Accept</button>
-            <button class="decline">Decline</button>
+        <div class="orders-grid">
+          <!--Order 1-->
+          <div class="order-card" id="order1">
+            <div class="order-header">
+              <div class="customer-name"><i class="fas fa-user" style=" margin-right: 6px ;"></i> Sarah Johnson</div>
+              <div class="order-price"><i class="fas fa-dollar-sign" style=" margin-right: 6px ;"></i>12.50</div>
+            </div>
+          
+            <div class="order-details">
+              <div class="detail-row">
+                <i class="fas fa-map-marker-alt detail-icon" style=" margin-right: 6px ;"></i>
+                <div class="detail-text">456 Park Avenue, New York</div>
+              </div>
+          
+              <div class="time-distance">
+                <div class="time-badge"><i class="fas fa-clock" style=" margin-right: 6px ;"></i> 15-20 min</div>
+                <div class="distance-badge"><i class="fas fa-route" style=" margin-right: 6px ;"></i> 1.2 km</div>
+              </div>
+            </div>
+          
+            <div class="action-buttons">
+              <button class="btn btn-accept" onclick="acceptOrder('order1', 'Sarah Johnson')"><i class="fas fa-check" style=" margin-right: 6px ;"></i>
+                Accept</button>
+              <button class="btn btn-decline" onclick="declineOrder('order1')"><i class="fas fa-times" style=" margin-right: 6px ;"></i> Decline</button>
+            </div>
           </div>
-          <div class="order">
-            <p><strong>Michael Brown</strong></p>
-            <p>789 Broadway, New York</p>
-            <p>
-              <span class="time">25-30 min</span> |
-              <span class="distance">2.5 km</span>
-            </p>
-            <p class="price">$15.75</p>
-            <button class="accept">Accept</button>
-            <button class="decline">Decline</button>
+
+          <!-- Order 2 -->
+          <div class="order-card" id="order2">
+            <div class="order-header">
+              <div class="customer-name"><i class="fas fa-user" style=" margin-right: 6px ;"></i> Michael Brown</div>
+              <div class="order-price"><i class="fas fa-dollar-sign" style=" margin-right: 6px ;"></i>15.75</div>
+            </div>
+          
+            <div class="order-details">
+              <div class="detail-row">
+                <i class="fas fa-map-marker-alt detail-icon" style=" margin-right: 6px ;"></i>
+                <div class="detail-text">789 Broadway, New York</div>
+              </div>
+          
+              <div class="time-distance">
+                <div class="time-badge"><i class="fas fa-clock" style=" margin-right: 6px ;"></i> 25-30 min</div>
+                <div class="distance-badge"><i class="fas fa-route" style=" margin-right: 6px ;"></i> 2.5 km</div>
+              </div>
+            </div>
+          
+            <div class="action-buttons">
+              <button class="btn btn-accept" onclick="acceptOrder('order2', 'Michael Brown')"><i class="fas fa-check" style=" margin-right: 6px ;"></i>
+                Accept</button>
+              <button class="btn btn-decline" onclick="declineOrder('order2')"><i class="fas fa-times" style=" margin-right: 6px ;"></i> Decline</button>
+            </div>
           </div>
-          <h2>Past Deliveries</h2>
-          <div class="order past">
-            <p>#1234 Emma Wilson</p>
-            <p>$10.25</p>
+          
+          <!--  Order 3 -->
+          <div class="order-card" id="order3">
+            <div class="order-header">
+              <div class="customer-name"><i class="fas fa-user" style=" margin-right: 6px ;"></i> Emma Wilson</div>
+              <div class="order-price"><i class="fas fa-dollar-sign" style=" margin-right: 6px ;"></i>18.25</div>
+            </div>
+          
+            <div class="order-details">
+              <div class="detail-row">
+                <i class="fas fa-map-marker-alt detail-icon" style=" margin-right: 6px ;"></i>
+                <div class="detail-text">123 Main Street, New York</div>
+              </div>
+          
+              <div class="time-distance">
+                <div class="time-badge"><i class="fas fa-clock" style=" margin-right: 6px ;"></i> 20-25 min</div>
+                <div class="distance-badge"><i class="fas fa-route" style=" margin-right: 6px ;"></i> 1.8 km</div>
+              </div>
+            </div>
+          
+            <div class="action-buttons">
+              <button class="btn btn-accept" onclick="acceptOrder('order3', 'Emma Wilson')"><i class="fas fa-check" style=" margin-right: 6px ;"></i>
+                Accept</button>
+              <button class="btn btn-decline" onclick="declineOrder('order3')"><i class="fas fa-times" style=" margin-right: 6px ;"></i> Decline</button>
+            </div>
           </div>
-          <div class="order past">
-            <p>#1233 James Smith</p>
-            <p>$8.50</p>
+          
+          <!--  Order 4 -->
+          <div class="order-card" id="order4">
+            <div class="order-header">
+              <div class="customer-name"><i class="fas fa-user" style=" margin-right: 6px ;"></i> James Smith</div>
+              <div class="order-price"><i class="fas fa-dollar-sign" style=" margin-right: 6px ;"></i>22.00</div>
+            </div>
+          
+            <div class="order-details">
+              <div class="detail-row">
+                <i class="fas fa-map-marker-alt detail-icon" style=" margin-right: 6px ;"></i>
+                <div class="detail-text">567 Fifth Avenue, New York</div>
+              </div>
+          
+              <div class="time-distance">
+                <div class="time-badge"><i class="fas fa-clock" style=" margin-right: 6px ;"></i> 30-35 min</div>
+                <div class="distance-badge"><i class="fas fa-route" style=" margin-right: 6px ;"></i> 3.2 km</div>
+              </div>
+            </div>
+          
+            <div class="action-buttons">
+              <button class="btn btn-accept" onclick="acceptOrder('order4', 'James Smith')"><i class="fas fa-check" style=" margin-right: 6px ;"></i>
+                Accept</button>
+              <button class="btn btn-decline" onclick="declineOrder('order4')"><i class="fas fa-times" style=" margin-right: 6px ;"></i> Decline</button>
+            </div>
           </div>
         </div>
-      </div>
     </div>
+<<<<<<< HEAD
+=======
+      
+
+    <footer>
+      <div class="container">
+        <div class="foot1">
+          <h3>STOREHUB</h3>
+          <a href="#">
+            <p>Subscribe</p>
+          </a>
+          <a href="#">
+            <p>Get 10% off your first order</p>
+          </a>
+          <input
+            type="email"
+            class="seacrch"
+            placeholder="Enter Your Email : " />
+        </div>
+        <div class="foot2">
+          <h3>Support</h3>
+          <a href="#">
+            <p>NATU - NEW ASSUIT</p>
+          </a>
+          <a href="#">
+            <p>StoreHub@gmail.com</p>
+          </a>
+          <a href="#">
+            <p>+201551803645</p>
+          </a>
+          <a href="#">
+            <p>+201551954315</p>
+          </a>
+        </div>
+        <div class="foot3">
+          <h3>Account</h3>
+          <a href="account.html">
+            <p>My Account</p>
+          </a>
+          <a href="#">
+            <p>Login / Register</p>
+          </a>
+          <a href="cart.html">
+            <p>Cart</p>
+          </a>
+          <a href="#">
+            <p>All Product</p>
+          </a>
+          <a href="#">
+            <p>Shop</p>
+          </a>
+        </div>
+        <div class="foot4">
+          <h3>Quick Link</h3>
+          <a href="#">
+            <p>Privacy Policy</p>
+          </a>
+          <a href="#">
+            <p>Terms Of Use</p>
+          </a>
+          <a href="#">
+            <p>FAQ</p>
+          </a>
+          <a href="contact.html">
+            <p>Contact</p>
+          </a>
+        </div>
+      </div>
+      <p style="text-align: center; padding-bottom: 8px">
+        Copyright &copy;<span> STOREHUB </span>all right reserved
+      </p>
+    </footer>
+
+>>>>>>> e1e4f300c05351acddc1a32a654c21e31fa7a344
     <script src="mainDelivery.js"></script>
   </body>
 </html>
