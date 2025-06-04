@@ -142,11 +142,9 @@
         </div>
       </div>
     </section>
-<<<<<<< HEAD
 <section class="comment" style="padding: 20px;">
-=======
     <section class="comment" style="padding: 20px;">
->>>>>>> 8cee46895f6463dca7e834b61cc429832ba8b96d
+
   <div class="comments" style="margin-left: 60px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px;">
     
     <div class="comment-block" style=" padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
@@ -177,21 +175,6 @@
     </div>
 
   </div>
-<<<<<<< HEAD
-
-  <div class="com" style="margin-top: 40px;">
-    {% if user.is_authenticated %}
-      <form method="POST" action="{% url 'add_comment' product.id %}" style="display: flex; flex-direction: column; align-items: center;">
-        {% csrf_token %}
-        <textarea name="comment" rows="4" cols="60" style="border-radius: 8px; padding: 10px; border: 1px solid #ccc;" placeholder="Write Your Comment..." required></textarea>
-        <button type="submit" style="margin-top: 20px; background-color:#9f1239 ; color: white; border:none; border-radius: 8px; width: 200px; height: 40px;">Add Comment</button>
-      </form>
-    {% else %}
-      <p style="text-align: center;">يرجى <a href="{% url 'login' %}" style="color: #9f1239; text-decoration: underline;">تسجيل الدخول</a> لكتابة تعليق.</p>
-    {% endif %}
-  </div>
-</section>
-=======
 
   <div class="com" style="margin-top: 40px;">
     {% if user.is_authenticated %}
@@ -206,8 +189,6 @@
   </div>
 </section>
 
-
->>>>>>> 8cee46895f6463dca7e834b61cc429832ba8b96d
 
     <section class="RelatedItem">
       <div class="container">

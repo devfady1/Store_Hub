@@ -17,11 +17,11 @@
 <body class="light">
   <div class="breadcrumb-account">
     <div class="bread">
-      <a href="index.html" class="a1">Home</a>
+      <a href="{% url 'index' %}" class="a1">Home</a>
       <span class="check">/</span>
-      <a href="account.html" class="check">My Account</a>
+      <a href="{% url 'account' %}" class="check">My Account</a>
     </div>
-    <div class="check">Welcome! <span>StoreHub Team!</span></div>
+    <div class="check">Welcome! <span>{{ user.get_full_name|default:user.username }}</span></div>
   </div>
 
   <div class="container-account">
@@ -63,143 +63,177 @@
         <li onclick="window.location.href='#'">Delete My Account</li>
       </ul>
     </aside>
-    <div class="profile-form" enctype="multipart/form-data">
-      <!-- Profile Picture Section -->
-      <div class="form-section">
-        {% if messages %}
-        <div class="messages">
-          {% for message in messages %}
-          <div class="alert {{ message.tags }}">{{ message }}</div>
-          {% endfor %}
-        </div>
-        {% endif %}
-        <form class="form-content">
+    <div class="profile-form">
+      {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+        <div class="alert {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Profile Picture Form -->
+      <form method="POST" enctype="multipart/form-data" id="profile-image-form">
+        {% csrf_token %}
+        <div class="form-section">
           <div class="profile-picture-container" id="profile-picture-container">
-            <div class="profile-picture" id="profile-picture"></div>
-            <button type="button" class="upload-btn">
-              <span class="upload-icon" onclick="document.getElementById('').click()">
+            <div class="profile-picture" id="profile-picture" style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden; background-color: #f5f5f5; margin-bottom: 20px; display: flex; align-items: center; justify-content: center;">
+              {% if profile.profile_image %}
+                <img src="{{ profile.profile_image.url }}" alt="Profile Picture" style="width: 100%; height: 100%; object-fit: cover;">
+              {% endif %}
+            </div>
+            <button type="button" class="upload-btn" >
+              <span class="upload-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                   <polyline points="17 8 12 3 7 8"></polyline>
                   <line x1="12" y1="3" x2="12" y2="15"></line>
-                </svg></span>
+                </svg>
+              </span>
               Upload Picture
             </button>
+            <input type="file" id="profile-image-input" name="profile_image" accept="image/*" style="display: none;" onchange="submitProfileImage()">
           </div>
-        </form>
-      </div>
-    
-      <!-- Personal Information Section -->
-      <div class="form-section">
-        <form class="form-content">
+        </div>
+      </form>
+
+      <!-- Personal Information Form -->
+      <form method="POST" id="profile-info-form">
+        {% csrf_token %}
+        <div class="form-section">
           <div class="form-row">
             <div class="form-group">
               <label for="firstName">First Name</label>
-              <input type="text" id="firstName" name="firstName" placeholder="StoreHub">
+              <input type="text" id="firstName" name="first_name" value="{{ user.first_name }}" placeholder="First Name">
             </div>
             <div class="form-group">
               <label for="lastName">Last Name</label>
-              <input type="text" id="lastName" name="lastName" placeholder="Team">
+              <input type="text" id="lastName" name="last_name" value="{{ user.last_name }}" placeholder="Last Name">
             </div>
           </div>
-    
+
           <div class="form-row">
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" id="email" name="email" placeholder="StoreHub@gmail.com">
+              <input type="email" id="email" name="email" value="{{ user.email }}" placeholder="Email">
             </div>
             <div class="form-group">
               <label for="address">Address</label>
-              <input type="text" id="address" name="address" placeholder="ASSUIT">
+              <input type="text" id="address" name="address" value="{{ profile.address }}" placeholder="Address">
             </div>
           </div>
-    
+
           <div class="form-group">
             <label for="phone">Phone</label>
-            <input type="tel" id="phone" name="phone">
+            <input type="tel" id="phone" name="phone" value="{{ profile.phone_number }}" placeholder="01xxxxxxxxx">
           </div>
-        </form>
-      </div>
-      <!-- Password Section -->
-      <div class="form-section">
-        <form class="form-content">
+
+          <!-- Form Actions -->
+          <div class="form-actions">
+            <button type="button" class="btn btn-cancel">Cancel</button>
+            <button type="submit" class="btn btn-save">Save Changes</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Password Change Form -->
+      <form method="POST" id="password-form">
+        {% csrf_token %}
+        <div class="form-section">
           <div class="form-group">
             <label for="currentPassword">Current Password</label>
-            <input type="text" id="currentPassword" name="currentPassword" class="current-password">
+            <input type="password" id="currentPassword" name="current_password" class="current-password">
           </div>
-    
+
           <div class="form-group">
             <label for="newPassword">New Password</label>
-            <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password">
+            <input type="password" id="newPassword" name="new_password" placeholder="Enter new password">
           </div>
-    
+
           <div class="form-group">
             <label for="confirmPassword">Confirm New Password</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm new password">
+            <input type="password" id="confirmPassword" name="confirm_password" placeholder="Confirm new password">
           </div>
-        </form>
-      </div>
-    
-      <!-- Form Actions -->
-      <div class="form-actions">
-        <button type="button" class="btn btn-cancel">Cancel</button>
-        <button type="submit" class="btn btn-save">Save Changes</button>
-      </div>
-    
+
+          <!-- Password Form Actions -->
+          <div class="form-actions">
+            <button type="button" class="btn btn-cancel">Cancel</button>
+            <button type="submit" class="btn btn-save">Change Password</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
+
   <script>
-        // Upload button functionality
-        const uploadBtn = document.querySelector('.upload-btn');
-        uploadBtn.addEventListener('click', function () {
-          // Create file input
-          const fileInput = document.createElement('input');
-          fileInput.type = 'file';
-          fileInput.accept = 'image/*';
-          fileInput.style.display = 'none';
+    // Upload button functionality
+    const uploadBtn = document.querySelector('.upload-btn');
+    const profileImageInput = document.getElementById('profile-image-input');
+    const profilePicture = document.getElementById('profile-picture');
 
-          fileInput.addEventListener('change', function (e) {
-            if (e.target.files && e.target.files[0]) {
-              const reader = new FileReader();
-              reader.onload = function (e) {
-                const profilePic = document.querySelector('.profile-picture');
-                profilePic.style.backgroundImage = `url(${e.target.result})`;
-                profilePic.style.backgroundSize = 'cover';
-                profilePic.style.backgroundPosition = 'center';
-                profilePic.innerHTML = '';
-              };
-              reader.readAsDataURL(e.target.files[0]);
-            }
-          });
+    uploadBtn.addEventListener('click', function() {
+      profileImageInput.click();
+    });
 
-          document.body.appendChild(fileInput);
-          fileInput.click();
-          document.body.removeChild(fileInput);
-        })
-        let phonenum = document.getElementById("phone");
-        let submit = document.querySelector(".btn-save");
+    // Auto submit when image is selected
+    function submitProfileImage() {
+      if (profileImageInput.files && profileImageInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          profilePicture.innerHTML = `<img src="${e.target.result}" alt="Profile Picture" style="width: 100%; height: 100%; object-fit: cover;">`;
+          // Auto submit the form
+          document.getElementById('profile-image-form').submit();
+        };
+        reader.readAsDataURL(profileImageInput.files[0]);
+      }
+    }
 
-submit.addEventListener("click", (e) => {
-  let phoneNumValue = phonenum.value.trim();
-  let errorMessage = "";
+    // Phone number validation
+    let phoneInput = document.getElementById("phone");
+    let profileForm = document.getElementById("profile-info-form");
 
-  if (phoneNumValue.length !== 11) {
-    errorMessage = "Your number must be exactly 11 digits.";
-  } else if (!phoneNumValue.startsWith("01")) {
-    errorMessage = "Your number must start with 01.";
-  } else if (!["0", "1", "2", "5"].includes(phoneNumValue[2])) {
-    errorMessage = "Your number is invalid.";
-  }
+    profileForm.addEventListener("submit", function(e) {
+      let phoneValue = phoneInput.value.trim();
+      
+      if (phoneValue) {
+        if (phoneValue.length !== 11) {
+          e.preventDefault();
+          alert("رقم الهاتف يجب أن يكون 11 رقم");
+          return;
+        }
+        if (!phoneValue.startsWith("01")) {
+          e.preventDefault();
+          alert("رقم الهاتف يجب أن يبدأ ب 01");
+          return;
+        }
+        if (!["0", "1", "2", "5"].includes(phoneValue[2])) {
+          e.preventDefault();
+          alert("رقم الهاتف غير صحيح");
+          return;
+        }
+      }
+    });
 
-  if (errorMessage !== "") {
-    e.prevent(); 
-    alert(errorMessage);
-  } else {
-    alert("Phone number is valid!"); 
-  }
-});
+    // Password validation
+    const passwordForm = document.getElementById('password-form');
+    passwordForm.addEventListener('submit', function(e) {
+      const currentPassword = document.getElementById('currentPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
 
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        e.preventDefault();
+        alert('يرجى ملء جميع حقول كلمة المرور');
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        e.preventDefault();
+        alert('كلمة المرور الجديدة غير متطابقة');
+        return;
+      }
+    });
   </script>
 </body>
 </html>
