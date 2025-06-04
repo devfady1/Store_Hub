@@ -4485,8 +4485,8 @@ body.dark .filters h3 {
 }
 
 .product-image-manag {
-  width: 60px;
-  height: 60px;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -4656,8 +4656,8 @@ body.dark .filters h3 {
   }
 
   .product-image-manag {
-    width: 40px;
-    height: 40px;
+    width: 85px;
+    height: 85px;
   }
 
   .action-buttons {
@@ -4680,8 +4680,8 @@ body.dark .filters h3 {
   }
 
   .product-image-manag {
-    width: 35px;
-    height: 35px;
+    width: 55px;
+    height: 55px;
   }
 
   .edit-btn,
