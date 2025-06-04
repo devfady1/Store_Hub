@@ -4485,8 +4485,8 @@ body.dark .filters h3 {
 }
 
 .product-image-manag {
-  width: 60px;
-  height: 60px;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -4611,7 +4611,7 @@ body.dark .filters h3 {
 .dark .table-product-manag tbody tr {
   background: #151d2a;
   color: var(--text-color);
-  box-shadow: 0px 1px 13px 0px rgba(255, 254, 254, 0.05);
+ box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
 }
 
 .dark .modal-content,
@@ -4656,8 +4656,8 @@ body.dark .filters h3 {
   }
 
   .product-image-manag {
-    width: 40px;
-    height: 40px;
+    width: 85px;
+    height: 85px;
   }
 
   .action-buttons {
@@ -4680,8 +4680,8 @@ body.dark .filters h3 {
   }
 
   .product-image-manag {
-    width: 35px;
-    height: 35px;
+    width: 55px;
+    height: 55px;
   }
 
   .edit-btn,
@@ -4719,14 +4719,14 @@ body.dark .filters h3 {
   background: var(--white-color);
   padding: 32px;
   border-radius: 18px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 0px 30px 14px rgba(223, 222, 222, 0.17);
 }
 
 .h-seller {
   margin-bottom: 50px;
   font-size: 30px;
   text-align: center;
-  color: var(text-color);
+  color: var(--main-color);
 }
 
 .form-group-seller {
@@ -4738,10 +4738,18 @@ body.dark .filters h3 {
   width: 100%;
   height: 56px;
   padding: 16px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  border: 3px solid #e0e0e0;
+  border-radius: 20px;
   font-size: 16px;
   transition: all 0.3s ease;
+  background-color: var(--white-color);
+  color: var(--text-color);
+}
+
+input.form-input-seller {
+  color:var(--main-color); 
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .form-input-seller:focus {
@@ -4751,21 +4759,40 @@ body.dark .filters h3 {
 .form-label-seller {
   position: absolute;
   left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 0 8px;
+  top: -10px;
+  background: var(--white-color);
+  padding: 0 6px;
+  font-size: 14px;
   color: #666;
   transition: all 0.3s ease;
+  pointer-events: none;
 }
 
 .form-input-seller:focus ~ .form-label-seller,
-.form-input-seller:hover ~ .form-label-seller,
 .form-input-seller.not-empty ~ .form-label-seller {
-  top: -10px;
-  left: 10px;
-  transform: translateY(0) scale(0.9);
   color: var(--main-color);
+}
+
+textarea.form-input-seller {
+  width: 100%;
+  height: 56px;
+  resize: vertical;
+  overflow-y: hidden;
+  color:var(--main-color); 
+  font-size: 16px;
+  font-weight: bold;
+}
+
+select.form-input-seller {
+  appearance: none;
   background: var(--white-color);
+  color:var(--main-color); 
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.file-input {
+  color: var(--main-color);
 }
 
 .file-upload-box {
@@ -4893,52 +4920,45 @@ body.dark .filters h3 {
 
 /* Dark Mode */
 
-.dark .seller {
+.dark .seller,
+.dark .cont-seller,
+.dark .form-input-seller,
+.dark .form-label-seller {
   background: #151d2a;
+  color: var(--text-color);
 }
+
 
 .dark .cont-seller {
-  background: #151d2a;
-  box-shadow: 1px 10px 10px 13px rgba(255, 254, 254, 0.05);
-}
-
-.dark .h-seller {
-  color: var(--text-color);
+  box-shadow: 0px 0px 30px 14px rgba(223, 222, 222, 0.17);
 }
 
 .dark .form-input-seller {
+  border-color: #6c757d;
+}
+
+.dark input.form-input-seller,
+.dark textarea.form-input-seller,
+.dark select.form-input-seller {
+  color:var(--main-color); 
+}
+
+.dark .form-label-seller {
   background: #151d2a;
-  color: var(--text-color);
 }
 
 .dark .form-input-seller:focus {
   border-color: var(--main-color);
 }
 
-.dark .form-group-seller input,
-.dark .form-group-seller select,
-.dark .form-group-seller textarea,
-.dark .file-upload-box {
-  border: 2px solid #6c757d;
-}
-
-.dark .form-label-seller {
-  background: #151d2a;
-  color: var(--text-color);
-}
-
 .dark .form-input-seller:focus ~ .form-label-seller,
-.dark .form-input-seller:hover ~ .form-label-seller,
 .dark .form-input-seller.not-empty ~ .form-label-seller {
   background: #151d2a;
   color: var(--main-color);
 }
-.dark .file-input {
-  border: none;
-}
 
-.dark .file-name {
-  color: var(--text-color);
+.dark .file-upload-box {
+  border: 2px solid #6c757d;
 }
 
 .dark .btn-seller {
@@ -4955,3 +4975,4 @@ body.dark .filters h3 {
 }
 
 /* ==> End Seller <== */
+
