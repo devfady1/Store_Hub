@@ -1,100 +1,129 @@
 {% extends 'pages/base.html' %}
 {% load static %}
+
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/style_delivery.css' %}" />
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
-/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  crossorigin=""
-/>
 
 <div class="order-Trick">
-  <div class="container" style="display:flex; gap:20px;">
-    <!-- الخريطة -->
-    <div id="map" style="height: 400px; width: 50%;"></div>
-
-    <!-- الأوردرات -->
-    <div class="orders-panel" style="width: 50%;">
-      <h2>New Orders</h2>
-      {% if orders_data %}
-        {% for order_info in orders_data %}
-          <div class="order" data-order-id="{{ order_info.order.id }}">
-            <p><strong>Order #{{ order_info.order.id }}</strong></p>
-            <p>Client Location: ({{ order_info.client_lat }}, {{ order_info.client_lng }})</p>
-            <p>Total Price: ${{ order_info.total_price }}</p>
-
-            <form method="post" action="{% url 'accept_order' order_info.order.id %}" style="display:inline;">
-              {% csrf_token %}
-              <button name="action" value="accept" class="accept">Accept</button>
-              <button name="action" value="decline" class="decline">Decline</button>
-            </form>
-
-          </div>
-        {% endfor %}
-      {% else %}
-        <p>No new orders available.</p>
-      {% endif %}
+    <div class="header">
+        <h1><i class="fas fa-car"></i> Driver Dashboard</h1>
+        <div class="status-badge"><i class="fas fa-check-circle"></i> Available for Delivery</div>
     </div>
-  </div>
+
+    <div class="container" style="display:flex; gap:20px;">
+        <!-- Map Container -->
+        <div id="map" style="height: 400px; width: 50%;"></div>
+
+        <!-- Orders Panel -->
+        <div class="orders-panel" style="width: 50%;">
+            <h2>New Orders</h2>
+            {% if orders_data %}
+                {% for order_info in orders_data %}
+                    <div class="order-card" data-order-id="{{ order_info.order.id }}">
+                        <div class="order-header">
+                            <div class="customer-name">
+                                <i class="fas fa-user"></i> {{ order_info.order.customer.username }}
+                            </div>
+                            <div class="order-price">
+                                <i class="fas fa-dollar-sign"></i>${{ order_info.total_price|floatformat:2 }}
+                            </div>
+                        </div>
+
+                        <div class="order-details">
+                            <div class="detail-row">
+                                <i class="fas fa-map-marker-alt detail-icon"></i>
+                                <div class="detail-text">
+                                    Delivery to: ({{ order_info.client_lat|floatformat:4 }}, {{ order_info.client_lng|floatformat:4 }})
+                                </div>
+                            </div>
+
+                            <div class="time-distance">
+                                <div class="time-badge">
+                                    <i class="fas fa-clock"></i> Estimated: 15-20 min
+                                </div>
+                                <div class="distance-badge">
+                                    <i class="fas fa-route"></i> {{ order_info.distance|default:"Calculating..." }} km
+                                </div>
+                            </div>
+                        </div>
+
+                        <form method="post" action="{% url 'accept_order' order_info.order.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <div class="action-buttons">
+                                <button type="submit" name="action" value="accept" class="btn btn-accept">
+                                    <i class="fas fa-check"></i> Accept
+                                </button>
+                                <button type="submit" name="action" value="decline" class="btn btn-decline">
+                                    <i class="fas fa-times"></i> Decline
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No new orders available.</p>
+            {% endif %}
+        </div>
+    </div>
 </div>
 
 <!-- Leaflet Map -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
-  const driverLat = {{ driver_lat|default:"27.1866" }};
-  const driverLng = {{ driver_lng|default:"31.1704" }};
+    const driverLat = {{ driver_lat|default:"27.1866" }};
+    const driverLng = {{ driver_lng|default:"31.1704" }};
 
-  {% if orders_data and orders_data.0 %}
-    const clientLat = {{ orders_data.0.client_lat }};
-    const clientLng = {{ orders_data.0.client_lng }};
-    const sellerLat = {{ orders_data.0.seller_lat }};
-    const sellerLng = {{ orders_data.0.seller_lng }};
-  {% else %}
-    const clientLat = driverLat;
-    const clientLng = driverLng;
-    const sellerLat = driverLat;
-    const sellerLng = driverLng;
-  {% endif %}
+    {% if orders_data and orders_data.0 %}
+        const clientLat = {{ orders_data.0.client_lat }};
+        const clientLng = {{ orders_data.0.client_lng }};
+        const sellerLat = {{ orders_data.0.seller_lat }};
+        const sellerLng = {{ orders_data.0.seller_lng }};
+    {% else %}
+        const clientLat = driverLat;
+        const clientLng = driverLng;
+        const sellerLat = driverLat;
+        const sellerLng = driverLng;
+    {% endif %}
 
-  const map = L.map("map").setView([driverLat, driverLng], 13);
+    const map = L.map("map").setView([driverLat, driverLng], 13);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "&copy; OpenStreetMap contributors",
-  }).addTo(map);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors",
+    }).addTo(map);
 
-  L.marker([driverLat, driverLng]).addTo(map).bindPopup("🚚 Driver").openPopup();
-  L.marker([sellerLat, sellerLng]).addTo(map).bindPopup("🏪 Seller");
-  L.marker([clientLat, clientLng]).addTo(map).bindPopup("📍 Customer");
+    // Add markers
+    L.marker([driverLat, driverLng]).addTo(map).bindPopup("🚚 Driver").openPopup();
+    L.marker([sellerLat, sellerLng]).addTo(map).bindPopup("🏪 Seller");
+    L.marker([clientLat, clientLng]).addTo(map).bindPopup("📍 Customer");
 
-  const routeCoordinates = [
-    [driverLat, driverLng],
-    [sellerLat, sellerLng],
-    [clientLat, clientLng],
-  ];
+    // Calculate and display route
+    const routeCoordinates = [
+        [driverLat, driverLng],
+        [sellerLat, sellerLng],
+        [clientLat, clientLng],
+    ];
 
-  fetch("https://api.openrouteservice.org/v2/directions/driving-car/geojson", {
-    method: "POST",
-    headers: {
-      Authorization: "5b3ce3597851110001cf624849ee31d7612e44018effded422136ba4",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ coordinates: routeCoordinates.map(c => [c[1], c[0]]) }),
-  })
-  .then((res) => res.json())
-  .then((data) => {
-    const coords = data.features[0].geometry.coordinates.map(c => [c[1], c[0]]);
-    L.polyline(coords, { color: "blue", weight: 5 }).addTo(map);
-    map.fitBounds(L.polyline(coords).getBounds());
-  })
-  .catch((err) => {
-    console.error("Route Error:", err);
-  });
+    // Use OpenRouteService for routing
+    fetch("https://api.openrouteservice.org/v2/directions/driving-car/geojson", {
+        method: "POST",
+        headers: {
+            Authorization: "5b3ce3597851110001cf624849ee31d7612e44018effded422136ba4",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            coordinates: routeCoordinates.map(c => [c[1], c[0]])
+        }),
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        const coords = data.features[0].geometry.coordinates.map(c => [c[1], c[0]]);
+        L.polyline(coords, { color: "blue", weight: 5 }).addTo(map);
+        map.fitBounds(L.polyline(coords).getBounds());
+    })
+    .catch((err) => {
+        console.error("Route Error:", err);
+    });
 </script>
 {% endblock %}
