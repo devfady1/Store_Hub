@@ -696,7 +696,7 @@ def assign_order(request, order_id):
     user_profile = get_object_or_404(UserProfile, user=request.user, role='delivery_agent')
 
     order.delivery_agent = request.user
-    order.delivery_agent_lat = user_profile.lat
+    order.delivey_agent_lart = user_profile.lat
     order.delivery_agent_lng = user_profile.lng
     order.status = 'in_progress'
     order.save()
@@ -735,11 +735,12 @@ def available_order_view(request):
         order = get_object_or_404(Order, id=order_id)
 
         if action == 'accept':
-            order.delivery_agent = user_profile
+            order.delivery_agent = user_profile.user  
             order.status = 'accepted'
             order.save()
             request.session['rejected_order_ids'] = []
-            return redirect('available_orders')  
+            return redirect('available_orders')
+  
 
         elif action == 'decline':
             rejected_order_ids.append(order_id)
@@ -773,22 +774,12 @@ def available_order_view(request):
     return render(request, 'delivery agent/OrderTracking.html', context)
 
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
-import json
-
-from .models import Order, UserProfile
-
-
 @csrf_exempt
 @login_required
 def live_location_view(request, order_id):
     order = get_object_or_404(Order, id=order_id)
 
     if request.method == 'GET':
-        # get locations of client, delivery agent, and seller
         customer_profile = UserProfile.objects.filter(user=order.customer).first()
         driver_profile = UserProfile.objects.filter(user=order.delivery_agent).first()
 
@@ -837,9 +828,25 @@ def live_location_view(request, order_id):
 
 
 
+@login_required
+@csrf_exempt
+def update_order_status(request, order_id):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            new_status = data.get('status')
+            order = get_object_or_404(Order, id=order_id)
 
+            if new_status in dict(Order.STATUS_CHOICES):
+                order.status = new_status
+                order.save()
+                return JsonResponse({'message': 'Status updated successfully.', 'new_status': order.get_status_display()})
+            else:
+                return JsonResponse({'error': 'Invalid status.'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
 
-
+    return JsonResponse({'error': 'Invalid request method.'}, status=405)
 
 
 

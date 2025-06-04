@@ -1,6 +1,9 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 from .views import *
+
+
+
 urlpatterns = [
     path('index/' ,views.index, name='index'),
     path('about/' ,views.about, name='about'),
@@ -31,15 +34,9 @@ urlpatterns = [
     path('orders/<int:order_id>/', views.order_details, name='order_detail'),
     path('rate/<int:product_id>/', views.rate_product, name='rate_product'),
     path('product/<int:product_id>/add_comment/', views.add_comment, name='add_comment'),
-    path('delivery/orders/available/', views.available_order_view, name='available_order'),
+    path('delivery/orders/available/', views.available_order_view, name='available_orders'),
     path('delivery/orders/assign/<int:order_id>/', views.assign_order, name='assign_order'),
     path('live-location/<int:order_id>/', views.live_location_view, name='live_location'),
-
-
-
-
-
-
-
-
+    path('orders/<int:order_id>/', order_detail, name='accept_order'),
+    path('orders/<int:order_id>/update-status/', update_order_status, name='update_order_status'),
 ]
