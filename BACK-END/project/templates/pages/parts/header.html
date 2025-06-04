@@ -42,7 +42,17 @@
             </a>
           </div>
           <form class="header-form">
-            
+              <input type="text" placeholder="Search Product" class="search-input" id="searchInput" autocomplete="off">
+              <div class="search-results" id="searchResults">
+                <div class="search-loading">
+                  <div class="spinner"></div>
+                  <span>جاري البحث...</span>
+                </div>
+                <div class="no-results">
+                  <i class="fas fa-box-open"></i>
+                  <span>لا توجد نتائج</span>
+                </div>
+              </div>
             <a href="{% url 'wishlist' %}"><i class="fa-regular fa-heart"></i></a>
             <a href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i></a>
             <a href="#" id="user-icon">
@@ -69,28 +79,10 @@
                     <li><a href="{% url 'register' %}"> <i class="fa-solid fa-user-plus"></i> Sign Up</a></li>
                 {% endif %}
             </ul>
-        </div>
-        <form class="header-form">
-          <div class="search-container">
-            <input 
-              type="text" 
-              class="search-input" 
-              placeholder="ابحث عن المنتجات..." 
-              id="searchInput"
-              autocomplete="off"
-            >
-            <i class="fas fa-search search-icon"></i>
-            <div class="search-results" id="searchResults">
-              <div class="search-loading">
-                <div class="spinner"></div>
-                <span>جاري البحث...</span>
-              </div>
-              <div class="no-results">
-                <i class="fas fa-box-open"></i>
-                <span>لا توجد نتائج</span>
-              </div>
-            </div>
           </div>
+        </form>
+        <form class="header-form">
+          
             <input type="checkbox" id="toggle" />
 
             <label class="toggle" for="toggle">
@@ -98,10 +90,10 @@
               <i class="bx bx-moon"></i>
               <span class="ball"></span>
             </label>
-          </form>
-        </nav>
-      </div>
-    </header>
+        </form>
+      </nav>
+    </div>
+  </header>
     
     <script>
       //User Account
@@ -328,47 +320,23 @@ document.addEventListener('click', (e) => {
 
     <style>
     /* Search Container & Input */
-    .search-container {
-      position: relative;
-      margin: 0 10px;
-    }
 
     .search-input {
-      width: 220px;
-      height: 40px;
-      padding: 0 40px 0 15px;
-      border: 1.5px solid rgba(var(--main-color-rgb), 0.15);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.9);
+      background-color: #ddd;
+      padding: 10px;
+      border-radius: 25px;
+      margin-right: 9px;
       font-size: 14px;
-      transition: all 0.3s var(--transition-cubic);
-      direction: rtl;
+      transition: all 0.3s ease;
     }
 
     .search-input::placeholder {
       color: #999;
-      font-size: 13px;
+      font-size: 14px;
     }
 
     .search-input:focus {
-      width: 280px;
-      border-color: var(--main-color);
-      box-shadow: 0 3px 12px rgba(var(--main-color-rgb), 0.12);
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #999;
-      font-size: 15px;
-      pointer-events: none;
-      transition: color 0.3s ease;
-    }
-
-    .search-input:focus + .search-icon {
-      color: var(--main-color);
+      scale: 1.05;
     }
 
     /* Search Results Dropdown */
