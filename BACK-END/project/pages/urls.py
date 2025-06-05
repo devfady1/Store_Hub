@@ -30,11 +30,12 @@ urlpatterns = [
     path('place_order/', views.place_order, name='place_order'),
     path('order_success/', views.order_success, name='order_success'),
     path('my-orders/', views.my_orders_view, name='my_orders'),
-    
-    # Delivery Agent Routes
+    path('order/<int:order_id>/', views.order_detail, name='order_detail'),
+    path('orders/<int:order_id>/', views.order_details, name='order_detail'),
+    path('delivery-orders/', views.delivery_order_view, name='delivery_orders'),
     path('delivery/orders/available/', views.available_order_view, name='available_orders'),
-    path('delivery/orders/<int:order_id>/', views.order_detail, name='order_detail'),
-    path('delivery/orders/<int:order_id>/update-status/', views.update_order_status, name='update_order_status'),
-    path('delivery/orders/<int:order_id>/location-update/', views.live_location_update, name='live_location_update'),
-    path('delivery/orders/accept/<int:order_id>/', views.assign_order, name='accept_order'),
-]
+    path('delivery/orders/assign/<int:order_id>/', views.assign_order, name='assign_order'),
+    path('live-location/<int:order_id>/', views.live_location_view, name='live_location'),
+    path('orderss/<int:order_id>/', order_detail, name='accept_order'),
+    path('orders/<int:order_id>/update-status/', update_order_status, name='update_order_status'),
+    path('delivery/orders/<int:order_id>/details/', views.delivery_order_detail_view, name='delivery_order_detail'),]

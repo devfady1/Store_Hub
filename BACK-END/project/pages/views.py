@@ -706,7 +706,7 @@ def assign_order(request, order_id):
     user_profile = get_object_or_404(UserProfile, user=request.user, role='delivery_agent')
 
     order.delivery_agent = request.user
-    order.delivey_agent_lart = user_profile.lat
+    order.delivery_agent_lat = user_profile.lat
     order.delivery_agent_lng = user_profile.lng
     order.status = 'in_progress'
     order.save()
@@ -718,58 +718,55 @@ def available_order_view(request):
     user_profile = get_object_or_404(UserProfile, user=request.user, role='delivery_agent')
     driver_location = (user_profile.lat, user_profile.lng)
 
-    # Get all pending orders without a delivery agent
     available_orders = list(Order.objects.filter(
         status='pending',
         delivery_agent__isnull=True,
         client_lat__isnull=False,
         client_lng__isnull=False,
-    ))
-
-    if not available_orders:
-        return render(request, 'delivery agent/no_orders.html')
-
-    # Calculate distances and sort orders by proximity
-    def order_distance(order):
-        return geodesic(driver_location, (order.client_lat, order.client_lng)).km
-    available_orders.sort(key=order_distance)
-
-    # Filter out rejected orders
-    rejected_order_ids = request.session.get('rejected_order_ids', [])
-    available_orders = [o for o in available_orders if o.id not in rejected_order_ids]
-    
-    if not available_orders:
-        return render(request, 'delivery agent/no_orders.html')
-    
-    # Get the closest orders
-    closest_orders = available_orders[:2]
+    ).prefetch_related('items', 'items__product', 'customer'))
 
     if request.method == 'POST':
         action = request.POST.get('action')
         order_id = int(request.POST.get('order_id'))
         order = get_object_or_404(Order, id=order_id)
-
         if action == 'accept':
             order.delivery_agent = request.user
             order.delivery_agent_lat = user_profile.lat
             order.delivery_agent_lng = user_profile.lng
-            order.status = 'accepted'
+            order.status = 'in_progress'
             order.save()
             request.session['rejected_order_ids'] = []
-            return redirect('order_detail', order_id=order.id)
-
+            return redirect('delivery_order_detail', order_id=order.id)
         elif action == 'decline':
+            rejected_order_ids = request.session.get('rejected_order_ids', [])
             rejected_order_ids.append(order_id)
             request.session['rejected_order_ids'] = rejected_order_ids
+            messages.info(request, 'Order declined.')
             return redirect('available_orders')
+
+    rejected_order_ids = request.session.get('rejected_order_ids', [])
+    available_orders = [o for o in available_orders if o.id not in rejected_order_ids]
+
+    if not available_orders:
+        return render(request, 'delivery agent/OrderTracking.html', {
+            'orders_data': [],
+            'driver_lat': user_profile.lat,
+            'driver_lng': user_profile.lng,
+        })
+
+    def order_distance(order):
+        return geodesic(driver_location, (order.client_lat, order.client_lng)).km
+
+    available_orders.sort(key=order_distance)
+    closest_orders = available_orders[:2]
 
     orders_data = []
     for order in closest_orders:
         items = order.items.all()
         total_price = sum(item.product.price * item.quantity for item in items)
         product = items[0].product if items else None
-        seller_lat = product.seller_lat if product else None
-        seller_lng = product.seller_lng if product else None
+        seller_lat = product.seller_lat if product else 0
+        seller_lng = product.seller_lng if product else 0
 
         orders_data.append({
             'order': order,
@@ -789,49 +786,62 @@ def available_order_view(request):
 
     return render(request, 'delivery agent/OrderTracking.html', context)
 
-@login_required
-def order_detail(request, order_id):
-    order = get_object_or_404(Order, id=order_id)
-    items = order.items.all()
-    total_price = sum(item.product.price * item.quantity for item in items)
-
-    # Get delivery agent profile and rating
-    delivery_agent_profile = None
-    filled_stars = 0
-    empty_stars = 5
-
-    if order.delivery_agent:
-        delivery_agent_profile = UserProfile.objects.filter(user=order.delivery_agent).first()
-        if delivery_agent_profile and delivery_agent_profile.rating:
-            filled_stars = int(round(delivery_agent_profile.rating))
-            empty_stars = 5 - filled_stars
-
-    # Get seller coordinates from first product
-    seller_lat = None
-    seller_lng = None
-    if items:
-        product = items[0].product
-        seller_lat = product.seller_lat
-        seller_lng = product.seller_lng
-
-    context = {
-        'order': order,
-        'items': items,
-        'total_price': total_price,
-        'delivery_agent_profile': delivery_agent_profile,
-        'filled_stars': filled_stars,
-        'empty_stars': empty_stars,
-        'client_lat': order.client_lat,
-        'client_lng': order.client_lng,
-        'driver_lat': order.delivery_agent_lat,
-        'driver_lng': order.delivery_agent_lng,
-        'seller_lat': seller_lat,
-        'seller_lng': seller_lng,
-    }
-    return render(request, 'delivery agent/delivery_order.html', context)
 
 @csrf_exempt
 @login_required
+def live_location_view(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    if request.method == 'GET':
+        customer_profile = UserProfile.objects.filter(user=order.customer).first()
+        driver_profile = UserProfile.objects.filter(user=order.delivery_agent).first()
+
+        items = order.items.all()
+        product = items[0].product if items else None
+
+        seller_lat = product.seller_lat if product else None
+        seller_lng = product.seller_lng if product else None
+
+        return JsonResponse({
+            'customer': {
+                'lat': customer_profile.lat if customer_profile else None,
+                'lng': customer_profile.lng if customer_profile else None,
+            },
+            'driver': {
+                'lat': driver_profile.lat if driver_profile else None,
+                'lng': driver_profile.lng if driver_profile else None,
+            },
+            'seller': {
+                'lat': seller_lat,
+                'lng': seller_lng,
+            },
+        })
+
+    elif request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            lat = data.get('lat')
+            lng = data.get('lng')
+
+            if lat is None or lng is None:
+                return JsonResponse({'status': 'error', 'message': 'Missing coordinates'}, status=400)
+
+            user_profile = UserProfile.objects.get(user=request.user)
+            user_profile.lat = lat
+            user_profile.lng = lng
+            user_profile.save()
+
+            return JsonResponse({'status': 'success'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid HTTP method'}, status=405)
+
+
+
+@login_required
+@csrf_exempt
 def update_order_status(request, order_id):
     if request.method == 'POST':
         try:
@@ -842,10 +852,7 @@ def update_order_status(request, order_id):
             if new_status in dict(Order.STATUS_CHOICES):
                 order.status = new_status
                 order.save()
-                return JsonResponse({
-                    'message': 'Status updated successfully.',
-                    'new_status': order.get_status_display()
-                })
+                return JsonResponse({'message': 'Status updated successfully.', 'new_status': order.get_status_display()})
             else:
                 return JsonResponse({'error': 'Invalid status.'}, status=400)
         except Exception as e:
@@ -853,28 +860,6 @@ def update_order_status(request, order_id):
 
     return JsonResponse({'error': 'Invalid request method.'}, status=405)
 
-@csrf_exempt
-@login_required
-def live_location_update(request, order_id):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            lat = data.get('lat')
-            lng = data.get('lng')
-            
-            if lat is None or lng is None:
-                return JsonResponse({'error': 'Missing coordinates'}, status=400)
-
-            order = get_object_or_404(Order, id=order_id)
-            order.delivery_agent_lat = lat
-            order.delivery_agent_lng = lng
-            order.save()
-
-            return JsonResponse({'status': 'success'})
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=400)
-
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 @login_required
 def rate_product(request, product_id):
@@ -928,7 +913,7 @@ def search_products(request):
             Q(name__icontains=query) |
             Q(description__icontains=query) |
             Q(category__name__icontains=query)
-        )[:5]  
+        )[:5]  # نقوم بتحديد عدد النتائج ب 5 فقط
         
         results = []
         for product in products:
@@ -941,3 +926,32 @@ def search_products(request):
         return JsonResponse(results, safe=False)
     return JsonResponse([], safe=False)
     
+    
+@login_required
+def delivery_order_detail_view(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    if not request.user.userprofile.role == 'delivery_agent':
+        return redirect('index')  # أو صفحة خطأ مخصصة
+    items = order.items.all()
+    total_price = sum(item.product.price * item.quantity for item in items)
+    delivery_agent_profile = UserProfile.objects.filter(user=order.delivery_agent).first()
+    filled_stars = int(round(delivery_agent_profile.rating)) if delivery_agent_profile and delivery_agent_profile.rating else 0
+    empty_stars = 5 - filled_stars
+    seller_lat = items[0].product.seller_lat if items else 0
+    seller_lng = items[0].product.seller_lng if items else 0
+    context = {
+        'order': order,
+        'items': items,
+        'total_price': total_price,
+        'delivery_agent_profile': delivery_agent_profile,
+        'filled_stars': filled_stars,
+        'empty_stars': empty_stars,
+        'client_lat': order.client_lat,
+        'client_lng': order.client_lng,
+        'driver_lat': order.delivery_agent_lat,
+        'driver_lng': order.delivery_agent_lng,
+        'seller_lat': seller_lat,
+        'seller_lng': seller_lng,
+    }
+    return render(request, 'delivery agent/delevry order.html', context)
+

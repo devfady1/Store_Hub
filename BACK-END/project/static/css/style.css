@@ -53,18 +53,6 @@ nav {
   justify-content: space-between;
 }
 
-.seacrch {
-  background-color: #ddd;
-  padding: 7px;
-  border-radius: 10px;
-  margin-right: 9px;
-  transition: 0.3s;
-}
-
-.seacrch:focus {
-  scale: 1.03;
-}
-
 nav .linkes {
   display: flex;
   justify-content: space-between;

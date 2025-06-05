@@ -3,127 +3,325 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/style_delivery.css' %}" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+<style>
+    
+/* ===> ordertracking  <===*/
+.order-Trick  {
+  margin: 0 auto;
+  padding: 1% 5%;
+}
 
+.order-Trick  .header {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 40px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.dark .order-Trick .header , .dark .order-Trick .order-card {
+  background-color: #1c2739;
+  box-shadow: 0 4px 6px rgba(165, 161, 161, 0.359);
+}
+
+.order-Trick  .header h1 {
+  color: var(--text-color);
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.order-Trick  .status-badge {
+  display: inline-block;
+  background: linear-gradient(45deg, #9f1239, #b93838);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.order-Trick  .orders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.order-Trick  .order-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 25px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-Trick  .order-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #9f1239, #b93838);
+  border-radius: 20px 20px 0 0;
+}
+
+.order-Trick  .order-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--main-color);
+}
+
+.order-Trick  .order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #979797fc;
+}
+
+.order-Trick  .customer-name {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.order-Trick  .order-price {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--main-color);
+  background: rgba(159, 18, 57, 0.1);
+  padding: 8px 10px;
+  border-radius: 25px;
+}
+
+.dark .order-Trick .order-price {
+  background: #eee;
+}
+
+.order-Trick  .order-details {
+  margin-bottom: 20px;
+}
+
+.order-Trick  .detail-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 8px;
+  background: rgba(159, 18, 57, 0.05);
+  border-radius: 10px;
+}
+
+.dark .order-Trick .detail-row {
+  background: none;
+}
+
+.order-Trick  .detail-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 10px;
+  opacity: 0.7;
+  color: var(--main-color);
+}
+
+.order-Trick  .detail-text {
+  color: var(--text-color);
+  font-size: 0.95rem;
+}
+
+.order-Trick  .time-distance {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.order-Trick  .time-badge,
+.order-Trick  .distance-badge {
+  background: linear-gradient(45deg, #9f1239, #b93838);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 25px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.order-Trick  .distance-badge {
+  background: linear-gradient(45deg, #b93838, #9f1239);
+}
+
+.order-Trick  .action-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.order-Trick  .btn {
+  flex: 1;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition:  0.3s ease;
+  letter-spacing: 0.5px;
+}
+
+.order-Trick  .btn-accept {
+  background: #28a745;
+  color: white;
+}
+
+.order-Trick  .btn-accept:hover {
+  background-color: white;
+  color: #28a745;
+  border: 1px solid #28a745;
+  transform: translateY(-2px);
+}
+
+.order-Trick  .btn-decline {
+  background: var(--main-color);
+  color: white;
+}
+
+.order-Trick  .btn-decline:hover {
+  background-color: white;
+  color: var(--main-color);
+  border: 1px solid var(--main-color);
+  transform: translateY(-2px);
+}
+
+/* @media (max-width: 768px) {
+  .order-Trick .container {
+    flex-direction: column;
+    width: 95%;
+  }
+
+  .order-Trick .container #map-container iframe {
+    height: 700px;
+  }
+
+  .order-Trick .container .orders-panel {
+    padding: 15px;
+  }
+} */
+
+/* ==> customer order <==*/
+/* body {
+  background-color: #e1e1e1;
+  color: #0e0d0d;
+  margin: 0;
+  padding: 0;
+} */
+</style>
 <div class="order-Trick">
     <div class="header">
-        <h1><i class="fas fa-car"></i> Driver Dashboard</h1>
-        <div class="status-badge"><i class="fas fa-check-circle"></i> Available for Delivery</div>
+        <h1><i class="fas fa-car" style="margin-right: 6px;"></i> Driver Dashboard</h1>
+        <div class="status-badge">
+            <i class="fas fa-check-circle" style="margin-right: 6px;"></i> Available for Delivery
+        </div>
     </div>
 
-    <div class="container" style="display:flex; gap:20px;">
-        <!-- Map Container -->
-        <div id="map" style="height: 400px; width: 50%;"></div>
+    <div class="orders-grid">
+        {% for order_data in orders_data %}
+        <div class="order-card" id="order-{{ order_data.order.id }}">
+            <div class="order-header">
+                <div class="customer-name">
+                    <i class="fas fa-user" style="margin-right: 6px;"></i> {{ order_data.order.customer.get_full_name }}
+                </div>
+                <div class="order-price">
+                    <i class="fas fa-dollar-sign" style="margin-right: 6px;"></i>{{ order_data.total_price|floatformat:2 }}
+                </div>
+            </div>
 
-        <!-- Orders Panel -->
-        <div class="orders-panel" style="width: 50%;">
-            <h2>New Orders</h2>
-            {% if orders_data %}
-                {% for order_info in orders_data %}
-                    <div class="order-card" data-order-id="{{ order_info.order.id }}">
-                        <div class="order-header">
-                            <div class="customer-name">
-                                <i class="fas fa-user"></i> {{ order_info.order.customer.username }}
-                            </div>
-                            <div class="order-price">
-                                <i class="fas fa-dollar-sign"></i>${{ order_info.total_price|floatformat:2 }}
-                            </div>
-                        </div>
-
-                        <div class="order-details">
-                            <div class="detail-row">
-                                <i class="fas fa-map-marker-alt detail-icon"></i>
-                                <div class="detail-text">
-                                    Delivery to: ({{ order_info.client_lat|floatformat:4 }}, {{ order_info.client_lng|floatformat:4 }})
-                                </div>
-                            </div>
-
-                            <div class="time-distance">
-                                <div class="time-badge">
-                                    <i class="fas fa-clock"></i> Estimated: 15-20 min
-                                </div>
-                                <div class="distance-badge">
-                                    <i class="fas fa-route"></i> {{ order_info.distance|default:"Calculating..." }} km
-                                </div>
-                            </div>
-                        </div>
-
-                        <form method="post" action="{% url 'accept_order' order_info.order.id %}" style="display:inline;">
-                            {% csrf_token %}
-                            <div class="action-buttons">
-                                <button type="submit" name="action" value="accept" class="btn btn-accept">
-                                    <i class="fas fa-check"></i> Accept
-                                </button>
-                                <button type="submit" name="action" value="decline" class="btn btn-decline">
-                                    <i class="fas fa-times"></i> Decline
-                                </button>
-                            </div>
-                        </form>
+            <div class="order-details">
+                <div class="detail-row">
+                    <i class="fas fa-map-marker-alt detail-icon" style="margin-right: 6px;"></i>
+                    <div class="detail-text">
+                        {% for item in order_data.items %}
+                            {{ item.product.name }} x{{ item.quantity }}<br>
+                        {% endfor %}
                     </div>
-                {% endfor %}
-            {% else %}
-                <p>No new orders available.</p>
-            {% endif %}
+                </div>
+
+                <div class="time-distance">
+                    <div class="time-badge">
+                        <i class="fas fa-clock" style="margin-right: 6px;"></i> 
+                        <span class="eta-{{ order_data.order.id }}">Calculating...</span>
+                    </div>
+                    <div class="distance-badge">
+                        <i class="fas fa-route" style="margin-right: 6px;"></i> 
+                        <span class="distance-{{ order_data.order.id }}">Calculating...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <form method="POST" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="order_id" value="{{ order_data.order.id }}">
+                    <button type="submit" name="action" value="accept" class="btn btn-accept">
+                        <i class="fas fa-check" style="margin-right: 6px;"></i> Accept
+                    </button>
+                    <button type="submit" name="action" value="decline" class="btn btn-decline">
+                        <i class="fas fa-times" style="margin-right: 6px;"></i> Decline
+                    </button>
+                </form>
+            </div>
         </div>
+        {% empty %}
+        <div class="no-orders">
+            <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 20px;"></i>
+            <h2>No Available Orders</h2>
+            <p>Check back later for new delivery requests.</p>
+        </div>
+        {% endfor %}
     </div>
 </div>
 
-<!-- Leaflet Map -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
-    const driverLat = {{ driver_lat|default:"27.1866" }};
-    const driverLng = {{ driver_lng|default:"31.1704" }};
+document.addEventListener('DOMContentLoaded', function() {
+    {% for order_data in orders_data %}
+    calculateRoute(
+        [{{ driver_lat }}, {{ driver_lng }}],
+        [{{ order_data.seller_lat }}, {{ order_data.seller_lng }}],
+        [{{ order_data.client_lat }}, {{ order_data.client_lng }}],
+        {{ order_data.order.id }}
+    );
+    {% endfor %}
+});
 
-    {% if orders_data and orders_data.0 %}
-        const clientLat = {{ orders_data.0.client_lat }};
-        const clientLng = {{ orders_data.0.client_lng }};
-        const sellerLat = {{ orders_data.0.seller_lat }};
-        const sellerLng = {{ orders_data.0.seller_lng }};
-    {% else %}
-        const clientLat = driverLat;
-        const clientLng = driverLng;
-        const sellerLat = driverLat;
-        const sellerLng = driverLng;
-    {% endif %}
-
-    const map = L.map("map").setView([driverLat, driverLng], 13);
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "&copy; OpenStreetMap contributors",
-    }).addTo(map);
-
-    // Add markers
-    L.marker([driverLat, driverLng]).addTo(map).bindPopup("🚚 Driver").openPopup();
-    L.marker([sellerLat, sellerLng]).addTo(map).bindPopup("🏪 Seller");
-    L.marker([clientLat, clientLng]).addTo(map).bindPopup("📍 Customer");
-
-    // Calculate and display route
-    const routeCoordinates = [
-        [driverLat, driverLng],
-        [sellerLat, sellerLng],
-        [clientLat, clientLng],
+function calculateRoute(driverLocation, sellerLocation, customerLocation, orderId) {
+    const coordinates = [
+        driverLocation.reverse(),
+        sellerLocation.reverse(),
+        customerLocation.reverse()
     ];
 
-    // Use OpenRouteService for routing
-    fetch("https://api.openrouteservice.org/v2/directions/driving-car/geojson", {
-        method: "POST",
+    fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
+        method: 'POST',
         headers: {
-            Authorization: "5b3ce3597851110001cf624849ee31d7612e44018effded422136ba4",
-            "Content-Type": "application/json",
+            'Authorization': '5b3ce3597851110001cf624849ee31d7612e44018effded422136ba4',
+            'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            coordinates: routeCoordinates.map(c => [c[1], c[0]])
-        }),
+        body: JSON.stringify({ coordinates: coordinates })
     })
-    .then((res) => res.json())
-    .then((data) => {
-        const coords = data.features[0].geometry.coordinates.map(c => [c[1], c[0]]);
-        L.polyline(coords, { color: "blue", weight: 5 }).addTo(map);
-        map.fitBounds(L.polyline(coords).getBounds());
+    .then(response => response.json())
+    .then(data => {
+        const distance = (data.features[0].properties.segments[0].distance / 1000).toFixed(1);
+        const duration = Math.round(data.features[0].properties.segments[0].duration / 60);
+        
+        document.querySelector(`.eta-${orderId}`).textContent = `${duration} min`;
+        document.querySelector(`.distance-${orderId}`).textContent = `${distance} km`;
     })
-    .catch((err) => {
-        console.error("Route Error:", err);
-    });
+    .catch(error => console.error('Error:', error));
+}
 </script>
 {% endblock %}
