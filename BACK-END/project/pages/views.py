@@ -225,43 +225,53 @@ def account(request):
     profile, created = UserProfile.objects.get_or_create(user=user)
 
     if request.method == 'POST':
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        email = request.POST.get('email')
-        address = request.POST.get('address')
-        phone = request.POST.get('phone')
-        profile_image = request.FILES.get('profile_image')
-
-        # تحديث بيانات المستخدم
-        user.first_name = first_name
-        user.last_name = last_name
-        user.email = email
-        user.save()
-
-        # تحديث بروفايل
-        profile.phone_number = phone
-        if profile_image:
-            profile.profile_image = profile_image
-        profile.save()
+        # التعامل مع رفع الصورة
+        if 'profile_image' in request.FILES:
+            profile_image = request.FILES.get('profile_image')
+            if profile_image:
+                profile.profile_image = profile_image
+                profile.save()
+                messages.success(request, "تم تحديث الصورة الشخصية بنجاح")
+                return redirect('account')
 
         # التعامل مع تغيير كلمة المرور
         current_password = request.POST.get('current_password')
         new_password = request.POST.get('new_password')
         confirm_password = request.POST.get('confirm_password')
 
-        if current_password or new_password or confirm_password:
-            if not (current_password and new_password and confirm_password):
-                messages.error(request, "Please fill in all password fields.")
-            elif new_password != confirm_password:
-                messages.error(request, "New passwords do not match.")
+        if current_password and new_password and confirm_password:
+            if new_password != confirm_password:
+                messages.error(request, "كلمة المرور الجديدة غير متطابقة")
             elif not user.check_password(current_password):
-                messages.error(request, "Current password is incorrect.")
+                messages.error(request, "كلمة المرور الحالية غير صحيحة")
             else:
                 user.set_password(new_password)
                 user.save()
-                messages.success(request, "Password updated successfully.")
+                messages.success(request, "تم تغيير كلمة المرور بنجاح")
+                return redirect('account')
 
-        messages.success(request, "Profile updated successfully.")
+        # التعامل مع تحديث المعلومات الشخصية
+        first_name = request.POST.get('first_name', '').strip()
+        last_name = request.POST.get('last_name', '').strip()
+        email = request.POST.get('email', '').strip()
+        address = request.POST.get('address', '').strip()
+        phone = request.POST.get('phone', '').strip()
+
+        # تحديث بيانات المستخدم مع التحقق من القيم الفارغة
+        if first_name or last_name or email:
+            user.first_name = first_name or user.first_name
+            user.last_name = last_name or user.last_name
+            user.email = email or user.email
+            user.save()
+
+        # تحديث بيانات البروفايل
+        if address or phone:
+            profile.address = address
+            if phone:
+                profile.phone_number = phone
+            profile.save()
+
+        messages.success(request, "تم تحديث البيانات بنجاح")
         return redirect('account')
 
     return render(request, 'pages/account/account.html', {
@@ -908,4 +918,24 @@ def add_comment(request, product_id):
         return redirect(referer)
     else:
         return redirect('product', pk=product.id)
+    
+def search_products(request):
+    query = request.GET.get('q', '')
+    if query:
+        products = Product.objects.filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query) |
+            Q(category__name__icontains=query)
+        )[:5]  # نقوم بتحديد عدد النتائج ب 5 فقط
+        
+        results = []
+        for product in products:
+            results.append({
+                'id': product.id,
+                'name': product.name,
+                'image': product.image.url if product.image else '',
+                'price': str(product.price),
+            })
+        return JsonResponse(results, safe=False)
+    return JsonResponse([], safe=False)
     
