@@ -53,18 +53,6 @@ nav {
   justify-content: space-between;
 }
 
-.seacrch {
-  background-color: #ddd;
-  padding: 7px;
-  border-radius: 10px;
-  margin-right: 9px;
-  transition: 0.3s;
-}
-
-.seacrch:focus {
-  scale: 1.03;
-}
-
 nav .linkes {
   display: flex;
   justify-content: space-between;
@@ -3800,8 +3788,8 @@ body.dark .filters h3 {
 }
 
 .product-image-manag {
-  width: 60px;
-  height: 60px;
+  width: 200px;
+  height: 200px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -3971,8 +3959,8 @@ body.dark .filters h3 {
   }
 
   .product-image-manag {
-    width: 40px;
-    height: 40px;
+    width: 100px;
+    height: 100px;
   }
 
   .action-buttons {
@@ -3995,8 +3983,8 @@ body.dark .filters h3 {
   }
 
   .product-image-manag {
-    width: 35px;
-    height: 35px;
+    width: 70px;
+    height: 70px;
   }
 
   .edit-btn,

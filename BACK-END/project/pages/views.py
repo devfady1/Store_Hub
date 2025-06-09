@@ -24,8 +24,17 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from random import sample
-
-
+from .sentiment_utils import analyze_sentiment
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.db.models import F
+from django.http import JsonResponse
+from .models import Order, UserProfile
+from geopy.distance import geodesic
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
+from geopy.distance import geodesic
+from .models import Order, UserProfile 
 
 
 def is_seler(user):
@@ -88,12 +97,13 @@ def wishlist(request):
         'liked_products': liked_products,
         'random_products': random_products
     })
+
+
 @login_required
 @csrf_exempt
 def toggle_like(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     
-    # إضافة أو إزالة اللايك
     if request.user in product.likes.all():
         product.likes.remove(request.user)  
         liked = False
@@ -101,13 +111,11 @@ def toggle_like(request, product_id):
         product.likes.add(request.user)  
         liked = True
 
-    # تحديث التقييمات
+
     product.star_list = range(int(round(product.rating)))
 
-    # حفظ التغييرات في قاعدة البيانات (مهم)
     product.save()
 
-    # إرجاع الاستجابة بالعدد الجديد للايكات
     return JsonResponse({'liked': liked, 'likes_count': product.likes.count()})
 
 def about(request):
@@ -118,9 +126,9 @@ def product(request, pk):
     product = Product.objects.get(id=pk)
     rating = getattr(product, 'rating', 0)
     full_stars = int(rating)
-    empty_stars = 5 - full_stars  # عدد النجوم الفارغة
+    empty_stars = 5 - full_stars  
 
-    # المنتجات المشابهة
+
     related_items = Product.objects.filter(category=product.category).exclude(id=pk)[:4]
 
     # تجهيز بيانات النجوم للمنتجات المشابهة
@@ -217,43 +225,53 @@ def account(request):
     profile, created = UserProfile.objects.get_or_create(user=user)
 
     if request.method == 'POST':
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        email = request.POST.get('email')
-        address = request.POST.get('address')
-        phone = request.POST.get('phone')
-        profile_image = request.FILES.get('profile_image')
-
-        # تحديث بيانات المستخدم
-        user.first_name = first_name
-        user.last_name = last_name
-        user.email = email
-        user.save()
-
-        # تحديث بروفايل
-        profile.phone_number = phone
-        if profile_image:
-            profile.profile_image = profile_image
-        profile.save()
+        # التعامل مع رفع الصورة
+        if 'profile_image' in request.FILES:
+            profile_image = request.FILES.get('profile_image')
+            if profile_image:
+                profile.profile_image = profile_image
+                profile.save()
+                messages.success(request, "تم تحديث الصورة الشخصية بنجاح")
+                return redirect('account')
 
         # التعامل مع تغيير كلمة المرور
         current_password = request.POST.get('current_password')
         new_password = request.POST.get('new_password')
         confirm_password = request.POST.get('confirm_password')
 
-        if current_password or new_password or confirm_password:
-            if not (current_password and new_password and confirm_password):
-                messages.error(request, "Please fill in all password fields.")
-            elif new_password != confirm_password:
-                messages.error(request, "New passwords do not match.")
+        if current_password and new_password and confirm_password:
+            if new_password != confirm_password:
+                messages.error(request, "كلمة المرور الجديدة غير متطابقة")
             elif not user.check_password(current_password):
-                messages.error(request, "Current password is incorrect.")
+                messages.error(request, "كلمة المرور الحالية غير صحيحة")
             else:
                 user.set_password(new_password)
                 user.save()
-                messages.success(request, "Password updated successfully.")
+                messages.success(request, "تم تغيير كلمة المرور بنجاح")
+                return redirect('account')
 
-        messages.success(request, "Profile updated successfully.")
+        # التعامل مع تحديث المعلومات الشخصية
+        first_name = request.POST.get('first_name', '').strip()
+        last_name = request.POST.get('last_name', '').strip()
+        email = request.POST.get('email', '').strip()
+        address = request.POST.get('address', '').strip()
+        phone = request.POST.get('phone', '').strip()
+
+        # تحديث بيانات المستخدم مع التحقق من القيم الفارغة
+        if first_name or last_name or email:
+            user.first_name = first_name or user.first_name
+            user.last_name = last_name or user.last_name
+            user.email = email or user.email
+            user.save()
+
+        # تحديث بيانات البروفايل
+        if address or phone:
+            profile.address = address
+            if phone:
+                profile.phone_number = phone
+            profile.save()
+
+        messages.success(request, "تم تحديث البيانات بنجاح")
         return redirect('account')
 
     return render(request, 'pages/account/account.html', {
@@ -419,7 +437,7 @@ from django.views import View
 from .models import Product
 import json
 
-# ✅ عرض المنتجات في الصفحة وفي API
+
 from django.contrib.auth.decorators import login_required
 def product_list(request):
     if request.user.is_authenticated:
@@ -571,17 +589,10 @@ def delivery_order_view(request):
 
 
 
-
-
-
-
 def order_success(request):
     return render(request, 'pages/payment/order_success.html')
 
 
-from django.shortcuts import render, redirect
-from .models import Order
-from django.contrib.auth.decorators import login_required
 
 @login_required
 def place_order(request):
@@ -592,10 +603,23 @@ def place_order(request):
         if not cart:
             return redirect('cart')
 
+        # Get lat/lng values with defaults
+        client_lat = request.POST.get('client_lat')
+        client_lng = request.POST.get('client_lng')
+
+        # Convert to float if not empty, otherwise use default coordinates
+        try:
+            client_lat = float(client_lat) if client_lat else 0.0
+            client_lng = float(client_lng) if client_lng else 0.0
+        except ValueError:
+            client_lat = 0.0
+            client_lng = 0.0
 
         order = Order.objects.create(
             customer=user,
-            status='pending'
+            status='pending',
+            client_lat=client_lat,
+            client_lng=client_lng
         )
 
         for product_id, item in cart.items():
@@ -607,7 +631,7 @@ def place_order(request):
                     quantity=item['quantity']
                 )
             except Product.DoesNotExist:
-                continue 
+                continue
 
         request.session['cart'] = {}
         return redirect('order_success')
@@ -617,10 +641,9 @@ def place_order(request):
 
 
 
-
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id)
-    items = order.items.all()  
+    items = order.items.all()
     total_price = sum(item.product.price * item.quantity for item in items)
 
     delivery_agent_profile = None
@@ -633,6 +656,13 @@ def order_detail(request, order_id):
             filled_stars = int(round(delivery_agent_profile.rating))
             empty_stars = 5 - filled_stars
 
+    seller_lat = None
+    seller_lng = None
+    if items:
+        product = items[0].product
+        seller_lat = product.seller_lat 
+        seller_lng = product.seller_lng
+
     context = {
         'order': order,
         'items': items,
@@ -644,14 +674,17 @@ def order_detail(request, order_id):
         'client_lng': order.client_lng,
         'driver_lat': order.delivery_agent_lat,
         'driver_lng': order.delivery_agent_lng,
+        'seller_lat': seller_lat,
+        'seller_lng': seller_lng,
     }
     return render(request, 'delivery agent/Delivery Order Details.html', context)
 
 
 
+
 def my_orders_view(request):
     user = request.user
-    status_filter = request.GET.get('status')  # نجيب الفلتر لو موجود
+    status_filter = request.GET.get('status')  
 
     orders = Order.objects.filter(customer=user).prefetch_related('items__product').order_by('-order_date')
 
@@ -670,12 +703,245 @@ def my_orders_view(request):
 
 
 
-
 def order_details(request, order_id):
     order = get_object_or_404(Order, id=order_id, customer=request.user)
     
     return render(request, 'delivery agent/order_detail.html', {'order': order})
 
+
+@login_required
+def assign_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id, delivery_agent__isnull=True)
+    user_profile = get_object_or_404(UserProfile, user=request.user, role='delivery_agent')
+
+    order.delivery_agent = request.user
+    order.delivery_agent_lat = user_profile.lat
+    order.delivery_agent_lng = user_profile.lng
+    order.status = 'in_progress'
+    order.save()
+
+    return redirect('order_detail', order_id=order.id)
+
+@login_required
+def available_order_view(request):
+    user_profile = get_object_or_404(UserProfile, user=request.user, role='delivery_agent')
+    driver_location = (user_profile.lat, user_profile.lng)
+
+    available_orders = list(Order.objects.filter(
+        status='pending',
+        delivery_agent__isnull=True,
+        client_lat__isnull=False,
+        client_lng__isnull=False,
+    ).prefetch_related('items', 'items__product', 'customer'))
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        order_id = int(request.POST.get('order_id'))
+        order = get_object_or_404(Order, id=order_id)
+        if action == 'accept':
+            order.delivery_agent = request.user
+            order.delivery_agent_lat = user_profile.lat
+            order.delivery_agent_lng = user_profile.lng
+            order.status = 'in_progress'
+            order.save()
+            request.session['rejected_order_ids'] = []
+            return redirect('delivery_order_detail', order_id=order.id)
+        elif action == 'decline':
+            rejected_order_ids = request.session.get('rejected_order_ids', [])
+            rejected_order_ids.append(order_id)
+            request.session['rejected_order_ids'] = rejected_order_ids
+            messages.info(request, 'Order declined.')
+            return redirect('available_orders')
+
+    rejected_order_ids = request.session.get('rejected_order_ids', [])
+    available_orders = [o for o in available_orders if o.id not in rejected_order_ids]
+
+    if not available_orders:
+        return render(request, 'delivery agent/OrderTracking.html', {
+            'orders_data': [],
+            'driver_lat': user_profile.lat,
+            'driver_lng': user_profile.lng,
+        })
+
+    def order_distance(order):
+        return geodesic(driver_location, (order.client_lat, order.client_lng)).km
+
+    available_orders.sort(key=order_distance)
+    closest_orders = available_orders[:2]
+
+    orders_data = []
+    for order in closest_orders:
+        items = order.items.all()
+        total_price = sum(item.product.price * item.quantity for item in items)
+        product = items[0].product if items else None
+        seller_lat = product.seller_lat if product else 0
+        seller_lng = product.seller_lng if product else 0
+
+        orders_data.append({
+            'order': order,
+            'items': items,
+            'total_price': total_price,
+            'client_lat': order.client_lat,
+            'client_lng': order.client_lng,
+            'seller_lat': seller_lat,
+            'seller_lng': seller_lng,
+        })
+
+    context = {
+        'orders_data': orders_data,
+        'driver_lat': user_profile.lat,
+        'driver_lng': user_profile.lng,
+    }
+
+    return render(request, 'delivery agent/OrderTracking.html', context)
+
+
+@csrf_exempt
+@login_required
+def live_location_view(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    if request.method == 'GET':
+        customer_profile = UserProfile.objects.filter(user=order.customer).first()
+        driver_profile = UserProfile.objects.filter(user=order.delivery_agent).first()
+
+        items = order.items.all()
+        product = items[0].product if items else None
+
+        seller_lat = product.seller_lat if product else None
+        seller_lng = product.seller_lng if product else None
+
+        return JsonResponse({
+            'customer': {
+                'lat': customer_profile.lat if customer_profile else None,
+                'lng': customer_profile.lng if customer_profile else None,
+            },
+            'driver': {
+                'lat': driver_profile.lat if driver_profile else None,
+                'lng': driver_profile.lng if driver_profile else None,
+            },
+            'seller': {
+                'lat': seller_lat,
+                'lng': seller_lng,
+            },
+        })
+
+    elif request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            lat = data.get('lat')
+            lng = data.get('lng')
+
+            if lat is None or lng is None:
+                return JsonResponse({'status': 'error', 'message': 'Missing coordinates'}, status=400)
+
+            user_profile = UserProfile.objects.get(user=request.user)
+            user_profile.lat = lat
+            user_profile.lng = lng
+            user_profile.save()
+
+            return JsonResponse({'status': 'success'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid HTTP method'}, status=405)
+
+
+
+@login_required
+@csrf_exempt
+def update_order_status(request, order_id):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            new_status = data.get('status')
+            order = get_object_or_404(Order, id=order_id)
+
+            if new_status in dict(Order.STATUS_CHOICES):
+                order.status = new_status
+                order.save()
+                return JsonResponse({'message': 'Status updated successfully.', 'new_status': order.get_status_display()})
+            else:
+                return JsonResponse({'error': 'Invalid status.'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+
+    return JsonResponse({'error': 'Invalid request method.'}, status=405)
+
+ 
+@login_required
+def delivery_order_detail_view(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    if not request.user.userprofile.role == 'delivery_agent':
+        return redirect('index')  # أو صفحة خطأ مخصصة
+    items = order.items.all()
+    total_price = sum(item.product.price * item.quantity for item in items)
+    delivery_agent_profile = UserProfile.objects.filter(user=order.delivery_agent).first()
+    filled_stars = int(round(delivery_agent_profile.rating)) if delivery_agent_profile and delivery_agent_profile.rating else 0
+    empty_stars = 5 - filled_stars
+    seller_lat = items[0].product.seller_lat if items else 0
+    seller_lng = items[0].product.seller_lng if items else 0
+    context = {
+        'order': order,
+        'items': items,
+        'total_price': total_price,
+        'delivery_agent_profile': delivery_agent_profile,
+        'filled_stars': filled_stars,
+        'empty_stars': empty_stars,
+        'client_lat': order.client_lat,
+        'client_lng': order.client_lng,
+        'driver_lat': order.delivery_agent_lat,
+        'driver_lng': order.delivery_agent_lng,
+        'seller_lat': seller_lat,
+        'seller_lng': seller_lng,
+    }
+    return render(request, 'delivery agent/delevry order.html', context)
+
+def search_products(request):
+    query = request.GET.get('q', '')
+    if query:
+        products = Product.objects.filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query) |
+            Q(category__name__icontains=query)
+        )[:5]  # نقوم بتحديد عدد النتائج ب 5 فقط
+        
+        results = []
+        for product in products:
+            results.append({
+                'id': product.id,
+                'name': product.name,
+                'image': product.image.url if product.image else '',
+                'price': str(product.price),
+            })
+        return JsonResponse(results, safe=False)
+    return JsonResponse([], safe=False)
+
+
+def add_comment(request, product_id):
+    if request.method == 'POST':
+        product = get_object_or_404(Product, id=product_id)
+        comment_text = request.POST.get('comment')
+
+        sentiment = analyze_sentiment(comment_text)  
+
+        ProductComment.objects.create(
+            product=product,
+            user=request.user,
+            comment_text=comment_text,
+            sentiment=sentiment
+        )
+
+        print("Comment Text:", comment_text)
+        print("Detected Sentiment:", sentiment) 
+
+    referer = request.META.get('HTTP_REFERER')
+    if referer:
+        return redirect(referer)
+    else:
+        return redirect('product', pk=product.id)
+    
 
 @login_required
 def rate_product(request, product_id):
@@ -698,3 +964,4 @@ def rate_product(request, product_id):
         return redirect(referer)
     else:
         return redirect('product', pk=product.id)
+    

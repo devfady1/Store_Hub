@@ -9,6 +9,8 @@ class UserProfile(models.Model):
         ('saler', 'Saler'),
         ('admin', 'Admin'), 
     ]
+    lat = models.FloatField(null=True, blank=True)
+    lng = models.FloatField(null=True, blank=True)
     profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True, default='default_driver.jpg')
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)  # من 5 نجوم
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # ارتباط كل مستخدم ببروفايل خاص بيه
@@ -64,6 +66,8 @@ class Product(models.Model):
     likes = models.ManyToManyField(User, related_name='product_likes', blank=True, verbose_name="اللايكات")
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="التصنيف")
     rating = models.FloatField(default=0, verbose_name="التقييم")
+    seller_lat = models.FloatField(null=True, blank=True)
+    seller_lng = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -85,7 +89,24 @@ class Product(models.Model):
         verbose_name = "منتج"
         verbose_name_plural = "منتجات"
 
+#التعليقات علي البرودكت و الفلتر بتاعها
+class ProductComment(models.Model):
+    SENTIMENT_CHOICES = [
+        ('positive', 'حلو'),
+        ('neutral', 'عادي'),
+        ('negative', 'وحش'),
+    ]
 
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment_text = models.TextField()
+    sentiment = models.CharField(max_length=10, choices=SENTIMENT_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} ({self.sentiment})"
+
+   
 #النجوم و المستخدم يقدر يعمل تقييم        
 class ProductRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ratings")

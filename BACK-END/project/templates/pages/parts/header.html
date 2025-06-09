@@ -42,7 +42,17 @@
             </a>
           </div>
           <form class="header-form">
-            
+              <input type="text" placeholder="Search Product" class="search-input" id="searchInput" autocomplete="off">
+              <div class="search-results" id="searchResults">
+                <div class="search-loading">
+                  <div class="spinner"></div>
+                  <span>Searching...</span>
+                </div>
+                <div class="no-results">
+                  <i class="fas fa-box-open"></i>
+                  <span>No Results</span>
+                </div>
+              </div>
             <a href="{% url 'wishlist' %}"><i class="fa-regular fa-heart"></i></a>
             <a href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i></a>
             <a href="#" id="user-icon">
@@ -69,7 +79,9 @@
                     <li><a href="{% url 'register' %}"> <i class="fa-solid fa-user-plus"></i> Sign Up</a></li>
                 {% endif %}
             </ul>
-        </div>
+          </div>
+        </form>
+        <form class="header-form">
           
             <input type="checkbox" id="toggle" />
 
@@ -78,10 +90,10 @@
               <i class="bx bx-moon"></i>
               <span class="ball"></span>
             </label>
-          </form>
-        </nav>
-      </div>
-    </header>
+        </form>
+      </nav>
+    </div>
+  </header>
     
     <script>
       //User Account
@@ -138,3 +150,172 @@ document.addEventListener('click', (e) => {
     
       document.addEventListener("DOMContentLoaded", typeWriter);
     </script>
+
+    <script>
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    const searchLoading = document.querySelector('.search-loading');
+    const noResults = document.querySelector('.no-results');
+    let searchTimeout;
+    let lastQuery = '';
+
+    // تحديث موضع القائمة عند التمرير
+    const updatePosition = () => {
+      if (searchResults.style.display === 'block') {
+        const headerHeight = document.querySelector('header').offsetHeight;
+        searchResults.style.top = `${headerHeight}px`;
+      }
+    };
+
+    window.addEventListener('scroll', updatePosition);
+    window.addEventListener('resize', updatePosition);
+
+    // دالة البحث
+    const performSearch = async (query) => {
+      if (query === lastQuery) return;
+      lastQuery = query;
+      
+      if (query.length < 2) {
+        searchResults.style.display = 'none';
+        return;
+      }
+
+      try {
+        searchResults.style.display = 'block';
+        searchLoading.style.display = 'flex';
+        noResults.style.display = 'none';
+        
+        const response = await fetch(`/search-products/?q=${encodeURIComponent(query)}`);
+        const data = await response.json();
+        
+        searchLoading.style.display = 'none';
+        
+        if (data.length === 0) {
+          noResults.style.display = 'flex';
+          return;
+        }
+
+        const resultsHtml = data.map(product => `
+          <div class="search-result-item" data-product-id="${product.id}">
+            <img src="${product.image}" alt="${product.name}" loading="lazy">
+            <div class="product-info">
+              <div class="product-name">${product.name}</div>
+              <div class="product-meta">
+                <span class="product-price">${product.price} جنيه</span>
+                ${product.category ? `<span class="product-category">${product.category}</span>` : ''}
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        const resultsContainer = document.createElement('div');
+        resultsContainer.className = 'search-results-container';
+        resultsContainer.innerHTML = resultsHtml;
+        
+        // حذف النتائج السابقة
+        const oldContainer = searchResults.querySelector('.search-results-container');
+        if (oldContainer) {
+          oldContainer.remove();
+        }
+        
+        searchResults.appendChild(resultsContainer);
+        
+        // إضافة مستمعي الأحداث للنتائج
+        const resultItems = searchResults.querySelectorAll('.search-result-item');
+        resultItems.forEach(item => {
+          item.addEventListener('click', () => {
+            const productId = item.dataset.productId;
+            window.location.href = `/product/${productId}/`;
+          });
+          
+          // تحميل مسبق عند التحويم
+          item.addEventListener('mouseenter', () => {
+            const productId = item.dataset.productId;
+            const link = document.createElement('link');
+            link.rel = 'prefetch';
+            link.href = `/product/${productId}/`;
+            document.head.appendChild(link);
+          });
+        });
+      } catch (error) {
+        console.error('خطأ في البحث:', error);
+        searchLoading.style.display = 'none';
+        noResults.style.display = 'flex';
+        noResults.querySelector('span').textContent = 'حدث خطأ في البحث';
+      }
+    };
+
+    // مستمع الأحداث لحقل البحث
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(searchTimeout);
+      const query = e.target.value.trim();
+      
+      searchTimeout = setTimeout(() => {
+        performSearch(query);
+      }, 300);
+    });
+
+    // إغلاق نتائج البحث عند النقر خارجها
+    document.addEventListener('click', (e) => {
+      if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+        searchResults.style.display = 'none';
+      }
+    });
+
+    // فتح نتائج البحث عند التركيز
+    searchInput.addEventListener('focus', () => {
+      if (searchInput.value.trim().length >= 2) {
+        searchResults.style.display = 'block';
+      }
+    });
+
+    // مستمع أحداث للوحة المفاتيح
+    searchInput.addEventListener('keydown', (e) => {
+      const results = searchResults.querySelectorAll('.search-result-item');
+      const currentActive = searchResults.querySelector('.search-result-item.active');
+      let nextActive;
+
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault();
+          if (!currentActive) {
+            nextActive = results[0];
+          } else {
+            const currentIndex = Array.from(results).indexOf(currentActive);
+            nextActive = results[currentIndex + 1] || results[0];
+          }
+          break;
+          
+        case 'ArrowUp':
+          e.preventDefault();
+          if (!currentActive) {
+            nextActive = results[results.length - 1];
+          } else {
+            const currentIndex = Array.from(results).indexOf(currentActive);
+            nextActive = results[currentIndex - 1] || results[results.length - 1];
+          }
+          break;
+          
+        case 'Enter':
+          if (currentActive) {
+            e.preventDefault();
+            window.location.href = `/product/${currentActive.dataset.productId}/`;
+          }
+          break;
+          
+        case 'Escape':
+          e.preventDefault();
+          searchResults.style.display = 'none';
+          searchInput.blur();
+          break;
+      }
+
+      if (nextActive) {
+        currentActive?.classList.remove('active');
+        nextActive.classList.add('active');
+        nextActive.scrollIntoView({ block: 'nearest' });
+      }
+    });
+    </script>
+
+   

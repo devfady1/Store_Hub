@@ -1,13 +1,15 @@
 {% extends 'pages/base.html' %} {% load static %} {% block content %}
 
 <div class="breadcrumb-checkout">
-  <a href="#">Account</a> / <a href="#">My Account</a> /
-  <a href="#">Product</a> / <a href="#">View Cart</a> /
-  <span class="check">/</span> <a href="#" class="check">Checkout</a>
+  <a href="{% url 'account' %}">My Account</a> /
+  <a href="{% url 'allproducts' %}">Product</a> / <a href="{% url 'cart' %}">View Cart</a>
+  <span class="check">/</span> <a href="{% url 'checkout' %}" class="check">Checkout</a>
 </div>
 
 <form method="POST" action="{% url 'place_order' %}" class="checkout-form">
   {% csrf_token %}
+  <input type="hidden" name="client_lat" id="client_lat">
+  <input type="hidden" name="client_lng" id="client_lng">
 
   <div class="container-checkout">
     <div class="billing">
@@ -149,4 +151,20 @@
       window.alert("Your Number is Invalid ");
   });
 </script>
+<script>
+  // جلب إحداثيات المستخدم تلقائيًا
+  window.onload = function () {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        document.getElementById('client_lat').value = position.coords.latitude;
+        document.getElementById('client_lng').value = position.coords.longitude;
+      }, function (error) {
+        console.error("Location Error:", error.message);
+      });
+    } else {
+      alert("Geolocation not supported by this browser.");
+    }
+  };
+</script>
+
 {% endblock %}

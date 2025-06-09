@@ -5,6 +5,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'css/style_delivery.css' %}" />
@@ -127,69 +132,101 @@
             </div>
         </div>
     
-        <div class="map-container">
+          <div class="map-container">
             <div id="map" style="height: 100%; width: 100%;"></div>
           </div>
           
           <script>
-          let map, directionsService, directionsRenderer, userMarker;
-          
-          function initMap() {
-            directionsService = new google.maps.DirectionsService();
-            directionsRenderer = new google.maps.DirectionsRenderer();
-          
-            map = new google.maps.Map(document.getElementById("map"), {
-              center: { lat: 27.1866617, lng: 31.1704269 },
-              zoom: 13,
-            });
-          
-            directionsRenderer.setMap(map);
-            const driverLocation = { lat: {{ driver_lat|default:27.1866 }}, lng: {{ driver_lng|default:31.1704 }} };
-            if (navigator.geolocation) {
-              navigator.geolocation.watchPosition(
-                (position) => {
-                  const userLocation = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
-                  };
-          
-                  if (userMarker) userMarker.setMap(null);
-          
-                  userMarker = new google.maps.Marker({
-                    position: userLocation,
-                    map: map,
-                    label: "U",
-                    title: "Your Live Location"
-                  });
-          
-                  calculateAndDisplayRoute(driverLocation, userLocation);
-                },
-                (error) => {
-                  console.error("Error getting location:", error);
-                },
-                { enableHighAccuracy: true }
-              );
-            } else {
-              alert("Geolocation is not supported by your browser.");
-            }
-          }
-          
-          function calculateAndDisplayRoute(start, end) {
-            directionsService.route(
-              {
-                origin: start,
-                destination: end,
-                travelMode: google.maps.TravelMode.DRIVING, 
-              },
-              (response, status) => {
-                if (status === "OK") {
-                  directionsRenderer.setDirections(response);
-                } else {
-                  window.alert("Directions request failed due to " + status);
-                }
+              const driverLat = {{ driver_lat|default:27.1866 }};
+              const driverLng = {{ driver_lng|default:31.1704 }};
+              const clientLat = {{ client_lat|default:27.1866 }};
+              const clientLng = {{ client_lng|default:31.1704 }};
+              const sellerLat = {{ seller_lat|default:27.1866 }};
+              const sellerLng = {{ seller_lng|default:31.1704 }};
+
+              const driverLocation = [driverLat, driverLng];
+              const staticClientLocation = [clientLat, clientLng];
+              const sellerLocation = [sellerLat, sellerLng];
+
+              let map = L.map('map').setView(driverLocation, 13);
+
+              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+              }).addTo(map);
+
+              const driverMarker = L.marker(driverLocation).addTo(map).bindPopup("Driver Location").openPopup();
+
+              const sellerMarker = L.marker(sellerLocation, {
+                icon: L.icon({
+                  iconUrl: 'https://cdn-icons-png.flaticon.com/512/2038/2038854.png',
+                  iconSize: [25, 25]
+                })
+              }).addTo(map).bindPopup("Seller Location");
+
+              let clientMarker = L.marker(staticClientLocation, {
+                icon: L.icon({
+                  iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+                  iconSize: [25, 25]
+                })
+              }).addTo(map).bindPopup("Customer Location");
+
+              let routeLine;
+
+              function drawRoute(from, to) {
+                const url = `https://api.openrouteservice.org/v2/directions/driving-car/geojson`;
+                const body = {
+                  coordinates: [
+                    [from[1], from[0]],
+                    [to[1], to[0]]
+                  ]
+                };
+
+                fetch(url, {
+                  method: "POST",
+                  headers: {
+                    'Authorization': '5b3ce3597851110001cf624849ee31d7612e44018effded422136ba4',
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(body)
+                })
+                .then(res => res.json())
+                .then(data => {
+                  const coords = data.features[0].geometry.coordinates.map(c => [c[1], c[0]]);
+                  if (routeLine) map.removeLayer(routeLine);
+                  routeLine = L.polyline(coords, { color: 'blue', weight: 5 }).addTo(map);
+                  map.fitBounds(routeLine.getBounds());
+                })
+                .catch(err => {
+                  console.error("Routing error:", err);
+                });
               }
-            );
-          }
+
+              // السائق → السيلر
+              drawRoute(driverLocation, sellerLocation);
+
+              // العميل (Live location)
+              if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(position => {
+                  const liveClientLocation = [position.coords.latitude, position.coords.longitude];
+
+                  if (clientMarker) map.removeLayer(clientMarker);
+
+                  clientMarker = L.marker(liveClientLocation, {
+                    icon: L.icon({
+                      iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+                      iconSize: [25, 25]
+                    }),
+                    title: "Your Live Location"
+                  }).addTo(map).bindPopup("Your Live Location").openPopup();
+
+                  // السيلر → العميل (live)
+                  drawRoute(sellerLocation, liveClientLocation);
+                }, err => {
+                  console.warn("Location access denied or unavailable.");
+                }, { enableHighAccuracy: true });
+              } else {
+                alert("Geolocation is not supported by your browser.");
+              }
           </script>
           
           <script async defer
