@@ -3888,7 +3888,11 @@ input[type="checkbox"]:checked::after {
 }
 .sign,
 .login {
+<<<<<<< HEAD
+  min-height: 150vh;
+=======
   min-height: 100vh;
+>>>>>>> fc42fbc2f36d938d562c1e5ea98e36ef3be4e9cf
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3908,6 +3912,7 @@ input[type="checkbox"]:checked::after {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  margin-left: 60px;
 }
 
 .sign-image img {
@@ -4110,8 +4115,9 @@ input[type="checkbox"]:checked::after {
 
 /* Dark Error Message  */
 
-.dark .error-message {
-  color: var(--text-color);
+.error-message {
+  color: var(--main-color);
+  font-size: 20px;
 }
 
 /* Responsive */
