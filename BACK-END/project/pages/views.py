@@ -603,8 +603,17 @@ def place_order(request):
         if not cart:
             return redirect('cart')
 
+        # Get lat/lng values with defaults
         client_lat = request.POST.get('client_lat')
         client_lng = request.POST.get('client_lng')
+
+        # Convert to float if not empty, otherwise use default coordinates
+        try:
+            client_lat = float(client_lat) if client_lat else 0.0
+            client_lng = float(client_lng) if client_lng else 0.0
+        except ValueError:
+            client_lat = 0.0
+            client_lng = 0.0
 
         order = Order.objects.create(
             customer=user,
@@ -860,73 +869,7 @@ def update_order_status(request, order_id):
 
     return JsonResponse({'error': 'Invalid request method.'}, status=405)
 
-
-@login_required
-def rate_product(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-
-    if request.method == 'POST':
-        stars = int(request.POST.get('stars', 0))
-        if 1 <= stars <= 5:
-            rating, created = ProductRating.objects.update_or_create(
-                user=request.user, product=product,
-                defaults={'stars': stars}
-            )
-            product.update_rating()
-            messages.success(request, 'تم حفظ تقييمك بنجاح.')
-        else:
-            messages.error(request, 'يرجى اختيار تقييم من 1 إلى 5 نجوم.')
-
-    referer = request.META.get('HTTP_REFERER')
-    if referer:
-        return redirect(referer)
-    else:
-        return redirect('product', pk=product.id)
-    
-def add_comment(request, product_id):
-    if request.method == 'POST':
-        product = get_object_or_404(Product, id=product_id)
-        comment_text = request.POST.get('comment')
-
-        sentiment = analyze_sentiment(comment_text)  
-
-        ProductComment.objects.create(
-            product=product,
-            user=request.user,
-            comment_text=comment_text,
-            sentiment=sentiment
-        )
-
-        print("Comment Text:", comment_text)
-        print("Detected Sentiment:", sentiment) 
-
-    referer = request.META.get('HTTP_REFERER')
-    if referer:
-        return redirect(referer)
-    else:
-        return redirect('product', pk=product.id)
-    
-def search_products(request):
-    query = request.GET.get('q', '')
-    if query:
-        products = Product.objects.filter(
-            Q(name__icontains=query) |
-            Q(description__icontains=query) |
-            Q(category__name__icontains=query)
-        )[:5]  # نقوم بتحديد عدد النتائج ب 5 فقط
-        
-        results = []
-        for product in products:
-            results.append({
-                'id': product.id,
-                'name': product.name,
-                'image': product.image.url if product.image else '',
-                'price': str(product.price),
-            })
-        return JsonResponse(results, safe=False)
-    return JsonResponse([], safe=False)
-    
-    
+ 
 @login_required
 def delivery_order_detail_view(request, order_id):
     order = get_object_or_404(Order, id=order_id)
@@ -955,3 +898,70 @@ def delivery_order_detail_view(request, order_id):
     }
     return render(request, 'delivery agent/delevry order.html', context)
 
+def search_products(request):
+    query = request.GET.get('q', '')
+    if query:
+        products = Product.objects.filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query) |
+            Q(category__name__icontains=query)
+        )[:5]  # نقوم بتحديد عدد النتائج ب 5 فقط
+        
+        results = []
+        for product in products:
+            results.append({
+                'id': product.id,
+                'name': product.name,
+                'image': product.image.url if product.image else '',
+                'price': str(product.price),
+            })
+        return JsonResponse(results, safe=False)
+    return JsonResponse([], safe=False)
+
+
+def add_comment(request, product_id):
+    if request.method == 'POST':
+        product = get_object_or_404(Product, id=product_id)
+        comment_text = request.POST.get('comment')
+
+        sentiment = analyze_sentiment(comment_text)  
+
+        ProductComment.objects.create(
+            product=product,
+            user=request.user,
+            comment_text=comment_text,
+            sentiment=sentiment
+        )
+
+        print("Comment Text:", comment_text)
+        print("Detected Sentiment:", sentiment) 
+
+    referer = request.META.get('HTTP_REFERER')
+    if referer:
+        return redirect(referer)
+    else:
+        return redirect('product', pk=product.id)
+    
+
+@login_required
+def rate_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    if request.method == 'POST':
+        stars = int(request.POST.get('stars', 0))
+        if 1 <= stars <= 5:
+            rating, created = ProductRating.objects.update_or_create(
+                user=request.user, product=product,
+                defaults={'stars': stars}
+            )
+            product.update_rating()
+            messages.success(request, 'تم حفظ تقييمك بنجاح.')
+        else:
+            messages.error(request, 'يرجى اختيار تقييم من 1 إلى 5 نجوم.')
+
+    referer = request.META.get('HTTP_REFERER')
+    if referer:
+        return redirect(referer)
+    else:
+        return redirect('product', pk=product.id)
+    

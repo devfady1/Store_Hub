@@ -669,6 +669,7 @@ nav form i:hover {
   border-radius: 10px;
   margin-right: 9px;
   transition: 0.3s;
+  margin: 15px;
 }
 
 .seacrch:focus {
@@ -1038,7 +1039,7 @@ footer .container {
 .foot1 p,
 footer .container p,
 footer .container h3 {
-  margin: 15px 0;
+  margin: 15px;
   color: #fff;
   transition: 0.8s;
 }
@@ -1532,6 +1533,10 @@ footer .container h5:hover {
   bottom: 8px;
   right: 2px;
   transition: 0.3s;
+}
+.ourproduct .container .products .pro .icons .icon i.liked {
+  background-color: var(--main-color);
+  color: #fff;
 }
 .pro-div .container .pro .icons .icon,
 .RelatedItem .container .products .pro .icons .icon {
@@ -3212,8 +3217,8 @@ input[type="checkbox"]:checked::after {
   display: flex;
   justify-content: space-between;
   padding: 30px 9%;
-  font-size: 17px;
-  font-weight: 500px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .breadcrumb-account .a1 {
@@ -3231,6 +3236,23 @@ input[type="checkbox"]:checked::after {
   color: var(--main-color);
 }
 
+.messages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+#message {
+  font-size: 24px;
+  font-weight: 600;
+  background-color: var(--main-color);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
 /* Sidebar Account */
 .container-account {
   display: flex;
@@ -3845,6 +3867,25 @@ input[type="checkbox"]:checked::after {
 
 /* ==> Start Sign And Login <== */
 
+#messagelogin {
+  color: var(--main-color);
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#close {
+  flex-shrink: 0;
+  background-color: transparent;
+}
+
+#close::after {
+  content: "×";
+  color: var(--main-color);
+  font-size: 28px;
+  font-weight: bold;
+}
 .sign,
 .login {
   min-height: 100vh;
@@ -4432,7 +4473,7 @@ body.dark .filters h3 {
     font-size: 14px;
   }
   .allproduct .container {
-    flex-direction: column;
+    flex-direction: column; 
     gap: 20px;
   }
   .allproduct .products_dev {

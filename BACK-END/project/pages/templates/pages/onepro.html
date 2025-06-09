@@ -130,13 +130,13 @@
 
           <div class="buyLove">
             <div class="Number">
-              <div class="dec">-</div>
-              <div id="Num">0</div>
-              <div class="inc">+</div>
+              <div class="dec" onclick="decrementQuantity()">-</div>
+              <div id="Num">1</div>
+              <div class="inc" onclick="incrementQuantity()">+</div>
             </div>
-            <button>Buy Now</button>
+            <button onclick="addToCart({{ product.id }})">Buy Now</button>
             <div class="ico">
-              <i class="fa-regular fa-heart"></i>
+              <i class="fa-{% if product.id in liked_products %}solid{% else %}regular{% endif %} fa-heart" onclick="toggleLike({{ product.id }}, this, event)"></i>
             </div>
           </div>
         </div>
@@ -240,21 +240,60 @@
       </div>
     </section>
     <script src="{% static 'js/darkmode.js' %}"></script>
-    <script>
-      let x = 0;
-      let Num = document.querySelector(".buyLove #Num");
-      let dec = document.querySelector(".buyLove .dec");
-      let inc = document.querySelector(".buyLove .inc");
-      inc.addEventListener("click", () => {
-        x++;
-        Num.textContent = x;
-      });
-      dec.addEventListener("click", () => {
-        if(x > 0){
-          x--;
-          Num.textContent = x;
-        }
-      });
+    <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        let quantity = 1;
+        const numElement = document.getElementById('Num');
+
+        window.incrementQuantity = function() {
+            quantity++;
+            numElement.textContent = quantity;
+        };
+
+        window.decrementQuantity = function() {
+            if (quantity > 1) {
+                quantity--;
+                numElement.textContent = quantity;
+            }
+        };
+
+        window.addToCart = function(productId) {
+            fetch(`/add-to-cart/?product_id=${productId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    let quantity = data.cart[productId].quantity;
+                    alert(`✅ المنتج تم إضافته بنجاح! الكمية الحالية: ${quantity}`);
+                    window.location.href = "/cart/";
+                } else {
+                    alert("❌ حدث خطأ أثناء الإضافة!");
+                }
+            })
+            .catch(error => console.error('❌ Fetch Error:', error));
+        };
+
+        window.toggleLike = function(productId, btn, event) {
+            event.preventDefault();
+
+            fetch(`/toggle-like/${productId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.liked) {
+                    btn.classList.remove('fa-regular');
+                    btn.classList.add('fa-solid');
+                } else {
+                    btn.classList.remove('fa-solid');
+                    btn.classList.add('fa-regular');
+                }
+            })
+            .catch(error => console.error('❌ Error:', error));
+        };
+    });
     </script>
   </body>
 </html>
