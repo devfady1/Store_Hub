@@ -209,13 +209,16 @@ SOCIALACCOUNT_AUTO_SIGNUP = False
 
 
 #auth
-LOGIN_REDIRECT_URL = '/index'
-LOGOUT_REDIRECT_URL = '/login'
-LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = 'custom_redirect'
+LOGOUT_REDIRECT_URL = 'login'
+LOGIN_URL = 'login'
 
+# Add default URL
+DEFAULT_REDIRECT_URL = 'custom_redirect'
 
-
-
+# Add these settings
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
+ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 
 #messages on forget password
 from django.contrib.messages import constants as message_constants
@@ -241,13 +244,6 @@ EMAIL_HOST_USER = 'e05d8f8bf91b6e'
 EMAIL_HOST_PASSWORD = '5b0be7f03fd05b'
 EMAIL_USE_TLS = True
 
-#اول باص يشتغل فالسيرفر هو index
-
-
-if request.user.userprofile.role == 'delivery_agent':
-    DEFAULT_URL = '/delivery_order_view'
-else:
-    DEFAULT_URL = '/index'
 
 
 

@@ -43,6 +43,30 @@ def is_seler(user):
 def is_delevry(user):
     return user.userprofile.role == 'delivery_agent'
 
+from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+
+def custom_redirect_view(request):
+    # إذا لم يكن المستخدم مسجل دخول، توجيهه لصفحة تسجيل الدخول
+    if not request.user.is_authenticated:
+        return redirect('login')
+        
+    try:
+        user = request.user
+        if user.userprofile.role == 'delivery_agent':
+            return redirect('available_orders')
+        elif user.userprofile.role == 'saler':
+            return redirect('product-management')
+        elif user.userprofile.role == 'admin':
+            return redirect('/admin')
+        else:
+            messages.info(request, f"مرحباً بك {user.username}")
+            return redirect('index')
+    except AttributeError:
+        messages.error(request, "لم يتم العثور على الملف الشخصي للمستخدم")
+        return redirect('login')
+
+
 
 
 @login_required
@@ -81,18 +105,15 @@ def wishlist(request):
     liked_products = Product.objects.filter(likes=request.user).select_related("saler")
     random_products = Product.objects.exclude(likes=request.user).exclude(name="banner").order_by('?')[:4]
 
-    # حساب old_price لكل منتج في liked_products
     for product in liked_products:
-        product.old_price = Decimal(product.price) * Decimal(1.35)  # تحويل السعر إلى Decimal
+        product.old_price = Decimal(product.price) * Decimal(1.35)  
 
-    # حساب old_price لكل منتج في random_products
     for product in random_products:
-        product.old_price = Decimal(product.price) * Decimal(1.35)  # تحويل السعر إلى Decimal
+        product.old_price = Decimal(product.price) * Decimal(1.35)
 
-    # إضافة قائمة النجوم لكل منتج في random_products
     for product in random_products:
-        product.star_list = range(int(round(product.rating)))  # تخصيص النجوم المملوءة
-
+        product.star_list = range(int(round(product.rating)))  
+        
     return render(request, 'pages/wishlist.html', {
         'liked_products': liked_products,
         'random_products': random_products
@@ -158,7 +179,7 @@ def user_login(request):
             if user:
                 login(request, user)
                 messages.success(request, "تم تسجيل الدخول بنجاح!")
-                return redirect('index')
+                return redirect('custom_redirect')
             else:
                 messages.error(request, "اسم المستخدم أو كلمة المرور غير صحيحة.")
         else:

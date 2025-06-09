@@ -265,7 +265,7 @@
 
             <div class="action-buttons">
                 <form method="POST" style="display: inline;">
-                    {% csrf_token %}
+              {% csrf_token %}
                     <input type="hidden" name="order_id" value="{{ order_data.order.id }}">
                     <button type="submit" name="action" value="accept" class="btn btn-accept">
                         <i class="fas fa-check" style="margin-right: 6px;"></i> Accept
@@ -273,7 +273,7 @@
                     <button type="submit" name="action" value="decline" class="btn btn-decline">
                         <i class="fas fa-times" style="margin-right: 6px;"></i> Decline
                     </button>
-                </form>
+            </form>
             </div>
         </div>
         {% empty %}
@@ -281,9 +281,9 @@
             <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 20px;"></i>
             <h2>No Available Orders</h2>
             <p>Check back later for new delivery requests.</p>
-        </div>
+          </div>
         {% endfor %}
-    </div>
+  </div>
 </div>
 
 <script>
@@ -307,7 +307,7 @@ function calculateRoute(driverLocation, sellerLocation, customerLocation, orderI
 
     fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
         method: 'POST',
-        headers: {
+    headers: {
             'Authorization': '5b3ce3597851110001cf624849ee31d7612e44018effded422136ba4',
             'Content-Type': 'application/json'
         },
