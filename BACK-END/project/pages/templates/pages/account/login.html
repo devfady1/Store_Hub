@@ -35,10 +35,10 @@
           {% if messages %}
             <div class="messages">
               {% for message in messages %}
-                <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} alert-dismissible fade show" role="alert">
+                <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} alert-dismissible fade show " id="messagelogin" role="alert">
                   {{ message }}
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                  <button type="button" data-dismiss="alert" aria-label="Close"  id="close">
+                    <span aria-hidden="true"></span>
                   </button>
                 </div>
               {% endfor %}
