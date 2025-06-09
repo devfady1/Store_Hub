@@ -258,12 +258,12 @@
         };
 
         window.addToCart = function(productId) {
-            fetch(`/add-to-cart/?product_id=${productId}`)
+            fetch(`/add-to-cart/?product_id=${productId}&quantity=${quantity}`)
             .then(response => response.json())
             .then(data => {
                 if (data.status === "success") {
-                    let quantity = data.cart[productId].quantity;
-                    alert(`✅ المنتج تم إضافته بنجاح! الكمية الحالية: ${quantity}`);
+                    let cartQuantity = data.cart[productId].quantity;
+                    alert(`✅ المنتج تم إضافته بنجاح! الكمية الحالية: ${cartQuantity}`);
                     window.location.href = "/cart/";
                 } else {
                     alert("❌ حدث خطأ أثناء الإضافة!");

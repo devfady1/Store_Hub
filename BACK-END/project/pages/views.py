@@ -350,18 +350,19 @@ def remove_from_cart(request, product_id):
 
 
 def add_to_cart(request):
-    product_id = str(request.GET.get('product_id'))  
+    product_id = str(request.GET.get('product_id'))
+    quantity = int(request.GET.get('quantity', 1))  # Get quantity from request, default to 1
     product = get_object_or_404(Product, id=product_id)
     cart = request.session.get('cart', {})
 
     if product_id in cart:
-        cart[product_id]['quantity'] += 1
+        cart[product_id]['quantity'] += quantity  
     else:
         cart[product_id] = {
             'name': product.name,
             'price': float(product.price),
             'image': product.image.url,
-            'quantity': 1, 
+            'quantity': quantity,  
         }
 
     request.session['cart'] = cart
@@ -441,7 +442,7 @@ import json
 from django.contrib.auth.decorators import login_required
 def product_list(request):
     if request.user.is_authenticated:
-        products = Product.objects.filter(saler=request.user)  # ✅ فلترة المنتجات على المستخدم الحالي
+        products = Product.objects.filter(saler=request.user) 
         products_list = [
             {
                 'id': product.id,
@@ -470,7 +471,7 @@ def ProductManagement(request):
             }
             for product in products
         ]
-        print(products_list)  # ✅ تأكد إن الـ JSON صحيح
+        print(products_list)  
         return JsonResponse(products_list, safe=False)
     
     products = Product.objects.filter(saler=request.user)

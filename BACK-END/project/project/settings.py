@@ -28,7 +28,6 @@ DEBUG = True
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'local.test']
 
 
-# Application definition
 SITE_ID = 1
 INSTALLED_APPS = [
     'saler.apps.SalerConfig',
@@ -241,3 +240,17 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'e05d8f8bf91b6e'
 EMAIL_HOST_PASSWORD = '5b0be7f03fd05b'
 EMAIL_USE_TLS = True
+
+#اول باص يشتغل فالسيرفر هو index
+
+
+if request.user.userprofile.role == 'delivery_agent':
+    DEFAULT_URL = '/delivery_order_view'
+else:
+    DEFAULT_URL = '/index'
+
+
+
+
+
+
