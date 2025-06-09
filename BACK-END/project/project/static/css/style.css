@@ -3529,7 +3529,7 @@ input[type="checkbox"]:checked::after {
 
 .sign,
 .login {
-  height: 120vh;
+  min-height: 150vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3549,6 +3549,7 @@ input[type="checkbox"]:checked::after {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  margin-left: 60px;
 }
 
 .sign-image img {
@@ -3634,10 +3635,13 @@ input[type="checkbox"]:checked::after {
   transform: translateY(-50%);
   transition: 0.5s;
 }
-
+.sign-form .input-box select ~ label,
+.sign-form .input-box select ~ i{
+  top: -5px;
+  color: var(--main-color);
+}
 .sign-form .input-box input:focus ~ label,
 .sign-form .input-box input:valid ~ label,
-.sign-form .input-box select:focus ~ label,
 .login-form .input-box input:focus ~ label,
 .login-form .input-box input:valid ~ label {
   top: -5px;
@@ -3647,7 +3651,6 @@ input[type="checkbox"]:checked::after {
 
 .sign-form .input-box input:focus ~ i,
 .sign-form .input-box input:valid ~ i,
-.sign-form .input-box select:focus ~ i,
 .login-form .input-box input:focus ~ i,
 .login-form .input-box input:valid ~ i {
   top: -5px;
@@ -3749,8 +3752,9 @@ input[type="checkbox"]:checked::after {
 
 /* Dark Error Message  */
 
-.dark .error-message {
-  color: var(--text-color);
+.error-message {
+  color: var(--main-color);
+  font-size: 20px;
 }
 
 /* Responsive */

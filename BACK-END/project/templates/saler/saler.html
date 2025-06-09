@@ -93,9 +93,6 @@
         </form>
       </div>
     </div>
-
-    <!-- Product added successfully -->
-
     <div class="product-add" id="productAdd">
       <div class="add-content">
         <h2>Product added successfully!</h2>
@@ -109,10 +106,8 @@
     </div>
 
     <!-- End Seller -->
-
-   
+       
     <script>
-      // Handle file input change event - update filename display
       document
         .getElementById("productImage")
         .addEventListener("change", function (e) {
@@ -122,7 +117,6 @@
           document.getElementById("fileNameSeller").textContent = fileName;
         });
 
-      // Add input animation for form fields
       document.querySelectorAll(".form-input-seller").forEach((input) => {
         input.addEventListener("input", function () {
           if (this.value.trim() !== "") {
@@ -133,7 +127,6 @@
         });
       });
 
-      // Modal control functions
       function showAddModal() {
         document.getElementById("productAdd").style.display = "flex";
       }
@@ -142,13 +135,11 @@
         document.getElementById("productAdd").style.display = "none";
       }
 
-      // Handle form submission for adding new product
       document
         .getElementById("productForm")
         .addEventListener("submit", function (e) {
           e.preventDefault();
 
-          // Collect form data
           const formData = {
             name: document.getElementById("productName").value,
             category: document.getElementById("productCategory").value,
@@ -156,13 +147,11 @@
             image: document.getElementById("productImage").files[0],
           };
 
-          // Validate image is selected
           if (!formData.image) {
             alert("Please select a product image");
             return;
           }
 
-          // Process image and save product
           const reader = new FileReader();
           reader.onload = function (e) {
             const newProduct = {
@@ -172,12 +161,10 @@
               date: new Date().toISOString(),
             };
 
-            // Save to localStorage
             let products = JSON.parse(localStorage.getItem("products")) || [];
             products.push(newProduct);
             localStorage.setItem("products", JSON.stringify(products));
 
-            // Reset form and show success modal
             document.getElementById("productForm").reset();
             showAddModal();
           };
