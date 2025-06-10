@@ -3908,11 +3908,7 @@ input[type="checkbox"]:checked::after {
 }
 .sign,
 .login {
-<<<<<<< HEAD
-  min-height: 150vh;
-=======
-  min-height: 100vh;
->>>>>>> fc42fbc2f36d938d562c1e5ea98e36ef3be4e9cf
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4231,10 +4227,9 @@ input[type="checkbox"]:checked::after {
 }
 .allproduct {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
   padding: 40px 20px;
-  justify-content: center;
 }
 
 .allproduct .Product {
@@ -4686,6 +4681,10 @@ body.dark .filters h3 {
   left: 10px;
   border-radius: 4px;
   padding: 4px 12px;
+}
+.wishlist-row .product .old-price{
+  margin-left:10px;
+  color: #777;
 }
 
 .wishlist-row .product .add-to-cart {
