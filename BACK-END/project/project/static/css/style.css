@@ -767,8 +767,8 @@ nav form i:hover {
 }
 
 .product-name {
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
   color: #333;
   margin-bottom: 4px;
   line-height: 1.4;
@@ -783,7 +783,7 @@ nav form i:hover {
 .product-price {
   color: var(--main-color);
   font-weight: 600;
-  font-size: 13px;
+  font-size: 16px;
 }
 
 .product-category {
@@ -3142,7 +3142,7 @@ input[type="checkbox"]:checked::after {
 }
 
 .coupon-container input:focus {
-  scale: 1.1;
+  scale: 1.04;
 }
 
 .dark .coupon-container input {

@@ -60,9 +60,6 @@
       {% for product_id, item in cart.items %}
       <div class="product-item">
         <div class="product-left">
-          <div class="product-image">
-            <img src="{{ item.image_url }}" alt="{{ item.name }}" />
-          </div>
           <div class="product-name">{{ item.name }}</div>
         </div>
         <div class="product-price">${{ item.subtotal|floatformat:2 }}</div>
