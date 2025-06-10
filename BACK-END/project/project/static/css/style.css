@@ -2246,6 +2246,11 @@ section#browseCat .container {
   text-decoration: none;
 }
 
+.breadcrumb-cart .a1:hover,
+.breadcrumb-cart .a2:hover {
+  color: var(--main-color);
+}
+
 .breadcrumb-cart .a2 {
   color: black;
   margin-left: 8px;
@@ -2608,6 +2613,12 @@ section#browseCat .container {
 
 .breadcrumb-about .a1 {
   color: gray;
+  font-weight: bold;
+}
+
+.breadcrumb-about .a1:hover,
+.breadcrumb-about .a2:hover {
+color: var(--main-color);
 }
 
 .breadcrumb-about .a2 {
@@ -2625,6 +2636,11 @@ section#browseCat .container {
 
 .dark .breadcrumb-about .a2 {
   color: #fff;
+}
+
+.dark .breadcrumb-about .a1:hover,
+.dark .breadcrumb-about .a2:hover {
+color: var(--main-color);
 }
 
 /* about section */
@@ -2976,6 +2992,7 @@ body.dark .breadcrumb .a2 {
 }
 
 .dark .form-group input {
+  color: white;
   background: #1e293b;
   box-shadow: 0 4px 6px rgba(255, 255, 255, 0.147);
 }
@@ -3229,6 +3246,11 @@ input[type="checkbox"]:checked::after {
 
 .breadcrumb-account .check {
   color: var(--text-color);
+}
+
+.breadcrumb-account .a1:hover,
+.breadcrumb-account .check:hover {
+  color: var(--main-color);
 }
 
 .breadcrumb-account span {
@@ -3689,7 +3711,7 @@ input[type="checkbox"]:checked::after {
   width: 100%;
   height: 207px;
   padding: 15px;
-  border: 2px solid #ddd;
+  border: 1px solid #ddd;
   border-radius: 20px;
   background-color: #f5f5f5;
   resize: vertical;
@@ -4369,12 +4391,12 @@ input[type="checkbox"]:checked::after {
 .pagination-btn:hover,
 .pagination-number:hover {
   background-color: var(--main-color);
-  color: var(--text-color);
+  color: var(--white-color);
 }
 
 .pagination-number.active {
   background-color: var(--main-color);
-  color: var(--text-color);
+  color: var(--white-color);
   pointer-events: none;
 }
 
@@ -4758,7 +4780,7 @@ body.dark .filters h3 {
   padding: 12px;
   border-radius: 25px;
   font-size: 14px;
-  border: 2px solid #ccc;
+  border: 1px solid #ccc;
   color: var(--text-color);
   transition: transform 0.3s ease,box-shadow 0.3s ease;
 }
@@ -4926,7 +4948,12 @@ body.dark .filters h3 {
 
 .dark .search-product-manag {
   background: #151d2a;
-  border: 2px solid #6c757d;
+  border: 1px solid #6c757d;
+}
+
+.dark .search-product-manag:focus {
+  border: 1px solid var(--main-color);
+  transform: scale(1.1);
 }
 
 .dark .table-product-manag tbody tr {
@@ -5051,8 +5078,16 @@ body.dark .filters h3 {
 }
 
 .form-group-seller {
-  position: relative;
   margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 80%;
 }
 
 .form-input-seller {
@@ -5062,19 +5097,14 @@ body.dark .filters h3 {
   border: 3px solid #e0e0e0;
   border-radius: 20px;
   font-size: 16px;
-  transition: all 0.3s ease;
   background-color: var(--white-color);
   color: var(--text-color);
-}
-
-input.form-input-seller {
-  color:var(--main-color); 
-  font-size: 16px;
-  font-weight: bold;
+  transition: transform 0.3s ease;
 }
 
 .form-input-seller:focus {
-  border:1px solid var(--main-color);
+  border: 1px solid var(--main-color);
+  transform: scale(1.03);
 }
 
 .form-label-seller {
@@ -5092,14 +5122,16 @@ input.form-input-seller {
 .form-input-seller:focus ~ .form-label-seller,
 .form-input-seller.not-empty ~ .form-label-seller {
   color: var(--main-color);
+  top: -10px;
+  font-size: 14px;
 }
 
 textarea.form-input-seller {
-  width: 100%;
-  height: 56px;
+  height: auto;
+  min-height: 56px;
   resize: vertical;
   overflow-y: hidden;
-  color:var(--main-color); 
+  color: var(--main-color);
   font-size: 16px;
   font-weight: bold;
 }
@@ -5107,7 +5139,7 @@ textarea.form-input-seller {
 select.form-input-seller {
   appearance: none;
   background: var(--white-color);
-  color:var(--main-color); 
+  color: var(--main-color);
   font-size: 16px;
   font-weight: bold;
 }
@@ -5121,6 +5153,7 @@ select.form-input-seller {
   border-radius: 8px;
   padding: 1rem;
   transition: all 0.3s ease;
+  text-align: center;
 }
 
 .file-upload-box:hover {
