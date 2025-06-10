@@ -1822,7 +1822,7 @@ section#browseCat .container {
   align-items: center;
   width: 15%;
   opacity: 0;
-  visibility: hidden;
+  /*visibility: hidden;*/
   transition: 0.3s ease;
 }
 
