@@ -47,10 +47,8 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
 def custom_redirect_view(request):
-    # إذا لم يكن المستخدم مسجل دخول، توجيهه لصفحة تسجيل الدخول
     if not request.user.is_authenticated:
-        return redirect('login')
-        
+        return redirect('login')     
     try:
         user = request.user
         if user.userprofile.role == 'delivery_agent':
@@ -822,17 +820,13 @@ def available_order_view(request):
 @login_required
 def live_location_view(request, order_id):
     order = get_object_or_404(Order, id=order_id)
-
     if request.method == 'GET':
         customer_profile = UserProfile.objects.filter(user=order.customer).first()
         driver_profile = UserProfile.objects.filter(user=order.delivery_agent).first()
-
+        # seller: من أول منتج في الطلب
         items = order.items.all()
         product = items[0].product if items else None
-
-        seller_lat = product.seller_lat if product else None
-        seller_lng = product.seller_lng if product else None
-
+        seller_profile = UserProfile.objects.filter(user=product.saler).first() if product and product.saler else None
         return JsonResponse({
             'customer': {
                 'lat': customer_profile.lat if customer_profile else None,
@@ -843,29 +837,32 @@ def live_location_view(request, order_id):
                 'lng': driver_profile.lng if driver_profile else None,
             },
             'seller': {
-                'lat': seller_lat,
-                'lng': seller_lng,
+                'lat': seller_profile.lat if seller_profile else (product.seller_lat if product else None),
+                'lng': seller_profile.lng if seller_profile else (product.seller_lng if product else None),
             },
         })
-
     elif request.method == 'POST':
         try:
             data = json.loads(request.body)
             lat = data.get('lat')
             lng = data.get('lng')
-
             if lat is None or lng is None:
                 return JsonResponse({'status': 'error', 'message': 'Missing coordinates'}, status=400)
-
             user_profile = UserProfile.objects.get(user=request.user)
             user_profile.lat = lat
             user_profile.lng = lng
             user_profile.save()
-
+            # لو بائع، حدث كمان أول منتج ليه في الطلب
+            if user_profile.role == 'saler':
+                items = order.items.all()
+                for item in items:
+                    if item.product.saler == request.user:
+                        item.product.seller_lat = lat
+                        item.product.seller_lng = lng
+                        item.product.save()
             return JsonResponse({'status': 'success'})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
-
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid HTTP method'}, status=405)
 

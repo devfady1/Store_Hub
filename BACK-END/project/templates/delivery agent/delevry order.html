@@ -1,0 +1,272 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_delivery.css' %}" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+<link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+
+
+
+<div class="container-delivery-order">
+    <div class="left-panel">
+        <div class="customer-info">
+            <h3 style="margin-bottom: 15px;">Customer Information</h3>
+            <p><i class="fas fa-user icon"></i>{{ order.customer.get_full_name }}</p>
+            <p><i class="fas fa-id-card icon"></i>Customer ID: #{{ order.customer.id }}</p>
+            <p><i class="fas fa-phone icon"></i>{{ order.customer.userprofile.phone_number }}</p>
+        </div>
+        <div class="order-details">
+            <h3 style="margin-bottom: 15px;"><i class="fas fa-clipboard-list icon"></i> Order Details</h3>
+            {% for item in items %}
+            <div>
+                <span>{{ item.product.name }}</span>
+                <span>${{ item.product.price }}</span>
+            </div>
+            {% endfor %}
+            <div class="total">
+                <span>Total</span>
+                <span>${{ total_price|floatformat:2 }}</span>
+            </div>
+        </div>
+        <div class="delivery-status">
+            <h3 style="margin-bottom: 25px;">Delivery Status</h3>
+            <div class="status-item">
+                <div class="status-item-span">
+                    <span><i class="fa-solid fa-circle-check" style="color: var(--main-color); cursor: pointer;"></i>Order Received</span>
+                    <span>{{ order.order_date|time:"H:i" }}</span>
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-item-span">
+                    <span><i class="fa-solid fa-circle-check" style="color: var(--main-color); cursor: pointer;"></i>Preparing Order</span>
+                    <span>{{ order.order_date|time:"H:i" }}</span>
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-item-span">
+                    <span style="color: #2196F3;" ><i class="fa-regular fa-circle " style="color: #2196F3; cursor: pointer;"></i>On the Way</span>
+                    <span >{% if order.status == 'on_way' or order.status == 'completed' %}{{ order.order_date|time:"H:i" }}{% else %}-{% endif %}</span>
+                </div>
+            </div>
+            <div class="status-item" style="color: gray;">
+                <i class="fa-regular fa-circle "></i>
+                <span>Delivered</span>
+            </div>
+        </div>
+    </div>
+    <div class="right-panel">
+        <div class="right-panel-1">
+            <div class="map" id="map"></div>
+            <div class="location-info">
+                <div class="location-info-icon">
+                    <i class="fas fa-map-marker-alt map-pin-pickup"style="color: var(--main-color);"></i>
+                    <div>
+                        <h4>Pickup Location</h4>
+                        <p>StoreHub St, Store District</p>
+                    </div>
+                </div>
+                <div class="location-info-icon">
+                    <i class="fas fa-map-marker-alt map-pin-delivery" style="color: #28a745;"></i>
+                    <div>
+                        <h4>Delivery Location</h4>
+                        <p>456 Customer Ave, Residential Area</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-panel-2">
+            <div class="delivery-info">
+                <div class="delivery-info-top">
+                    <div class="icon-info">
+                        <i class="fas fa-clock icon" style="color: var(--main-color);"></i>
+                        <div>
+                            <h4> Estimated Delivery Time</h4>
+                            <p id="eta">Calculating...</p>
+                        </div>
+                    </div>
+                    <div class="icon-info">
+                        <i class="fas fa-road icon"style="color: var(--main-color);"></i>
+                        <div>
+                            <h4> Distance</h4>
+                            <p id="distance">-</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="delivery-info-bottom">
+                    <button class="start-delivery" id="startDeliveryBtn"><i class="fa-solid fa-truck"></i>Start Delivery</button>
+                    <button class="complete-delivery" id="completeDeliveryBtn"><i class="fa-solid fa-circle-check"></i>Complete Delivery</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+    const userRole = "{{ request.user.userprofile.role }}";
+    let map;
+    let routeLayer;
+    let driverMarker, sellerMarker, clientMarker;
+    const orderId = "{{ order.id }}";
+    const driverLat = "{{ driver_lat|default:'null' }}";
+    const driverLng = "{{ driver_lng|default:'null' }}";
+    const sellerLat = "{{ seller_lat|default:'null' }}";
+    const sellerLng = "{{ seller_lng|default:'null' }}";
+    const clientLat = "{{ client_lat|default:'null' }}";
+    const clientLng = "{{ client_lng|default:'null' }}";
+    const hasDriverLocation = driverLat !== "null" && driverLng !== "null";
+    const hasSellerLocation = sellerLat !== "null" && sellerLng !== "null";
+    const hasClientLocation = clientLat !== "null" && clientLng !== "null";
+    let centerLat = clientLat !== "null" ? parseFloat(clientLat) : 0;
+    let centerLng = clientLng !== "null" ? parseFloat(clientLng) : 0;
+
+    // أيقونات عصرية
+    const driverIcon = L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048314.png',
+        iconSize: [40, 40]
+    });
+    const sellerIcon = L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/2972/2972185.png',
+        iconSize: [40, 40]
+    });
+    const customerIcon = L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/1946/1946429.png',
+        iconSize: [40, 40]
+    });
+
+    function initMap() {
+        map = L.map('map').setView([centerLat, centerLng], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        if (hasDriverLocation) {
+            driverMarker = L.marker([
+                parseFloat(driverLat),
+                parseFloat(driverLng)
+            ], {icon: driverIcon})
+                .addTo(map)
+                .bindPopup('🚚 Delivery');
+        }
+        if (hasSellerLocation) {
+            sellerMarker = L.marker([
+                parseFloat(sellerLat),
+                parseFloat(sellerLng)
+            ], {icon: sellerIcon})
+                .addTo(map)
+                .bindPopup('🏪 Seller');
+        }
+        if (hasClientLocation) {
+            clientMarker = L.marker([
+                parseFloat(clientLat),
+                parseFloat(clientLng)
+            ], {icon: customerIcon})
+                .addTo(map)
+                .bindPopup('👤 Customer');
+        }
+        if (hasDriverLocation && hasSellerLocation && hasClientLocation) {
+            updateRoute();
+        }
+    }
+
+    function updateRoute() {
+        if (!hasDriverLocation || !hasSellerLocation || !hasClientLocation) {
+            return;
+        }
+        if (userRole === "delivery_agent") {
+            const coordinates = [
+                [parseFloat(driverLng), parseFloat(driverLat)],
+                [parseFloat(sellerLng), parseFloat(sellerLat)],
+                [parseFloat(clientLng), parseFloat(clientLat)]
+            ];
+            fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
+                method: 'POST',
+                headers: {
+                    'Authorization': '5b3ce3597851110001cf624849ee31d7612e44018effded422136ba4',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ coordinates: coordinates })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (routeLayer) {
+                    map.removeLayer(routeLayer);
+                }
+                routeLayer = L.geoJSON(data, {
+                    style: { color: '#00bfff', weight: 6, dashArray: '10,10', opacity: 0.8 }
+                }).addTo(map);
+                const distance = (data.features[0].properties.segments[0].distance / 1000).toFixed(1);
+                const duration = Math.round(data.features[0].properties.segments[0].duration / 60);
+                document.getElementById('eta').textContent = duration + ' minutes';
+                document.getElementById('distance').textContent = distance + ' km';
+                map.fitBounds(routeLayer.getBounds());
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
+
+    // تهيئة الخريطة
+    initMap();
+
+    // تحديث موقع السائق والبائع والعميل دورياً
+    setInterval(() => {
+        fetch(`/live-location/${orderId}/`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.driver && data.driver.lat && data.driver.lng) {
+                    driverMarker.setLatLng([data.driver.lat, data.driver.lng]);
+                }
+                if (data.seller && data.seller.lat && data.seller.lng) {
+                    sellerMarker.setLatLng([data.seller.lat, data.seller.lng]);
+                }
+                if (data.customer && data.customer.lat && data.customer.lng) {
+                    clientMarker.setLatLng([data.customer.lat, data.customer.lng]);
+                }
+                updateRoute();
+            })
+            .catch(error => console.error('Error:', error));
+    }, 10000);
+
+    // إرسال موقع اليوزر الحالي (customer, delivery, seller) كل فترة قصيرة
+    function sendMyLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                fetch(`/live-location/${orderId}/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ lat: position.coords.latitude, lng: position.coords.longitude })
+                });
+                // تحديث ماركر موقعك مباشرة
+                if (userRole === "delivery_agent" && driverMarker) {
+                    driverMarker.setLatLng([position.coords.latitude, position.coords.longitude]);
+                }
+                if (userRole === "saler" && sellerMarker) {
+                    sellerMarker.setLatLng([position.coords.latitude, position.coords.longitude]);
+                }
+                if (userRole === "user" && clientMarker) {
+                    clientMarker.setLatLng([position.coords.latitude, position.coords.longitude]);
+                }
+            });
+        }
+    }
+    setInterval(sendMyLocation, 10000);
+
+    // أزرار بدء/إنهاء التوصيل
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('startDeliveryBtn').onclick = function() {
+            fetch(`/orders/${orderId}/update-status/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'in_progress' })
+            }).then(() => location.reload());
+        };
+        document.getElementById('completeDeliveryBtn').onclick = function() {
+            fetch(`/orders/${orderId}/update-status/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'completed' })
+            }).then(() => location.reload());
+        };
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,251 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style_delivery.css' %}" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+<link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+
+<style>
+    .CustomerOrder {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        height: calc(100vh - 100px);
+    }
+    
+    .content-container {
+        flex: 1;
+        overflow-y: auto;
+    }
+    
+    .map-container {
+        flex: 1;
+        min-height: 500px;
+        position: relative;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    #map {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 12px;
+    }
+</style>
+
+    <div class="CustomerOrder">
+        <div class="content-container">
+            <div class="containera">
+                <div class="order-status">
+                <p>Order ID: #{{ order.id }}</p><br>
+                <h3>{{ order.get_status_display }}</h3>
+                    <div class="progress-bar">
+                        <div class="progress-line"></div>
+                    <div class="progress-completed" style="width: {{ progress_percentage }}%;"></div>
+                    <div class="progress-point {% if order.status != 'pending' %}active{% endif %}"></div>
+                    <div class="progress-point {% if order.status == 'in_progress' or order.status == 'on_way' or order.status == 'completed' %}active{% endif %}"></div>
+                    <div class="progress-point {% if order.status == 'on_way' or order.status == 'completed' %}active{% endif %}"></div>
+                    <div class="progress-point {% if order.status == 'completed' %}active{% endif %}"></div>
+                    </div>                    
+                    <div class="stages">
+                      <div class="stage">
+                        <div class="stage-name">
+                            <div class="stage-dot {% if order.status != 'pending' %}active{% endif %}"></div>
+                          <div><p>Order Confirmed</p></div>
+                        </div>
+                        <div class="stage-time"><p>{{ order.order_date|time:"H:i" }}</p></div>
+                      </div>
+                    
+                      <div class="stage">
+                        <div class="stage-name">
+                            <div class="stage-dot {% if order.status == 'in_progress' or order.status == 'on_way' or order.status == 'completed' %}active{% endif %}"></div>
+                            <div><p>In Progress</p></div>
+                        </div>
+                        <div class="stage-time"><p>{% if order.status == 'in_progress' or order.status == 'on_way' or order.status == 'completed' %}{{ order.order_date|time:"H:i" }}{% else %}-{% endif %}</p></div>
+                      </div>
+                    
+                      <div class="stage">
+                        <div class="stage-name">
+                            <div class="stage-dot {% if order.status == 'on_way' or order.status == 'completed' %}active{% endif %}"></div>
+                          <div><p>Out for Delivery</p></div>
+                        </div>
+                        <div class="stage-time"><p>{% if order.status == 'on_way' or order.status == 'completed' %}{{ order.order_date|time:"H:i" }}{% else %}-{% endif %}</p></div>
+                      </div>
+                    
+                      <div class="stage">
+                        <div class="stage-name">
+                            <div class="stage-dot {% if order.status == 'completed' %}active{% endif %}"></div>
+                          <div><p>Delivered</p></div>
+                        </div>
+                        <div class="stage-time"><p>{% if order.status == 'completed' %}{{ order.order_date|time:"H:i" }}{% else %}-{% endif %}</p></div>
+                    </div>
+                    </div>
+                </div>
+    
+                <div class="order-details">
+                    <h3>Order Details</h3><br>
+                {% for item in items %}
+                <p>
+                    <span>{{ item.product.name }}</span>
+                    <span>x{{ item.quantity }}</span>
+                </p><br>
+                {% endfor %}
+                    <hr class="separator">
+                    <p class="total">
+                        <span>Total Amount:</span>
+                    <span>${{ total_price|floatformat:2 }}</span>
+                      </p><br>
+                      
+                    <div class="delivery-time">
+                        <p>Estimated Delivery Time</p>
+                    <p style="font-size: 20px;" id="eta">Calculating...</p>
+                </div>
+                </div>
+                
+            {% if delivery_agent_profile %}
+                <div class="driver-info">
+                <img src="{{ delivery_agent_profile.profile_image.url|default:'/static/images/default-profile.jpg' }}" alt="Driver">
+                    <div>
+                    <h4>{{ order.delivery_agent.get_full_name }}</h4>
+                    <p>
+                        {% for i in filled_stars %}⭐{% endfor %}
+                        {% for i in empty_stars %}☆{% endfor %}
+                        {{ delivery_agent_profile.rating|floatformat:1 }}
+                    </p>
+                </div>
+                <button class="call-btn" onclick="window.location.href='tel:{{ delivery_agent_profile.phone_number }}'">
+                    📞 Call Driver
+                </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="map-container">
+        <div id="map" style="height: 100%; width: 100%; border-radius: 12px;"></div>
+        </div>
+      </div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+    let map;
+    let routeLayer;
+    let driverMarker, sellerMarker, clientMarker;
+    const orderId = {{ order.id }};
+    const hasDriverLocation = {% if driver_lat and driver_lng %}true{% else %}false{% endif %};
+    const hasSellerLocation = {% if seller_lat and seller_lng %}true{% else %}false{% endif %};
+    const hasClientLocation = {% if client_lat and client_lng %}true{% else %}false{% endif %};
+    let centerLat = {{ client_lat|default:0 }};
+    let centerLng = {{ client_lng|default:0 }};
+
+    // أيقونات عصرية
+    const driverIcon = L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048314.png',
+        iconSize: [40, 40]
+    });
+    const sellerIcon = L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/2972/2972185.png',
+        iconSize: [40, 40]
+    });
+    const customerIcon = L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/1946/1946429.png',
+        iconSize: [40, 40]
+    });
+
+    function initMap() {
+        map = L.map('map').setView([centerLat, centerLng], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        if (hasDriverLocation) {
+            driverMarker = L.marker([{{ driver_lat|default:0 }}, {{ driver_lng|default:0 }}], {icon: driverIcon})
+                .addTo(map)
+                .bindPopup('🚚 Delivery');
+        }
+        if (hasSellerLocation) {
+            sellerMarker = L.marker([{{ seller_lat|default:0 }}, {{ seller_lng|default:0 }}], {icon: sellerIcon})
+                .addTo(map)
+                .bindPopup('🏪 Seller');
+        }
+        if (hasClientLocation) {
+            clientMarker = L.marker([{{ client_lat|default:0 }}, {{ client_lng|default:0 }}], {icon: customerIcon})
+                .addTo(map)
+                .bindPopup('👤 Customer');
+        }
+        // لا تعرض الطريق هنا (عند الكاستمر)
+    }
+
+    function updateRoute() {
+        if (!hasDriverLocation || !hasSellerLocation || !hasClientLocation) {
+            return;
+        }
+        const coordinates = [
+            [{{ driver_lng|default:0 }}, {{ driver_lat|default:0 }}],
+            [{{ seller_lng|default:0 }}, {{ seller_lat|default:0 }}],
+            [{{ client_lng|default:0 }}, {{ client_lat|default:0 }}]
+        ];
+        fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
+            method: 'POST',
+            headers: {
+                'Authorization': '5b3ce3597851110001cf624849ee31d7612e44018effded422136ba4',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ coordinates: coordinates })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (routeLayer) {
+                map.removeLayer(routeLayer);
+            }
+            routeLayer = L.geoJSON(data, {
+                style: { color: '#00bfff', weight: 6, dashArray: '10,10', opacity: 0.8 }
+            }).addTo(map);
+            const distance = (data.features[0].properties.segments[0].distance / 1000).toFixed(1);
+            const duration = Math.round(data.features[0].properties.segments[0].duration / 60);
+            document.getElementById('eta').textContent = duration + ' minutes';
+            map.fitBounds(routeLayer.getBounds());
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // تهيئة الخريطة
+    initMap();
+
+    // تحديث موقع السائق والبائع والعميل دورياً
+    setInterval(() => {
+        fetch(`/live-location/${orderId}/`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.driver && data.driver.lat && data.driver.lng) {
+                    driverMarker.setLatLng([data.driver.lat, data.driver.lng]);
+                }
+                if (data.seller && data.seller.lat && data.seller.lng) {
+                    sellerMarker.setLatLng([data.seller.lat, data.seller.lng]);
+                }
+                if (data.customer && data.customer.lat && data.customer.lng) {
+                    clientMarker.setLatLng([data.customer.lat, data.customer.lng]);
+                }
+                // لا تحدث الطريق هنا (عند الكاستمر)
+            })
+            .catch(error => console.error('Error:', error));
+    }, 10000);
+
+    // إرسال موقع اليوزر الحالي (customer, delivery, seller) كل فترة قصيرة
+    function sendMyLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                fetch(`/live-location/${orderId}/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ lat: position.coords.latitude, lng: position.coords.longitude })
+                });
+            });
+        }
+    }
+    setInterval(sendMyLocation, 10000);
+</script>
+{% endblock %}

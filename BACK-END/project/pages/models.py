@@ -165,7 +165,7 @@ class Report(models.Model):
     GeneratedDate = models.DateTimeField(auto_now_add=True)
     ReportData = models.TextField(verbose_name="بيانات التقرير")
 
-    def _str_(self):
+    def __str__(self):
         return f"Report {self.id} - {self.ReportType}"
 
     class Meta:
