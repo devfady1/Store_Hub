@@ -4061,16 +4061,6 @@ body.dark .filters h3 {
   transition: all 0.3s ease;
 }
 
-.form-input-seller:focus ~ .form-label-seller,
-.form-input-seller:hover ~ .form-label-seller,
-.form-input-seller.not-empty ~ .form-label-seller {
-  top: -10px;
-  left: 10px;
-  transform: translateY(0) scale(0.9);
-  color: var(--main-color);
-  background: var(--white-color);
-}
-
 .file-upload-box {
   border: 2px solid #e0e0e0;
   border-radius: 8px;
