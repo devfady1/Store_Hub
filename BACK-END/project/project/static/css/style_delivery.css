@@ -8,32 +8,35 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 /* order detail */
-.orderDiv .container {
-  display: flex;
-  flex-wrap: wrap;
+.orderDiv {
+   padding: 2% 0;
 }
-.orderDiv .container .pro {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
-  position: relative;
-  width: 20%;
+.orderDiv .container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 280px));
+  gap: 18px;
+  justify-content: center;
 }
 
 .orderDiv .container .pro .img {
-  width: 100%;
-  height: 150px;
+  width: 95%;
   display: flex;
   align-items: center;
   overflow: hidden;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.07);
   border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(23, 22, 22, 0.152);
 }
+
+.dark .orderDiv .container .pro .img {
+  background-color: #263349c6;
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.152);
+}
+
 .orderDiv .container .pro .img img {
-  width: 70%;
-  height: 100%;
+  width: 100%;
+  height: 180px;
   object-fit: cover;
   display: block;
   margin: 0 auto;
@@ -46,7 +49,7 @@
 }
 
 .orderDiv .container .pro .detailes h5 {
-  font-size: 14px;
+  font-size: 16px;
 }
 .orderDiv .container .pro .detailes div {
   margin: 5px 0;
@@ -59,9 +62,6 @@
   color: #ffc918;
 }
 
-.orderDiv .container .pro .img {
-  width: 95%;
-}
 @media (max-width: 800px) {
   .orderDiv .container {
     flex-wrap: wrap;
@@ -2033,7 +2033,9 @@ button:hover {
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
+.dark .myOrders-header{
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.152);
+}
 .myOrders-header h1 {
   font-size: 26px;
   font-weight: 600;
@@ -2070,7 +2072,9 @@ button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
+.dark .myOrders-filters .filter-btn:hover{
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.152);
+}
 .myOrders-filters .filter-btn.active {
   background-color: var(--main-color);
   color: white;
@@ -2184,20 +2188,24 @@ button:hover {
   justify-content: space-between;
   align-items: center;
 }
-
-.myOrders-details-btn {
+.dark .myOrders-order-footer {
+  border-top: 1px solid #eeeeee8e;
+}
+#myOrders-details-btn {
   list-style: none;
-  padding: 6px 8px;
+  padding: 8px 15px;
   background-color: var(--main-color);
   border: none;
   border-radius: 25px;
   cursor: pointer;
-  transition:  0.3s;
+  transition: 0.3s ease;
   font-weight: 500;
 }
-
-.myOrders-details-btn i , 
-.myOrders-details-btn a {
+#myOrders-details-btn:hover {
+  scale: 1.03;
+}
+#myOrders-details-btn i , 
+#myOrders-details-btn a {
   color: white;
 }
 
