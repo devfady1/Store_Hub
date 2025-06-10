@@ -4685,6 +4685,7 @@ body.dark .filters h3 {
 .wishlist-row .product .old-price{
   margin-left:10px;
   color: #777;
+  text-decoration: line-through;
 }
 
 .wishlist-row .product .add-to-cart {
