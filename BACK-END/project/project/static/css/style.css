@@ -3677,8 +3677,7 @@ input[type="checkbox"]:checked::after {
 
 .contact .contact-container .contact-form .form input,
 .contact .contact-container .form-message textarea {
-  color: var(--main-color) !important;
-  font-weight: bold;
+  color: black;
   font-size: 16px;
 }
 
@@ -3787,22 +3786,21 @@ input[type="checkbox"]:checked::after {
 
 .dark .contact .contact-container .contact-form .form input,
 .dark .contact .contact-container .form-message textarea {
+  color: white;
   background: #0f1620;
   border-color: #6c757d;
-  color: var(--main-color) !important;
 }
 
 .contact .contact-container .contact-form .form input:hover,
 .contact .contact-container .contact-form .form input:focus,
 .contact .contact-container .form-message textarea:focus,
 .contact .contact-container .form-message textarea:hover {
-  border: 2px solid var(--main-color);
+  border: 1px solid var(--main-color);
   outline: none;
 }
 
 .dark .contact-button button {
   background: #151d2a;
-  color: var(--main-color);
 }
 
 /* Responsive Contact */
@@ -3815,7 +3813,7 @@ input[type="checkbox"]:checked::after {
   .contact .contact-container {
     margin: 10px 100px;
     flex-direction: row;
-    align-items: stretch; /* تم تعديلها لتوحيد الارتفاع */
+    align-items: stretch; 
   }
 
   .contact .contact-container .contact-info {
@@ -3829,7 +3827,7 @@ input[type="checkbox"]:checked::after {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* لتوزيع المحتوى عموديًا */
+    justify-content: space-between; 
   }
 
   .contact .contact-container .contact-form {
@@ -4758,14 +4756,17 @@ body.dark .filters h3 {
   width: 100%;
   max-width: 300px;
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 25px;
   font-size: 14px;
   border: 2px solid #ccc;
   color: var(--text-color);
+  transition: transform 0.3s ease,box-shadow 0.3s ease;
 }
 
+
 .search-product-manag:focus {
-  scale: 1.1;
+  border: 1px solid var(--main-color);
+  transform: scale(1.1);
 }
 
 .table-product-manag {
@@ -4805,8 +4806,8 @@ body.dark .filters h3 {
 }
 
 .product-image-manag {
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -4976,8 +4977,8 @@ body.dark .filters h3 {
   }
 
   .product-image-manag {
-    width: 85px;
-    height: 85px;
+    width: 60px;
+    height: 60px;
   }
 
   .action-buttons {
@@ -5073,7 +5074,7 @@ input.form-input-seller {
 }
 
 .form-input-seller:focus {
-  border-color: var(--main-color);
+  border:1px solid var(--main-color);
 }
 
 .form-label-seller {
