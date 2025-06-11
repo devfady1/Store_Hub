@@ -1065,7 +1065,10 @@ footer .container h5:hover {
 .linkesRes ul a {
   display: none;
 }
-
+form.header-form{
+  display: flex;
+  align-items: center;
+}
 /* start Responsive */
 @media (max-width: 1024px) {
   .linkesRes ul a {
@@ -1116,6 +1119,7 @@ footer .container h5:hover {
 
   nav .linkes {
     width: 100%;
+    margin: 20px 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -1132,10 +1136,14 @@ footer .container h5:hover {
   }
 
   form.header-form {
-    width: 50%;
+    width: 100%;
     text-align: center;
+    display: flex;
+    flex-direction: column;
   }
-
+  form.header-form div.z{
+    margin-top: 15px;
+  }
   .seacrch {
     margin: 10px 0;
     width: 100%;
