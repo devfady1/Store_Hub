@@ -10,79 +10,85 @@
 
 <section class="orderDiv">
   <div class="container-myOrders">
-    {% if orders %}
-      <div class="myOrders-header">
-        <h1>All Orders</h1>
-        <span class="orders-count">{{ orders|length }} Orders</span>
-      </div>
-
-      <div class="myOrders-filters">
-        <a href="?status=all">
-            <button class="filter-btn {% if status_filter == 'all' %}active{% endif %}">All</button>
-        </a>
-        <a href="?status=in_progress">
-            <button class="filter-btn {% if status_filter == 'in_progress' %}active{% endif %}">Processing</button>
-        </a>
-        <a href="?status=completed">
-            <button class="filter-btn {% if status_filter == 'completed' %}active{% endif %}">Completed</button>
-        </a>
-        <a href="?status=pending">
-            <button class="filter-btn {% if status_filter == 'pending' %}active{% endif %}">Pending</button>
-        </a>
-        <a href="?status=cancelled">
-            <button class="filter-btn {% if status_filter == 'cancelled' %}active{% endif %}">Cancelled</button>
-        </a>
-    </div>
-    
-
-      <div class="myOrders-grid">
-        {% for order in orders %}
-          <div class="myOrders-card">
-            <div class="myOrders-header-card">
-              <div class="myOrders-number">#{{ order.id }}</div>
-              <div class="myOrders-date">{{ order.order_date|date:"F d, Y" }}</div>
-
-            </div>
-            <div class="myOrders-body">
-              <div class="myOrders-info">
-                <span class="myOrders-info-label">Price:</span>
-                <span class="myOrders-info-value">${{ order.total_price }}</span>
-              </div>
-              <div class="myOrders-info">
-                <span class="myOrders-info-label">Items:</span>
-                <span class="myOrders-info-value">{{ order.items.count }}</span>
-              </div>
-              <div class="myOrders-info">
-                <span class="myOrders-info-label">Status:</span>
-                <span class="myOrders-status-badge status-{{ order.status|status_class }}">
-                  {{ order.status|status_label }}
-                </span>
-              </div>
-            </div>
-            <div class="myOrders-order-footer">
-              <span class="myOrders-info-label">Order placed: {{ order.order_date|timesince }} ago</span>
-            </div>
-            <div class="myOrders-order-footer">
-              <button id="myOrders-details-btn">
-                <a href="{% url 'order_detail' order.id %}">
-                  <i class="fas fa-eye"></i>
-                  View Details
-                </a>
-              </button>
-              <button id="myOrders-details-btn">
-                <a href="">
-                  <i class="fas fa-eye"></i>
-                  View 
-                </a>
-              </button>
-            </div>
-          </div>
-        {% endfor %}
-      </div>
+    {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+            {{ error_message }}
+        </div>
     {% else %}
-    <div class="div-no-orders">
-      <h3 class="no-orders">No Orders</h3>
-    </div>
+        {% if orders %}
+            <div class="myOrders-header">
+                <h1>All Orders</h1>
+                <span class="orders-count">{{ orders|length }} Orders</span>
+            </div>
+
+            <div class="myOrders-filters">
+                <a href="?status=all">
+                    <button class="filter-btn {% if status_filter == 'all' %}active{% endif %}">All</button>
+                </a>
+                <a href="?status=in_progress">
+                    <button class="filter-btn {% if status_filter == 'in_progress' %}active{% endif %}">Processing</button>
+                </a>
+                <a href="?status=completed">
+                    <button class="filter-btn {% if status_filter == 'completed' %}active{% endif %}">Completed</button>
+                </a>
+                <a href="?status=pending">
+                    <button class="filter-btn {% if status_filter == 'pending' %}active{% endif %}">Pending</button>
+                </a>
+                <a href="?status=cancelled">
+                    <button class="filter-btn {% if status_filter == 'cancelled' %}active{% endif %}">Cancelled</button>
+                </a>
+            </div>
+            
+
+            <div class="myOrders-grid">
+                {% for order in orders %}
+                    <div class="myOrders-card">
+                        <div class="myOrders-header-card">
+                            <div class="myOrders-number">#{{ order.id }}</div>
+                            <div class="myOrders-date">{{ order.order_date|date:"F d, Y" }}</div>
+
+                        </div>
+                        <div class="myOrders-body">
+                            <div class="myOrders-info">
+                                <span class="myOrders-info-label">Price:</span>
+                                <span class="myOrders-info-value">${{ order.total_price }}</span>
+                            </div>
+                            <div class="myOrders-info">
+                                <span class="myOrders-info-label">Items:</span>
+                                <span class="myOrders-info-value">{{ order.items.count }}</span>
+                            </div>
+                            <div class="myOrders-info">
+                                <span class="myOrders-info-label">Status:</span>
+                                <span class="myOrders-status-badge status-{{ order.status|status_class }}">
+                                    {{ order.status|status_label }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="myOrders-order-footer">
+                            <span class="myOrders-info-label">Order placed: {{ order.order_date|timesince }} ago</span>
+                        </div>
+                        <div class="myOrders-order-footer">
+                            <button id="myOrders-details-btn">
+                                <a href="{% url 'order_detail' order.id %}">
+                                    <i class="fas fa-eye"></i>
+                                    View Details
+                                </a>
+                            </button>
+                            <button id="myOrders-details-btn">
+                                <a href="">
+                                    <i class="fas fa-eye"></i>
+                                    View 
+                                </a>
+                            </button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                لا توجد طلبات حالياً
+            </div>
+        {% endif %}
     {% endif %}
   </div>
 </section>
