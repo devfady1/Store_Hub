@@ -44,7 +44,7 @@
       {% for product in random_products %}
           <div class="product">
               <span class="discount-badge">{{ product.discount }}%</span>
-              <i class="view-icon fa fa-eye"></i>
+              <i class="view-icon fa fa-eye "onclick="window.location.href='/product/{{ product.id }}/'"></i>
               <div class="img">
                 <img src="{{ product.image.url }}" alt="{{ product.name }}" onclick="window.location.href='/product/{{ product.id }}/'">
               </div>

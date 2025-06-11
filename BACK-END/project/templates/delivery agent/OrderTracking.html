@@ -45,9 +45,10 @@
 
 .order-Trick  .orders-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 400px));
   gap: 25px;
   margin-bottom: 30px;
+  justify-content: center;
 }
 
 .order-Trick  .order-card {
@@ -163,11 +164,9 @@
 }
 
 .order-Trick  .btn {
-  flex: 1;
-  padding: 12px 18px;
+  padding: 10px 20px;
   border: none;
   border-radius: 25px;
-  font-weight: bold;
   font-size: 1rem;
   cursor: pointer;
   transition:  0.3s ease;
@@ -198,28 +197,7 @@
   transform: translateY(-2px);
 }
 
-/* @media (max-width: 768px) {
-  .order-Trick .container {
-    flex-direction: column;
-    width: 95%;
-  }
 
-  .order-Trick .container #map-container iframe {
-    height: 700px;
-  }
-
-  .order-Trick .container .orders-panel {
-    padding: 15px;
-  }
-} */
-
-/* ==> customer order <==*/
-/* body {
-  background-color: #e1e1e1;
-  color: #0e0d0d;
-  margin: 0;
-  padding: 0;
-} */
 </style>
 <div class="order-Trick">
     <div class="header">

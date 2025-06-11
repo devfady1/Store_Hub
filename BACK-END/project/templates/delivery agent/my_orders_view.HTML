@@ -61,11 +61,18 @@
             </div>
             <div class="myOrders-order-footer">
               <span class="myOrders-info-label">Order placed: {{ order.order_date|timesince }} ago</span>
-
-              <button class="myOrders-details-btn">
+            </div>
+            <div class="myOrders-order-footer">
+              <button id="myOrders-details-btn">
                 <a href="{% url 'order_detail' order.id %}">
                   <i class="fas fa-eye"></i>
                   View Details
+                </a>
+              </button>
+              <button id="myOrders-details-btn">
+                <a href="">
+                  <i class="fas fa-eye"></i>
+                  View 
                 </a>
               </button>
             </div>
