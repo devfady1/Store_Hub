@@ -251,16 +251,32 @@
                     </div>
                 </div>
 
+                <div class="detail-row">
+                    <i class="fas fa-location-dot detail-icon" style="margin-right: 6px;"></i>
+                    <div class="detail-text location-text-{{ order_data.order.id }}" style="line-height: 1.5;">
+                        جاري تحميل العنوان...
+                    </div>
+                </div>
+
                 <div class="time-distance">
                     <div class="time-badge">
                         <i class="fas fa-clock" style="margin-right: 6px;"></i> 
-                        <span class="eta-{{ order_data.order.id }}">Calculating...</span>
+                        <span class="eta-{{ order_data.order.id }}">{{ order_data.estimated_time }} دقيقة</span>
                     </div>
                     <div class="distance-badge">
                         <i class="fas fa-route" style="margin-right: 6px;"></i> 
-                        <span class="distance-{{ order_data.order.id }}">Calculating...</span>
+                        <span class="distance-{{ order_data.order.id }}">{{ order_data.distance }} كم</span>
                     </div>
+                    
                 </div>
+                <div class="delivery-fee-badge" style="margin-top: 10px;">
+                  <i class="fas fa-motorcycle" style="margin-right: 6px;"></i>
+                  <span>رسوم التوصيل: {{ order_data.delivery_fee }} جنيه</span>
+              </div>
+              <div class="total-price-badge" style="margin-top: 5px;">
+                  <i class="fas fa-money-bill-wave" style="margin-right: 6px;"></i>
+                  <span>السعر الإجمالي: {{ order_data.final_price }} جنيه</span>
+              </div>
             </div>
 
             <div class="action-buttons">
@@ -295,8 +311,74 @@ document.addEventListener('DOMContentLoaded', function() {
         [{{ order_data.client_lat }}, {{ order_data.client_lng }}],
         {{ order_data.order.id }}
     );
+    
+    // إضافة استدعاء للحصول على العنوان
+    getLocationAddress(
+        {{ order_data.client_lat }},
+        {{ order_data.client_lng }},
+        {{ order_data.order.id }}
+    );
     {% endfor %}
 });
+
+function getLocationAddress(lat, lon, orderId) {
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=ar&addressdetails=1&zoom=18`)
+        .then(response => response.json())
+        .then(data => {
+            let addressHTML = '<strong>العنوان التفصيلي:</strong><br>';
+            
+            if (data.address) {
+                // الشارع والرقم
+                if (data.address.road || data.address.house_number) {
+                    let street = [];
+                    if (data.address.road) street.push(data.address.road);
+                    if (data.address.house_number) street.push(`رقم ${data.address.house_number}`);
+                    addressHTML += `<div>🛣️ ${street.join(' - ')}</div>`;
+                }
+
+                // الحي والمنطقة
+                if (data.address.neighbourhood || data.address.suburb || data.address.quarter) {
+                    let area = [];
+                    if (data.address.neighbourhood) area.push(data.address.neighbourhood);
+                    if (data.address.suburb) area.push(data.address.suburb);
+                    if (data.address.quarter) area.push(data.address.quarter);
+                    addressHTML += `<div>🏘️ ${area.join(' - ')}</div>`;
+                }
+
+                // المدينة والمحافظة
+                if (data.address.city || data.address.state) {
+                    let city = [];
+                    if (data.address.city) city.push(data.address.city);
+                    if (data.address.state) city.push(data.address.state);
+                    addressHTML += `<div>🏙️ ${city.join(' - ')}</div>`;
+                }
+
+                // معالم قريبة
+                let landmarks = [];
+                if (data.address.amenity) landmarks.push(data.address.amenity);
+                if (data.address.shop) landmarks.push(data.address.shop);
+                if (data.address.landmark) landmarks.push(data.address.landmark);
+                
+                if (landmarks.length > 0) {
+                    addressHTML += `<div style="margin-top: 5px;">📍 بالقرب من: ${landmarks.join('، ')}</div>`;
+                }
+            } else {
+                addressHTML += '<div>العنوان غير متوفر بالتفصيل</div>';
+            }
+            
+            const locationElement = document.querySelector(`.location-text-${orderId}`);
+            if (locationElement) {
+                locationElement.innerHTML = addressHTML;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const locationElement = document.querySelector(`.location-text-${orderId}`);
+            if (locationElement) {
+                locationElement.textContent = 'تعذر تحميل العنوان';
+            }
+        });
+}
 
 function calculateRoute(driverLocation, sellerLocation, customerLocation, orderId) {
     const coordinates = [

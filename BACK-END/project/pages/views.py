@@ -783,6 +783,16 @@ def available_order_view(request):
             'driver_lng': user_profile.lng,
         })
 
+    def calculate_delivery_fee(distance_km):
+        base_fee = 25
+        extra_km_fee = 6
+        
+        if distance_km <= 5:
+            return int(base_fee)
+        else:
+            extra_distance = distance_km - 5
+            return int(base_fee + (extra_distance * extra_km_fee))
+
     def order_distance(order):
         return geodesic(driver_location, (order.client_lat, order.client_lng)).km
 
@@ -792,10 +802,16 @@ def available_order_view(request):
     orders_data = []
     for order in closest_orders:
         items = order.items.all()
-        total_price = sum(item.product.price * item.quantity for item in items)
+        # تحويل السعر الإجمالي إلى رقم صحيح
+        total_price = int(sum(item.product.price * item.quantity for item in items))
         product = items[0].product if items else None
         seller_lat = product.seller_lat if product else 0
         seller_lng = product.seller_lng if product else 0
+        
+        distance_km = order_distance(order)
+        estimated_time_hours = distance_km / 30
+        estimated_time_minutes = int(estimated_time_hours * 60)
+        delivery_fee = calculate_delivery_fee(distance_km)
 
         orders_data.append({
             'order': order,
@@ -805,6 +821,10 @@ def available_order_view(request):
             'client_lng': order.client_lng,
             'seller_lat': seller_lat,
             'seller_lng': seller_lng,
+            'distance': round(distance_km, 1),
+            'estimated_time': estimated_time_minutes,
+            'delivery_fee': delivery_fee,
+            'final_price': total_price + delivery_fee
         })
 
     context = {
