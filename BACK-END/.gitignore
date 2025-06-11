@@ -1,3 +1,22 @@
-# Created by venv; see https://docs.python.org/3/library/venv.html
-*
-pyvenv.cfg
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+
+# Environments
+env/
+venv/
+ENV/
+*.env
+
+# Django Stuff:
+media/
+staticfiles/
+
+# Others
+.DS_Store
+.idea/
+.vscode/
