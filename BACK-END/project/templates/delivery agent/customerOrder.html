@@ -141,8 +141,6 @@
     const hasClientLocation = {% if client_lat and client_lng %}true{% else %}false{% endif %};
     let centerLat = {{ client_lat|default:0 }};
     let centerLng = {{ client_lng|default:0 }};
-
-    // أيقونات عصرية
     const driverIcon = L.icon({
         iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048314.png',
         iconSize: [40, 40]
@@ -176,7 +174,6 @@
                 .addTo(map)
                 .bindPopup('👤 Customer');
         }
-        // لا تعرض الطريق هنا (عند الكاستمر)
     }
 
     function updateRoute() {
@@ -212,7 +209,6 @@
         .catch(error => console.error('Error:', error));
     }
 
-    // تهيئة الخريطة
     initMap();
 
     // تحديث موقع السائق والبائع والعميل دورياً
@@ -229,7 +225,6 @@
                 if (data.customer && data.customer.lat && data.customer.lng) {
                     clientMarker.setLatLng([data.customer.lat, data.customer.lng]);
                 }
-                // لا تحدث الطريق هنا (عند الكاستمر)
             })
             .catch(error => console.error('Error:', error));
     }, 10000);
