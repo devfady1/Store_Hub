@@ -1,88 +1,125 @@
-{% extends 'pages/base.html' %}
-{% block content %}
-{% load static %}
+{% extends 'pages/base.html' %} {% block content %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <title>Store Hub | Wishlist</title>
-</head>
-<body class="light">
-<div class="continer-wishlist">
-    <div class="wishlist-header">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>Store Hub | Wishlist</title>
+  </head>
+  <body class="light">
+    <div class="continer-wishlist">
+      <div class="wishlist-header">
         <h2>Wishlist (4)</h2>
         <button class="move-all-btn">Move All To Bag</button>
-    </div>
-    <!-- الصف الأول -->
-    <div class="wishlist-row">
+      </div>
+      <!-- الصف الأول -->
+      <div class="wishlist-row">
         {% for product in liked_products %}
         <div class="product" id="product-{{ product.id }}">
-          <span class="discount-badge">-35%</span>
-          <i class="wishlist-icon fa fa-trash" onclick="removeFromWishlist( {{ product.id }} )"></i>
+          <span class="discount-badge" id="discount_badge">-35%</span>
+          <i
+            class="wishlist-icon fa fa-trash"
+            onclick="removeFromWishlist( {{ product.id }} )"
+          ></i>
           <div class="img">
-            <img src="{{ product.image.url }}" alt="{{ product.name }}" onclick="window.location.href='/product/{{ product.id }}/'" >
+            <img
+              src="{{ product.image.url }}"
+              alt="{{ product.name }}"
+              onclick="window.location.href='/product/{{ product.id }}/'"
+            />
           </div>
-          <button class="add-to-cart"><i class="fas fa-shopping-cart"></i> Add To Cart</button>
+          <button class="add-to-cart">
+            <i class="fas fa-shopping-cart"></i> Add To Cart
+          </button>
           <p class="detail">{{ product.name }}</p>
-          <p class="price">${{ product.price }} <span class="old-price">${{ product.old_price|floatformat:2 }}</span></p>
+          <p class="price">
+            <span class="new-price">${{ product.price }}</span>
+            <span class="old-price"
+              >${{ product.old_price|floatformat:2 }}</span
+            >
+          </span>
         </div>
-      {% endfor %}
-    </div>
+        {% endfor %}
+      </div>
 
-    <div class="just-for-you-section">
+      <div class="just-for-you-section">
         <h2>Just For You</h2>
-        <a href="{% url 'allproducts' %}"><button class="see-all">See All</button></a>
-    </div>
+        <a href="{% url 'allproducts' %}"
+          ><button class="see-all">See All</button></a
+        >
+      </div>
 
-    <!-- الصف الثاني -->
-    <div class="wishlist-row">
-      {% for product in random_products %}
-          <div class="product">
-              <span class="discount-badge">{{ product.discount }}%</span>
-              <i class="view-icon fa fa-eye "onclick="window.location.href='/product/{{ product.id }}/'"></i>
-              <div class="img">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" onclick="window.location.href='/product/{{ product.id }}/'">
-              </div>
-              <button class="add-to-cart"> <i class="fas fa-shopping-cart"></i> Add To Cart</button>
-              <p class="detail">{{ product.name }}</p>
-              <p class="price">${{ product.price }} <span class="old-price">${{ product.old_price|floatformat:2 }}</span></p>
-              <div class="stars">
-                {% for _ in product.star_list %}
-                    <i class="fa-solid fa-star"></i>  
-                {% endfor %}
-
-                {% for _ in product.empty_stars %}
-                    <i class="fa-regular fa-star"></i>  
-                {% endfor %}
-
-                <span>({{ product.rating }})</span>  
-              </div>
+      <!-- الصف الثاني -->
+      <div class="wishlist-row">
+        {% for product in random_products %}
+        <div class="product">
+          <span class="discount-badge">{{ product.discount }}%</span>
+          <i
+            class="view-icon fa fa-eye"
+            onclick="window.location.href='/product/{{ product.id }}/'"
+          ></i>
+          <div class="img">
+            <img
+              src="{{ product.image.url }}"
+              alt="{{ product.name }}"
+              onclick="window.location.href='/product/{{ product.id }}/'"
+            />
           </div>
-      {% endfor %}
-  </div>
-</div>
-<script>
-  function removeFromWishlist(productId) {
-      fetch(`/toggle-like/${productId}/`, {
-          method: 'POST',
+          <button class="add-to-cart">
+            <i class="fas fa-shopping-cart"></i> Add To Cart
+          </button>
+          <p class="detail">{{ product.name }}</p>
+          <p class="price">
+              <span class="new-price">${{ product.price }}</span>
+            <span class="old-price"
+              >${{ product.old_price|floatformat:2 }}</span
+            >
+          </p>
+          <div class="stars">
+            {% for _ in product.star_list %}
+            <i class="fa-solid fa-star"></i>
+            {% endfor %} {% for _ in product.empty_stars %}
+            <i class="fa-regular fa-star"></i>
+            {% endfor %}
+
+            <span>({{ product.rating }})</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <script>
+      function removeFromWishlist(productId) {
+        fetch(`/toggle-like/${productId}/`, {
+          method: "POST",
           headers: {
-              'X-CSRFToken': '{{ csrf_token }}'
-          }
-      }).then(response => response.json())
-      .then(data => {
-          if (!data.liked) { 
+            "X-CSRFToken": "{{ csrf_token }}",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (!data.liked) {
               document.getElementById(`product-${productId}`).remove();
-          }
-      });
-  }
-</script>
-</body>
+            }
+          });
+      }
+      let product = document.querySelectorAll(".wishlist-row .product");
+      product.forEach((pro) => {
+        let oldP = parseInt(pro.querySelector(".old-price").textContent.replace("$", ""));
+        let newP = parseInt(pro.querySelector(".new-price").textContent.replace("$", ""));
+        let disSpan = pro.querySelector(".discount-badge");
+        let dis = ((oldP - newP) / oldP) * 100;
+        disSpan.textContent = `${Math.round(dis)}%`;
+      })
+    </script>
+  </body>
 </html>
 {% endblock content %}
-
-    
