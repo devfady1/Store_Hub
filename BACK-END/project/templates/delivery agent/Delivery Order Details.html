@@ -133,105 +133,127 @@
         </div>
     
           <div class="map-container">
-            <div id="map" style="height: 100%; width: 100%;"></div>
+            <div id="map" style="height: 100%; width: 100%; z-index: 1;"></div>
           </div>
           
-          <script>
-              const driverLat = {{ driver_lat|default:27.1866 }};
-              const driverLng = {{ driver_lng|default:31.1704 }};
-              const clientLat = {{ client_lat|default:27.1866 }};
-              const clientLng = {{ client_lng|default:31.1704 }};
-              const sellerLat = {{ seller_lat|default:27.1866 }};
-              const sellerLng = {{ seller_lng|default:31.1704 }};
+          <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+    let map;
+    let routeLayer;
+    let driverMarker, sellerMarker, clientMarker;
+    const orderId = {{ order.id }};
+    const hasDriverLocation = {% if driver_lat and driver_lng %}true{% else %}false{% endif %};
+    const hasSellerLocation = {% if seller_lat and seller_lng %}true{% else %}false{% endif %};
+    const hasClientLocation = {% if client_lat and client_lng %}true{% else %}false{% endif %};
+    let centerLat = {{ client_lat|default:0 }};
+    let centerLng = {{ client_lng|default:0 }};
 
-              const driverLocation = [driverLat, driverLng];
-              const staticClientLocation = [clientLat, clientLng];
-              const sellerLocation = [sellerLat, sellerLng];
+    // أيقونات عصرية
+    const driverIcon = L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048314.png',
+        iconSize: [40, 40]
+    });
+    const sellerIcon = L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/2972/2972185.png',
+        iconSize: [40, 40]
+    });
+    const customerIcon = L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/1946/1946429.png',
+        iconSize: [40, 40]
+    });
 
-              let map = L.map('map').setView(driverLocation, 13);
+    function initMap() {
+        map = L.map('map').setView([centerLat, centerLng], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        if (hasDriverLocation) {
+            driverMarker = L.marker([{{ driver_lat|default:0 }}, {{ driver_lng|default:0 }}], {icon: driverIcon})
+                .addTo(map)
+                .bindPopup('🚚 Delivery');
+        }
+        if (hasSellerLocation) {
+            sellerMarker = L.marker([{{ seller_lat|default:0 }}, {{ seller_lng|default:0 }}], {icon: sellerIcon})
+                .addTo(map)
+                .bindPopup('🏪 Seller');
+        }
+        if (hasClientLocation) {
+            clientMarker = L.marker([{{ client_lat|default:0 }}, {{ client_lng|default:0 }}], {icon: customerIcon})
+                .addTo(map)
+                .bindPopup('👤 Customer');
+        }
+        // لا تعرض الطريق هنا (عند الكاستمر)
+    }
 
-              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
-              }).addTo(map);
+    function updateRoute() {
+        if (!hasDriverLocation || !hasSellerLocation || !hasClientLocation) {
+            return;
+        }
+        const coordinates = [
+            [{{ driver_lng|default:0 }}, {{ driver_lat|default:0 }}],
+            [{{ seller_lng|default:0 }}, {{ seller_lat|default:0 }}],
+            [{{ client_lng|default:0 }}, {{ client_lat|default:0 }}]
+        ];
+        fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
+            method: 'POST',
+            headers: {
+                'Authorization': '5b3ce3597851110001cf624849ee31d7612e44018effded422136ba4',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ coordinates: coordinates })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (routeLayer) {
+                map.removeLayer(routeLayer);
+            }
+            routeLayer = L.geoJSON(data, {
+                style: { color: '#00bfff', weight: 6, dashArray: '10,10', opacity: 0.8 }
+            }).addTo(map);
+            const distance = (data.features[0].properties.segments[0].distance / 1000).toFixed(1);
+            const duration = Math.round(data.features[0].properties.segments[0].duration / 60);
+            document.getElementById('eta').textContent = duration + ' minutes';
+            map.fitBounds(routeLayer.getBounds());
+        })
+        .catch(error => console.error('Error:', error));
+    }
 
-              const driverMarker = L.marker(driverLocation).addTo(map).bindPopup("Driver Location").openPopup();
+    // تهيئة الخريطة
+    initMap();
 
-              const sellerMarker = L.marker(sellerLocation, {
-                icon: L.icon({
-                  iconUrl: 'https://cdn-icons-png.flaticon.com/512/2038/2038854.png',
-                  iconSize: [25, 25]
-                })
-              }).addTo(map).bindPopup("Seller Location");
+    // تحديث موقع السائق والبائع والعميل دورياً
+    setInterval(() => {
+        fetch(`/live-location/${orderId}/`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.driver && data.driver.lat && data.driver.lng) {
+                    driverMarker.setLatLng([data.driver.lat, data.driver.lng]);
+                }
+                if (data.seller && data.seller.lat && data.seller.lng) {
+                    sellerMarker.setLatLng([data.seller.lat, data.seller.lng]);
+                }
+                if (data.customer && data.customer.lat && data.customer.lng) {
+                    clientMarker.setLatLng([data.customer.lat, data.customer.lng]);
+                }
+                // لا تحدث الطريق هنا (عند الكاستمر)
+            })
+            .catch(error => console.error('Error:', error));
+    }, 10000);
 
-              let clientMarker = L.marker(staticClientLocation, {
-                icon: L.icon({
-                  iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
-                  iconSize: [25, 25]
-                })
-              }).addTo(map).bindPopup("Customer Location");
-
-              let routeLine;
-
-              function drawRoute(from, to) {
-                const url = `https://api.openrouteservice.org/v2/directions/driving-car/geojson`;
-                const body = {
-                  coordinates: [
-                    [from[1], from[0]],
-                    [to[1], to[0]]
-                  ]
-                };
-
-                fetch(url, {
-                  method: "POST",
-                  headers: {
-                    'Authorization': '5b3ce3597851110001cf624849ee31d7612e44018effded422136ba4',
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(body)
-                })
-                .then(res => res.json())
-                .then(data => {
-                  const coords = data.features[0].geometry.coordinates.map(c => [c[1], c[0]]);
-                  if (routeLine) map.removeLayer(routeLine);
-                  routeLine = L.polyline(coords, { color: 'blue', weight: 5 }).addTo(map);
-                  map.fitBounds(routeLine.getBounds());
-                })
-                .catch(err => {
-                  console.error("Routing error:", err);
+    // إرسال موقع اليوزر الحالي (customer, delivery, seller) كل فترة قصيرة
+    function sendMyLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                fetch(`/live-location/${orderId}/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ lat: position.coords.latitude, lng: position.coords.longitude })
                 });
-              }
-
-              // السائق → السيلر
-              drawRoute(driverLocation, sellerLocation);
-
-              // العميل (Live location)
-              if (navigator.geolocation) {
-                navigator.geolocation.watchPosition(position => {
-                  const liveClientLocation = [position.coords.latitude, position.coords.longitude];
-
-                  if (clientMarker) map.removeLayer(clientMarker);
-
-                  clientMarker = L.marker(liveClientLocation, {
-                    icon: L.icon({
-                      iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
-                      iconSize: [25, 25]
-                    }),
-                    title: "Your Live Location"
-                  }).addTo(map).bindPopup("Your Live Location").openPopup();
-
-                  // السيلر → العميل (live)
-                  drawRoute(sellerLocation, liveClientLocation);
-                }, err => {
-                  console.warn("Location access denied or unavailable.");
-                }, { enableHighAccuracy: true });
-              } else {
-                alert("Geolocation is not supported by your browser.");
-              }
-          </script>
-          
-          <script async defer
-          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSp3OoxS0lL0wOcEGC-ty8FQutMBqKTLE&callback=initMap">
-          </script>
+            });
+        }
+    }
+    setInterval(sendMyLocation, 10000);
+</script>
           
     </div>
     <script src="mainDelivery.js"></script>
