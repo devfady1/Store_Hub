@@ -22,7 +22,8 @@
   text-align: center;
 }
 
-.dark .order-Trick .header , .dark .order-Trick .order-card {
+.dark .order-Trick .header , 
+.dark .order-Trick .order-card {
   background-color: #1c2739;
   box-shadow: 0 4px 6px rgba(165, 161, 161, 0.359);
 }
@@ -114,14 +115,23 @@
 .order-Trick  .detail-row {
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
-  padding: 8px;
-  background: rgba(159, 18, 57, 0.05);
-  border-radius: 10px;
+  background: #f8f9fa;
+  color: var(--text-color);
+  padding: 18px;
+  border-radius: 15px;
+  margin-bottom: 25px;
+  border-left: 4px solid var(--main-color);
 }
-
+.order-Trick  .detail-row1 {
+  display: flex;
+  align-items: center;
+  margin-bottom: 18px;
+  font-weight: 500;
+}
 .dark .order-Trick .detail-row {
-  background: none;
+  background: #27354ce4;
+  border: 1px solid #1e293be4;
+  border-left: 4px solid var(--main-color);
 }
 
 .order-Trick  .detail-icon {
@@ -138,38 +148,68 @@
 }
 
 .order-Trick  .time-distance {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 15px;
-  margin-top: 15px;
+  margin-bottom: 20px;
 }
 
-.order-Trick  .time-badge,
-.order-Trick  .distance-badge {
-  background: linear-gradient(45deg, #9f1239, #b93838);
-  color: white;
-  padding: 6px 12px;
-  border-radius: 25px;
-  font-size: 0.85rem;
-  font-weight: bold;
+.order-Trick  .time-badge {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid #ecf0f1;
+  transition:  0.3s ease;
+  color: var(--text-color);
+}
+.dark .order-Trick  .time-badge {
+  background: #27354ce4;
+  border: 1px solid #1e293be4;
+}
+.order-Trick  .time-badge:hover {
+  border: 1px solid var(--main-color);
+  transform: translateY(-2px);
 }
 
-.order-Trick  .distance-badge {
-  background: linear-gradient(45deg, #b93838, #9f1239);
+.order-Trick .fees-section {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  gap: 15px;
 }
 
+.order-Trick .fees-section .delivery-fee-badge , 
+.order-Trick .fees-section  .total-price-badge{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8f9fa;
+  color: var(--text-color);
+  padding: 12px 15px;
+  border-radius: 10px;
+  flex: 1;
+  border-left: 3px solid var(--main-color);
+}
+.dark .order-Trick .fees-section .delivery-fee-badge ,
+.dark .order-Trick .fees-section  .total-price-badge {
+  background: #27354ce4;
+  border: 1px solid #1e293be4;
+  border-left: 4px solid var(--main-color);
+}
 .order-Trick  .action-buttons {
   display: flex;
+  justify-content: center;
   gap: 12px;
   margin-top: 20px;
+  transition:  0.3s ease;
 }
-
 .order-Trick  .btn {
   padding: 10px 20px;
   border: none;
   border-radius: 25px;
   font-size: 1rem;
   cursor: pointer;
-  transition:  0.3s ease;
   letter-spacing: 0.5px;
 }
 
@@ -196,7 +236,14 @@
   border: 1px solid var(--main-color);
   transform: translateY(-2px);
 }
-
+@media (max-width : 550px) {
+  .order-Trick  .action-buttons {
+    flex-direction: column;
+  }
+  .order-Trick  .action-buttons .btn-accept {
+    margin-bottom: 15px;
+  }
+}
 
 </style>
 <div class="order-Trick">
@@ -220,7 +267,7 @@
             </div>
 
             <div class="order-details">
-                <div class="detail-row">
+                <div class="detail-row1">
                     <i class="fas fa-map-marker-alt detail-icon" style="margin-right: 6px;"></i>
                     <div class="detail-text">
                         {% for item in order_data.items %}
@@ -230,7 +277,7 @@
                 </div>
 
                 <div class="detail-row">
-                    <i class="fas fa-location-dot detail-icon" style="margin-right: 6px;"></i>
+                  <i class="fas fa-home address-icon detail-icon" style="margin-right: 10px;"></i>
                     <div class="detail-text location-text-{{ order_data.order.id }}" style="line-height: 1.5;">
                         جاري تحميل العنوان...
                     </div>
@@ -239,22 +286,25 @@
                 <div class="time-distance">
                     <div class="time-badge">
                         <i class="fas fa-clock" style="margin-right: 6px;"></i> 
-                        <span class="eta-{{ order_data.order.id }}">{{ order_data.estimated_time }} دقيقة</span>
+                        <span class="eta-{{ order_data.order.id }}">{{ order_data.estimated_time }} Minutes</span>
                     </div>
-                    <div class="distance-badge">
+                    <div class="time-badge">
                         <i class="fas fa-route" style="margin-right: 6px;"></i> 
-                        <span class="distance-{{ order_data.order.id }}">{{ order_data.distance }} كم</span>
+                        <span class="distance-{{ order_data.order.id }}">{{ order_data.distance }} KM</span>
                     </div>
                     
                 </div>
-                <div class="delivery-fee-badge" style="margin-top: 10px;">
-                  <i class="fas fa-motorcycle" style="margin-right: 6px;"></i>
-                  <span>رسوم التوصيل: {{ order_data.delivery_fee }} جنيه</span>
-              </div>
-              <div class="total-price-badge" style="margin-top: 5px;">
-                  <i class="fas fa-money-bill-wave" style="margin-right: 6px;"></i>
-                  <span>السعر الإجمالي: {{ order_data.final_price }} جنيه</span>
-              </div>
+                <div class="fees-section">
+                  <div class="delivery-fee-badge" style="margin-top: 10px;">
+                    <i class="fas fa-motorcycle" style="margin-right: 6px;"></i>
+                    <span>رسوم التوصيل: {{ order_data.delivery_fee }} جنيه</span>
+                  </div>
+
+                  <div class="total-price-badge" style="margin-top: 5px;">
+                    <i class="fas fa-money-bill-wave" style="margin-right: 6px;"></i>
+                    <span>السعر الإجمالي: {{ order_data.final_price }} جنيه</span>
+                  </div>
+               </div>
             </div>
 
             <div class="action-buttons">

@@ -1003,4 +1003,3 @@ def rate_product(request, product_id):
         return redirect(referer)
     else:
         return redirect('product', pk=product.id)
-    

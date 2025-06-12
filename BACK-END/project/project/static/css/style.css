@@ -184,7 +184,11 @@
   color: var(--dark-color);
   padding-bottom: 10px;
 }
-
+@media (max-width:410px) {
+  .ourproduct .container .products .pro .detailes h5 {
+    font-size: 16px;
+  }
+}
 .ourproduct .container .products .pro .detailes .dis {
   display: flex;
 }
@@ -1162,6 +1166,9 @@ form.header-form{
 }
 
 @media (max-width: 551px) {
+  nav h1 {
+    font-size: 30px;
+  }
   footer .container {
     flex-direction: column;
     justify-content: center;
@@ -1179,9 +1186,7 @@ form.header-form{
 }
 
 @media (max-width: 450px) {
-  nav h1 {
-    font-size: 30px;
-  }
+  
 
   nav .linkes p {
     font-size: 15px;
@@ -1469,7 +1474,11 @@ form.header-form{
 .RelatedItem .container .products .pro .detailes h5 {
   font-size: 14px;
 }
-
+@media (max-width: 410px) {
+  .BestSellingProducts .container .bttom .pro .detailes h5 {
+    font-size: 16px;
+  }
+}
 .pro-div .products .product .pro .detailes div,
 .BestSellingProducts .container .bttom .pro .detailes div,
 .RelatedItem .container .products .pro .detailes div {
@@ -1542,6 +1551,7 @@ form.header-form{
   right: 2px;
   transition: 0.3s;
 }
+
 .ourproduct .container .products .pro .icons .icon i.liked {
   background-color: var(--main-color);
   color: #fff;
@@ -1711,7 +1721,16 @@ section .container .browseCat h3 {
   font-size: 35px;
   color: var(--dark-color);
 }
-
+@media (max-width: 550px) {
+  section .container .browseCat h3 {
+    font-size: 27px;
+  }
+}
+@media (max-width: 410px) {
+  section .container .browseCat h3 {
+    font-size: 25px;
+  }
+}
 section#browseCat .container {
   position: relative;
   display: flex;
@@ -1785,7 +1804,16 @@ section#browseCat .container {
   font-size: 35px;
   color: var(--dark-color);
 }
-
+@media (max-width: 550px) {
+  .BestSellingProducts .container .top .bttn h4 {
+    font-size: 27px;
+  }
+}
+@media (max-width: 410px) {
+  .BestSellingProducts .container .top .bttn h4 {
+    font-size: 25px;
+  }
+}
 .BestSellingProducts .container .top .bttn a button {
   width: 150px;
   height: 50px;
@@ -1794,6 +1822,17 @@ section#browseCat .container {
   color: #fff;
   font-size: 16px;
   transition: 0.3s;
+}
+
+@media (max-width: 410px) {
+  .ourproduct .container .products .pro .icons .icon i {
+    width: 84%;
+    height: 30px;
+  }
+  .BestSellingProducts .container .top .bttn a button {
+    width: 100px;
+    height: 40px;
+  }
 }
 
 .BestSellingProducts .container .top .bttn a button:hover {
@@ -1845,13 +1884,13 @@ section#browseCat .container {
   border-bottom: 2px solid var(--main-color);
 }
 
-@media (max-width: 800px) {
+@media (max-width: 815px) {
   .BestSellingProducts .container .bttom {
     flex-wrap: wrap;
   }
 
   .BestSellingProducts .container .bttom .pro {
-    width: 40%;
+    width: 50%;
   }
 }
 
@@ -1860,7 +1899,11 @@ section#browseCat .container {
     width: 100%;
   }
 }
-
+@media (max-width: 410px) {
+  .BestSellingProducts .container .bttom .pro {
+    width: 100%;
+  }
+}
 .ourproduct .container .ourprotext {
   display: flex;
   align-items: center;
@@ -1903,13 +1946,16 @@ section#browseCat .container {
 
 @media (max-width: 600px) {
   .ourproduct .container .products .pro {
-    width: 40%;
+    width: 50%;
   }
 }
 
-@media (max-width: 450px) {
+@media (max-width: 410px) {
+  .ourproduct .container .products .pro {
+    width: 100%;
+  }
   .ourproduct .container .products .pro .img img {
-    width: 90%;
+    width: 100%;
   }
 }
 
@@ -2519,7 +2565,7 @@ section#browseCat .container {
   }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 550px) {
   .cart-header {
     grid-template-columns: 2fr 1fr 1fr;
   }
@@ -2535,8 +2581,10 @@ section#browseCat .container {
 
   .cart-buttons {
     flex-direction: column;
-    width: 70%;
-    margin-left: 70px;
+    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-self: center;
     gap: 10px;
   }
 
@@ -2544,13 +2592,22 @@ section#browseCat .container {
     width: 100%;
   }
 
-  .coupon-section-cart {
-    margin-left: 70px;
-    gap: 50px;
+  .btn-primary {
+    width: 60%;
   }
+  .coupon-section-cart {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    width: 100%;
+  }
+    .coupon-input-cart {
+      width: 60%;
+    }
 }
 
-@media (max-width: 550px) {
+@media (max-width: 500px) {
   .breadcrumb-cart {
     display: flex;
     align-items: center;
@@ -2590,21 +2647,23 @@ section#browseCat .container {
   }
 
   .btn {
-    padding: 8px 15px;
+    width: 100%;
     font-size: 14px;
   }
-
-  .coupon-section-cart {
-    flex-direction: column;
-    width: 70%;
-    margin-left: 70px;
-    gap: 10px;
+  .btn-primary {
+    width: 60%;
   }
   .coupon-input-cart {
-    width: 100%;
+    width: 60%;
   }
 }
-
+@media (max-width: 410px) {
+  .cart-item-row {
+    gap: 10px;
+    padding-left: 30px;
+  }
+  
+}
 /*      --End Cart--    */
 
 /*      --Start About--   */
@@ -3217,11 +3276,13 @@ input[type="checkbox"]:checked::after {
     width: 100%;
   }
 
-  .cheakout-form .form-group {
+  .form-group {
     width: 100%;
     margin: 10px auto;
   }
-
+  .apply-btn {
+    width: 50%;
+  }
   .billing {
     width: 100%;
   }
@@ -3234,7 +3295,17 @@ input[type="checkbox"]:checked::after {
     width: 100%;
   }
 }
-
+@media (max-width: 550px) {
+  .coupon-container {
+    flex-direction: column;
+  }
+  .place-order-btn {
+    width: 100%;
+  }
+  .apply-btn {
+    width: 100%;
+  }
+}
 /*      --End CheckOut--   */
 
 /*      --Start Account--   */
@@ -3369,13 +3440,14 @@ input[type="checkbox"]:checked::after {
   border-radius: 25px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 500;
   transition: background 0.3s ease;
   margin-top: 10px;
   margin-bottom: 20px;
 }
 
 .upload-icon {
-  margin-right: 8px;
+  margin-right: 4px;
 }
 
 /* Form Groups */
@@ -3541,16 +3613,18 @@ input[type="checkbox"]:checked::after {
 }
 
 @media screen and (max-width: 650px) {
-  .profile-form .profile-pic {
-    position: relative;
-    top: 32%;
-    left: 32%;
+  .breadcrumb-account .check {
+    font-size: 18px;
   }
-  .upload-icon {
-    bottom: 3%;
-    right: 38%;
+  .profile-picture {
+    width: 130px;
+    height: 130px;
   }
-
+  .upload-btn {
+    padding: 10px 8px;
+    font-size: 13px;
+    font-weight: 500;
+  }
   .profile-form .form-row {
     grid-template-columns: none;
     gap: 0;
@@ -3572,7 +3646,13 @@ input[type="checkbox"]:checked::after {
 
 @media screen and (max-width: 450px) {
   .breadcrumb-account {
-    gap: 30px;
+    gap: 100px;
+  }
+  .breadcrumb-account .a1 {
+    font-size: 18px;
+  }
+  .breadcrumb-account .check {
+    font-size: 18px;
   }
 }
 

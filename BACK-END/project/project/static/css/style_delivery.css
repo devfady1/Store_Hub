@@ -62,19 +62,6 @@
   color: #ffc918;
 }
 
-@media (max-width: 800px) {
-  .orderDiv .container {
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-  }
-  .orderDiv .container .pro {
-    width: 40%;
-  }
-  .orderDiv .container .pro .img img {
-    width: 10%;
-  }
-}
 
 /* Main Class in Any div parent */
 .container {
@@ -2067,7 +2054,14 @@ button:hover {
   font-weight: bold;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
-
+@media (max-width: 550px) {
+  .orderDiv {
+    padding: 0 3%;
+  }
+  .myOrders-filters .filter-btn {
+    font-size: 14px;
+  }
+}
 .myOrders-filters .filter-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
