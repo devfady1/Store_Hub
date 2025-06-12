@@ -71,13 +71,13 @@
                             <button id="myOrders-details-btn">
                                 <a href="{% url 'order_detail' order.id %}">
                                     <i class="fas fa-eye"></i>
-                                    View Details
+                                    Track Order
                                 </a>
                             </button>
                             <button id="myOrders-details-btn">
-                                <a href="">
+                                <a href="{% url 'order_details' order.id %}">
                                     <i class="fas fa-eye"></i>
-                                    View 
+                                    View Details
                                 </a>
                             </button>
                         </div>
@@ -85,7 +85,7 @@
                 {% endfor %}
             </div>
         {% else %}
-            <div class="alert alert-info" role="alert">
+            <div class="alert alert-info" role="alert" style="text-align: center; font-size: 20px; font-weight: bold; margin-top: 20px;">
                 لا توجد طلبات حالياً
             </div>
         {% endif %}
