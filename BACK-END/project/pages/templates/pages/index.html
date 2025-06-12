@@ -101,7 +101,7 @@
                   <i class="fa-regular fa-heart" id="iconheart-{{ pro.product.id }}" data-id="{{ pro.product.id }}" onclick="toggleLike({{ pro.product.id }}, this, event)">
                   </i>
                                     
-                  <i class="fa-regular fa-eye" onclick="window.location.href='/product/{{ pro.product.id }}/'; return false;"></i>
+                  <i class="fa-regular fa-eye" onclick="window.location.href='/product/{{ pro.product.id }}/'; return false; {% if pro.product.id in liked_products %}style="color: #9f1239;"{% endif %}"></i>
                 </div>
               </div>
 
@@ -224,8 +224,8 @@
           {% for product in products %}
           <div class="pro">
             <div class="icons">
-              <div class="icon">
-                <i class="fa-regular fa-heart iconheart" onclick="toggleLike({{ product.id }}, this, event)"></i>
+              <div class="icon" >
+                <i class="fa-regular fa-heart iconheart" onclick="toggleLike({{ product.id }}, this, event)" {% if product.id in liked_products %}style="color: #9f1239;  "{% endif %}></i>
                 <a href="/product/{{ product.id }}/">
                   <i class="fa-regular fa-eye"></i>
                 </a>
@@ -295,7 +295,7 @@
             <div class="pro">
               <div class="icons">
                 <div class="icon">
-                  <i class="fa-regular fa-heart iconheart" onclick="toggleLike({{ product.id }}, this, event)"></i>
+                  <i class="fa-regular fa-heart iconheart" onclick="toggleLike({{ product.id }}, this, event)" {% if product.id in liked_products %}style="color: #9f1239;  "{% endif %}></i>
                     <i class="fa-regular fa-eye" onclick="window.location.href='/product/{{ product.id }}/'"></i>
                 </div>
               </div>

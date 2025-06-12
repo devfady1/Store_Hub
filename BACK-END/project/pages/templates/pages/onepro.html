@@ -19,6 +19,208 @@
       href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
       rel="stylesheet" />
     <title>Store Hub | {{ product.name }}</title>
+    <style>
+      .comments-section {
+        padding: 2rem 1rem;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .comments-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .comment-container {
+        background: var(--comment-bg);
+        border-radius: 12px;
+        padding: 1rem;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      .light .comment-container {
+        --comment-bg: #ffffff;
+        border: 1px solid #e9ecef;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+      }
+      .dark .comment-container {
+        --comment-bg: #2d3436;
+        border: 1px solid #4a4a4a;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      }
+      .comment-container:hover {
+        transform: translateY(-2px);
+      }
+      .light .comment-container:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      }
+      .dark .comment-container:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      }
+      .comment-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        position: relative;
+      }
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 0.75rem;
+        object-fit: cover;
+        border: 2px solid var(--avatar-border);
+      }
+      .light .user-avatar {
+        --avatar-border: #e9ecef;
+      }
+      .dark .user-avatar {
+        --avatar-border: #4a4a4a;
+      }
+      .comment-metadata {
+        flex-grow: 1;
+      }
+      .user-name {
+        font-weight: 600;
+        margin: 0;
+        font-size: 0.95rem;
+        color: var(--user-name-color);
+      }
+      .light .user-name {
+        --user-name-color: #2d3436;
+      }
+      .dark .user-name {
+        --user-name-color: #f8f9fa;
+      }
+      .comment-date {
+        font-size: 0.8rem;
+        color: #6c757d;
+        display: block;
+        margin-top: 0.2rem;
+      }
+      .comment-text {
+        color: var(--text-color);
+        line-height: 1.5;
+        font-size: 0.9rem;
+        margin: 0;
+      }
+      .light .comment-text {
+        --text-color: #4a4a4a;
+      }
+      .dark .comment-text {
+        --text-color: #e9ecef;
+      }
+      .sentiment-badge {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+      .sentiment-positive {
+        background-color: rgba(25, 135, 84, 0.1);
+        color: #198754;
+      }
+      .sentiment-neutral {
+        background-color: rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+      }
+      .sentiment-negative {
+        background-color: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+      }
+      .show-more-btn {
+        display: block;
+        width: 200px;
+        margin: 2rem auto;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        background: var(--btn-bg);
+        color: var(--btn-color);
+      }
+      .light .show-more-btn {
+        --btn-bg: #9f1239;
+        --btn-color: white;
+      }
+      .dark .show-more-btn {
+        --btn-bg: #e74c3c;
+        --btn-color: white;
+      }
+      .show-more-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      }
+      .comment-form-container {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        border-radius: 12px;
+        background: var(--form-bg);
+      }
+      .light .comment-form-container {
+        --form-bg: #f8f9fa;
+        border: 1px solid #e9ecef;
+      }
+      .dark .comment-form-container {
+        --form-bg: #2d3436;
+        border: 1px solid #4a4a4a;
+      }
+      .comment-textarea {
+        width: 100%;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        resize: vertical;
+        min-height: 80px;
+        background: var(--textarea-bg);
+        border: 1px solid var(--textarea-border);
+        color: var(--textarea-color);
+      }
+      .light .comment-textarea {
+        --textarea-bg: white;
+        --textarea-border: #ced4da;
+        --textarea-color: #4a4a4a;
+      }
+      .dark .comment-textarea {
+        --textarea-bg: #1a1a1a;
+        --textarea-border: #4a4a4a;
+        --textarea-color: #e9ecef;
+      }
+      @media (max-width: 768px) {
+        .comments-grid {
+          grid-template-columns: 1fr;
+        }
+        .comment-container {
+          margin-bottom: 1rem;
+        }
+      }
+
+      /* تنسيقات أيقونة القلب */
+      .ico .fa-heart {
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .ico .fa-heart.fa-solid,
+      .ico .fa-heart.liked {
+        color: #9f1239 !important;
+      }
+
+      .dark .ico .fa-heart.fa-solid,
+      .dark .ico .fa-heart.liked {
+        color: #e74c3c !important;
+      }
+
+      .ico .fa-heart:hover {
+        transform: scale(1.1);
+      }
+    </style>
   </head>
 
   <body class="light">
@@ -136,57 +338,84 @@
             </div>
             <button onclick="addToCart({{ product.id }})">Buy Now</button>
             <div class="ico">
-              <i class="fa-{% if product.id in liked_products %}solid{% else %}regular{% endif %} fa-heart" onclick="toggleLike({{ product.id }}, this, event)"></i>
+              <i class="fa-{% if product.id in liked_products %}solid{% else %}regular{% endif %} fa-heart" 
+                 onclick="toggleLike({{ product.id }}, this, event)"
+                 {% if product.id in liked_products %}style="color: #9f1239;"{% endif %}></i>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <section class="comment" style="padding: 20px;">
+    <section class="comments-section">
+      <div class="comments-grid">
+        {% for pair in comment_pairs %}
+          {% for comment in pair %}
+            {% if comment %}
+              <div class="comment-container">
+                <div class="comment-header">
+                  <img src="{% if comment.profile_image_url %}{{ comment.profile_image_url }}{% else %}{% static 'images/default_driver.jpg' %}{% endif %}" 
+                       alt="{{ comment.user.username }}" 
+                       class="user-avatar">
+                  <div class="comment-metadata">
+                    <h4 class="user-name">{{ comment.user.username }}</h4>
+                    <span class="comment-date">{{ comment.created_at|date:"F d, Y" }}</span>
+                  </div>
+                  <span class="sentiment-badge sentiment-{{ comment.sentiment }}">
+                    {{ comment.get_sentiment_display }}
+                  </span>
+                </div>
+                <p class="comment-text">{{ comment.comment_text }}</p>
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+      </div>
 
-  <div class="comments" style="margin-left: 60px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px;">
-    
-    <div class="comment-block" style=" padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
-      <h3 class="comment_H" style="color: #15803d;">Positive Comments</h3>
-      {% for comment in product.comments.all %}
-        {% if comment.sentiment == "positive" %}
-          <p style="margin: 10px 0; color: #065f46;">{{ comment.comment_text }}</p>
+      {% if hidden_comment_pairs %}
+        <button class="show-more-btn" id="showMoreComments">عرض المزيد من التعليقات</button>
+        
+        <div id="hiddenComments" style="display: none;">
+          <div class="comments-grid">
+            {% for pair in hidden_comment_pairs %}
+              {% for comment in pair %}
+                {% if comment %}
+                  <div class="comment-container">
+                    <div class="comment-header">
+                      <img src="{% if comment.profile_image_url %}{{ comment.profile_image_url }}{% else %}{% static 'images/default_driver.jpg' %}{% endif %}" 
+                           alt="{{ comment.user.username }}" 
+                           class="user-avatar">
+                      <div class="comment-metadata">
+                        <h4 class="user-name">{{ comment.user.username }}</h4>
+                        <span class="comment-date">{{ comment.created_at|date:"F d, Y" }}</span>
+                      </div>
+                      <span class="sentiment-badge sentiment-{{ comment.sentiment }}">
+                        {{ comment.get_sentiment_display }}
+                      </span>
+                    </div>
+                    <p class="comment-text">{{ comment.comment_text }}</p>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="comment-form-container">
+        {% if user.is_authenticated %}
+          <form method="POST" action="{% url 'add_comment' product.id %}" class="comment-form">
+            {% csrf_token %}
+            <textarea name="comment" 
+                      class="comment-textarea" 
+                      placeholder="اكتب تعليقك هنا..." 
+                      required></textarea>
+            <button type="submit" class="show-more-btn">إضافة تعليق</button>
+          </form>
+        {% else %}
+          <p style="text-align: center;">يرجى <a href="{% url 'login' %}" style="color: #9f1239; text-decoration: underline;">تسجيل الدخول</a> لكتابة تعليق.</p>
         {% endif %}
-      {% endfor %}
-    </div>
-
-    <div class="comment-block" style="background-color: #fefce8; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
-      <h3 class="comment_H" style="color: #ee8e08;">Neutral Comments</h3>
-      {% for comment in product.comments.all %}
-        {% if comment.sentiment == "neutral" %}
-          <p style="margin: 10px 0; color: #713f12;">{{ comment.comment_text }}</p>
-        {% endif %}
-      {% endfor %}
-    </div>
-
-    <div class="comment-block" style="background-color: #fef2f2; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
-      <h3 class="comment_H" style="color: #b91c1c;">Negative Comments</h3>
-      {% for comment in product.comments.all %}
-        {% if comment.sentiment == "negative" %}
-          <p style="margin: 10px 0; color: #7f1d1d;">{{ comment.comment_text }}</p>
-        {% endif %}
-      {% endfor %}
-    </div>
-
-  </div>
-
-  <div class="com" style="margin-top: 40px;">
-    {% if user.is_authenticated %}
-      <form method="POST" action="{% url 'add_comment' product.id %}" style="display: flex; flex-direction: column; align-items: center;">
-        {% csrf_token %}
-        <textarea name="comment" rows="4" cols="60" style="border-radius: 8px; padding: 10px; border: 1px solid #ccc;" placeholder="Write Your Comment..." required></textarea>
-        <button type="submit" style="margin-top: 20px; background-color:#9f1239 ; color: white; border:none; border-radius: 8px; width: 200px; height: 40px;">Add Comment</button>
-      </form>
-    {% else %}
-      <p style="text-align: center;">يرجى <a href="{% url 'login' %}" style="color: #9f1239; text-decoration: underline;">تسجيل الدخول</a> لكتابة تعليق.</p>
-    {% endif %}
-  </div>
-</section>
+      </div>
+    </section>
 
 
     <section class="RelatedItem">
@@ -242,6 +471,12 @@
     <script src="{% static 'js/darkmode.js' %}"></script>
     <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
+        // تحديث حالة أيقونة القلب عند تحميل الصفحة
+        const heartIcon = document.querySelector('.ico .fa-heart');
+        if (heartIcon && heartIcon.classList.contains('fa-solid')) {
+            heartIcon.style.color = '#9f1239';
+        }
+
         let quantity = 1;
         const numElement = document.getElementById('Num');
 
@@ -286,13 +521,30 @@
                 if (data.liked) {
                     btn.classList.remove('fa-regular');
                     btn.classList.add('fa-solid');
+                    btn.style.color = '#9f1239';
                 } else {
                     btn.classList.remove('fa-solid');
                     btn.classList.add('fa-regular');
+                    btn.style.color = '';
                 }
             })
             .catch(error => console.error('❌ Error:', error));
         };
+
+        const showMoreBtn = document.getElementById('showMoreComments');
+        const hiddenComments = document.getElementById('hiddenComments');
+
+        if (showMoreBtn) {
+            showMoreBtn.addEventListener('click', function() {
+                if (hiddenComments.style.display === 'none') {
+                    hiddenComments.style.display = 'block';
+                    showMoreBtn.textContent = 'عرض تعليقات أقل';
+                } else {
+                    hiddenComments.style.display = 'none';
+                    showMoreBtn.textContent = 'عرض المزيد من التعليقات';
+                }
+            });
+        }
     });
     </script>
   </body>

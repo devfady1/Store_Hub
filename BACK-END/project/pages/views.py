@@ -147,6 +147,17 @@ def product(request, pk):
     full_stars = int(rating)
     empty_stars = 5 - full_stars  
 
+    # Get comments with user profiles in random order
+    comments = product.comments.select_related('user').order_by('?').all()
+    for comment in comments:
+        try:
+            profile = UserProfile.objects.get(user=comment.user)
+            comment.profile_image_url = profile.profile_image.url if profile.profile_image else None
+        except UserProfile.DoesNotExist:
+            comment.profile_image_url = None
+
+    # Split comments into pairs for 2x2 grid display
+    comment_pairs = list(zip(comments[::2], comments[1::2])) if len(comments) > 1 else [(comments[0], None)] if comments else []
 
     related_items = Product.objects.filter(category=product.category).exclude(id=pk)[:4]
 
@@ -160,7 +171,9 @@ def product(request, pk):
         'rating': rating,
         'star_list': range(full_stars),
         'empty_stars': range(empty_stars),
-        'related_items': related_items
+        'related_items': related_items,
+        'comment_pairs': comment_pairs[:3],  # First 3 pairs (6 comments)
+        'hidden_comment_pairs': comment_pairs[3:] if len(comment_pairs) > 3 else []  # Remaining pairs
     })
 
 
