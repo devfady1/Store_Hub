@@ -3328,11 +3328,6 @@ input[type="checkbox"]:checked::after {
   color: var(--text-color);
 }
 
-.breadcrumb-account .a1:hover,
-.breadcrumb-account .check:hover {
-  color: var(--main-color);
-}
-
 .breadcrumb-account span {
   margin-left: 3px;
   color: var(--main-color);
@@ -3779,7 +3774,7 @@ input[type="checkbox"]:checked::after {
 .contact .contact-container .contact-form .form input {
   width: 100%;
   padding: 12px 15px;
-  border: 2px solid #ddd;
+  border: 1px solid #ddd;
   border-radius: 20px;
   height: 50px;
   background-color: #f5f5f5;

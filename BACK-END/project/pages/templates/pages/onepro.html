@@ -372,7 +372,7 @@
       </div>
 
       {% if hidden_comment_pairs %}
-        <button class="show-more-btn" id="showMoreComments">عرض المزيد من التعليقات</button>
+        <button class="show-more-btn" id="showMoreComments">View more comments</button>
         
         <div id="hiddenComments" style="display: none;">
           <div class="comments-grid">
@@ -407,9 +407,9 @@
             {% csrf_token %}
             <textarea name="comment" 
                       class="comment-textarea" 
-                      placeholder="اكتب تعليقك هنا..." 
+                      placeholder="Write your comment here..." 
                       required></textarea>
-            <button type="submit" class="show-more-btn">إضافة تعليق</button>
+            <button type="submit" class="show-more-btn">Add Comment</button>
           </form>
         {% else %}
           <p style="text-align: center;">يرجى <a href="{% url 'login' %}" style="color: #9f1239; text-decoration: underline;">تسجيل الدخول</a> لكتابة تعليق.</p>
