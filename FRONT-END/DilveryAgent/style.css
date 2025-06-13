@@ -1283,13 +1283,19 @@ button:hover {
   transform: scale(0.95);
 }
 @media (max-width: 835px) {
-  .CustomerOrder {
-    display: flex;
-    flex-direction: column-reverse;
-  }
+ .CustomerOrder {
+  display: flex !important;
+  flex-direction: column-reverse !important;
+  visibility: visible !important;
+}
+
   .CustomerOrder .map-container iframe {
-    height: 500px;
+   /* height: 500px;*/
     width: 100%;
+    display: block !important;
+  visibility: visible !important;
+  height: auto !important;
+
   }
   .CustomerOrder .content-container {
     width: 100%;

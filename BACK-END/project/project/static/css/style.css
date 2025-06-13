@@ -1770,12 +1770,14 @@ section#browseCat .container {
   justify-content: space-evenly;
   border-radius: 3px;
   transition: 0.3s;
+  
 }
 
 #browseCat .container .categ .cat a {
   font-size: 25px;
   color: var(--text-color);
   font-weight: bold;
+  padding: 15px;
 }
 
 #browseCat .container .categ .cat:hover {
@@ -1868,8 +1870,7 @@ section#browseCat .container {
   justify-content: center;
   align-items: center;
   width: 15%;
-  opacity: 0;
-  /*visibility: hidden;*/
+  opacity: 1;
   transition: 0.3s ease;
 }
 
@@ -4749,7 +4750,7 @@ body.dark .filters h3 {
 }
 
 .wishlist-row .product .add-to-cart:hover {
-  background: #c52c57;
+  background: var(--main-color);
 }
 
 .wishlist-row .product .add-to-cart i {
@@ -4786,8 +4787,8 @@ body.dark .filters h3 {
   }
   .wishlist-header .move-all-btn,
   .just-for-you-section .see-all {
-    padding: 10px 40px;
-    font-size: 12px;
+    padding: 8px 20px;
+    font-size: 9px;
   }
 }
 /* ==> End Wishlist  <== */
