@@ -5187,14 +5187,14 @@ select.form-input-seller {
   background: var(--white-color);
 }
 
-.upload-btn {
+.form-group-seller .upload-btn {
   background-color: white;
   color: var(--main-color);
   border: 1px solid var(--main-color);
   transition: border-color 0.3s ease, transform 0.3s ease;
 }
 
- .upload-btn:hover{
+.form-group-seller .upload-btn:hover{
   background-color: var(--main-color);
   color: white;
   transform: scale(1.1);
@@ -5339,6 +5339,14 @@ select.form-input-seller {
 
 .dark .file-upload-box {
   border: 2px solid #6c757d;
+}
+
+.dark .form-group-seller .upload-btn {
+  background: #151d2a;
+}
+
+.dark .form-group-seller .upload-btn:hover {
+  background-color: var(--main-color);
 }
 
 .dark .btn-seller {
