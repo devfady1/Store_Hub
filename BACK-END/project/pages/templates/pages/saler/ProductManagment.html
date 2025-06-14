@@ -1,6 +1,4 @@
-{% extends 'pages/base.html' %}
-{% load static %}
-{% block content %}
+{% extends 'pages/base.html' %} {% load static %} {% block content %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -21,7 +19,7 @@
     <title>Store Hub | Product Management</title>
   </head>
   <body class="light">
-  <!-- Start Product Managment -->
+    <!-- Start Product Managment -->
 
     <div class="product-manag">
       <div class="cont-product-manag">
@@ -62,19 +60,56 @@
               <div>
                 <label>Product Color:</label>
                 <input type="text" id="editColor" list="productList" required />
-                  <datalist id="productList">
-                   {% for product in products %}
-                    <option value="{{ product.name }}">
-                    {% endfor %}
-                  </datalist>
+                <datalist id="productList">
+                  {% for product in products %}
+                  <option value="{{ product.name }}">{% endfor %}</option>
+                </datalist>
               </div>
               <div>
                 <label>Price:</label>
                 <input type="number" id="editPrice" required />
               </div>
-              <div>
-                <label>Change The Image:</label>
-                <input type="file" id="editImage" accept="image/*" />
+              <div class="form-group-seller">
+                <!-- {{ form.image }}  -->
+
+                <input
+                  type="file"
+                  id="productImage"
+                  name="image"
+                  style="display: none"
+                  onchange="updateFileName(this)"
+                />
+
+                <button
+                  type="button"
+                  class="upload-btn"
+                  onclick="document.getElementById('productImage').click();"
+                >
+                  <span
+                    id="fileNameSeller"
+                    class="upload-icon"
+                    style="display: none"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                      ></path>
+                      <polyline points="17 8 12 3 7 8"></polyline>
+                      <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                  </span>
+                  <span id="fileNameText">Upload Picture</span>
+                </button>
               </div>
               <div class="modal-buttons">
                 <button type="submit" class="confirm-btn">Save Changes</button>
@@ -105,6 +140,12 @@
 
     <!-- End Product Managment -->
     <script>
+      function updateFileName(input) {
+        const fileName = input.files[0]
+          ? input.files[0].name
+          : "Upload Picture";
+        document.getElementById("fileNameText").textContent = fileName;
+      }
       // ✅ تحميل Boxicons لو مش محمل
       function checkBoxiconsLoaded() {
         const boxiconsLoaded = document.querySelector('link[href*="boxicons"]');
@@ -117,12 +158,12 @@
           document.head.appendChild(boxiconsLink);
         }
       }
-    
+
       document.addEventListener("DOMContentLoaded", checkBoxiconsLoaded);
-    
+
       // ✅ تحميل المنتجات من الـ API
       let products = [];
-    
+
       async function fetchProducts() {
         try {
           const response = await fetch("{% url 'product-list' %}");
@@ -133,7 +174,7 @@
           console.error("Error fetching products:", error);
         }
       }
-    
+
       // ✅ عرض المنتجات في الجدول
       function renderProducts(filteredProducts = products) {
         const tbody = document.getElementById("productsListManag");
@@ -157,16 +198,18 @@
           )
           .join("");
       }
-    
+
       // ✅ البحث عن منتج معين
-      document.getElementById("searchBox").addEventListener("input", function (e) {
-        const searchTerm = e.target.value.toLowerCase();
-        const filtered = products.filter((product) =>
-          product.name.toLowerCase().includes(searchTerm)
-        );
-        renderProducts(filtered);
-      });
-    
+      document
+        .getElementById("searchBox")
+        .addEventListener("input", function (e) {
+          const searchTerm = e.target.value.toLowerCase();
+          const filtered = products.filter((product) =>
+            product.name.toLowerCase().includes(searchTerm)
+          );
+          renderProducts(filtered);
+        });
+
       // ✅ فتح المودال للتعديل
       function openEditModal(index) {
         const product = products[index];
@@ -176,63 +219,62 @@
         document.getElementById("editPrice").value = product.price;
         document.getElementById("editModal").style.display = "flex";
       }
-    
+
       // ✅ تعديل المنتج
       document
         .getElementById("editForm")
         .addEventListener("submit", async function (e) {
           e.preventDefault();
-    
+
           const id = document.getElementById("editId").value;
           const name = document.getElementById("editName").value;
           const price = document.getElementById("editPrice").value;
           const color = document.getElementById("editColor").value;
           const file = document.getElementById("editImage").files[0];
-    
+
           const formData = new FormData();
           formData.append("name", name);
           formData.append("price", price);
           formData.append("color", color);
           if (file) formData.append("image", file);
-    
+
           try {
             console.log("Submitting patch request..."); // ✅ للتأكد إن الـ function بتشتغل
-    
-              const response = await fetch(`/products/${id}/`, {
-                method: "PATCH",
-                headers: {
-                  "X-CSRFToken": getCSRFToken(),
-                  "Accept": "application/json", // 👈 دي بتخلي السيرفر يعترف بإن الطلب JSON
-                },
-                body: formData,
-              });
 
-    
+            const response = await fetch(`/products/${id}/`, {
+              method: "PATCH",
+              headers: {
+                "X-CSRFToken": getCSRFToken(),
+                Accept: "application/json", // 👈 دي بتخلي السيرفر يعترف بإن الطلب JSON
+              },
+              body: formData,
+            });
+
             if (!response.ok) throw new Error("Failed to update product");
-    
+
             console.log("Product updated successfully!");
-    
+
             await fetchProducts(); // ✅ تحديث المنتجات بعد التعديل
             closeModal();
           } catch (error) {
             console.error("Error updating product:", error);
           }
         });
-    
+
       // ✅ الحصول على CSRF Token
       function getCSRFToken() {
         const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]");
         return csrfToken ? csrfToken.value : "";
       }
-    
+
       // ✅ فتح مودال الحذف
       let currentDeleteIndex = null;
-    
+
       function openDeleteModal(index) {
         currentDeleteIndex = index;
         document.getElementById("deleteModal").style.display = "flex";
       }
-    
+
       // ✅ تنفيذ عملية الحذف
       async function confirmDelete() {
         if (currentDeleteIndex !== null) {
@@ -244,11 +286,11 @@
                 "X-CSRFToken": getCSRFToken(),
               },
             });
-    
+
             if (!response.ok) throw new Error("Failed to delete product");
-    
+
             console.log("Product deleted successfully!");
-    
+
             await fetchProducts(); // ✅ تحديث القائمة بعد الحذف
             closeModal();
           } catch (error) {
@@ -256,7 +298,7 @@
           }
         }
       }
-    
+
       // ✅ إغلاق أي مودال مفتوح
       function closeModal() {
         document.querySelectorAll(".modal-modify").forEach((modal) => {
@@ -264,21 +306,21 @@
         });
         currentDeleteIndex = null;
       }
-    
+
       // ✅ إغلاق المودال عند الضغط خارجه
       window.addEventListener("click", (event) => {
         if (event.target.classList.contains("modal-modify")) {
           closeModal();
         }
       });
-    
+
       // ✅ تحديث المنتجات عند التغيير في Local Storage
       window.addEventListener("storage", async (e) => {
         if (e.key === "products") {
           await fetchProducts();
         }
       });
-    
+
       // ✅ تحميل المنتجات عند فتح الصفحة
       fetchProducts();
     </script>
