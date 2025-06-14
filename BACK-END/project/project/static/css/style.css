@@ -1438,7 +1438,7 @@ form.header-form {
 
 @media (max-width: 500px) {
   .pro-div .products .product .pro .img img {
-    width: 50%;
+    width: 100%;
   }
 
   .pro-div .products .product .pro .img img[src="images/game.png"],
@@ -1554,6 +1554,7 @@ form.header-form {
   background-color: var(--main-color);
   color: #fff;
 }
+
 .pro-div .container .pro .icons .icon,
 .RelatedItem .container .products .pro .icons .icon {
   display: flex;
@@ -4441,7 +4442,12 @@ input[type="checkbox"]:checked::after {
   margin-top: 20px;
   gap: 10px;
 }
-
+@media (max-width: 550px){
+  .pagination {
+    padding: 20px;  
+  }
+}
+  
 .pagination-btn,
 .pagination-number {
   display: flex;
