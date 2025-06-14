@@ -35,6 +35,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from geopy.distance import geodesic
 from .models import Order, UserProfile 
+from django.core.mail import send_mail
+from django.http import HttpResponse
+from django.conf import settings
 
 
 def is_seler(user):
@@ -1016,3 +1019,16 @@ def rate_product(request, product_id):
         return redirect(referer)
     else:
         return redirect('product', pk=product.id)
+
+def test_email(request):
+    try:
+        send_mail(
+            'Test Email',
+            'This is a test email from StoreHub.',
+            settings.EMAIL_HOST_USER,
+            ['fady555555555522@gmail.com'],
+            fail_silently=False,
+        )
+        return HttpResponse('Test email sent successfully! Check your console for the email content.')
+    except Exception as e:
+        return HttpResponse(f'Error sending email: {str(e)}')

@@ -56,7 +56,7 @@
             {% csrf_token %}
             <div class="input-box">
               <input type="text" name="username" id="id_username" required>
-              <label for="id_username">Name</label>
+              <label for="id_username">Username</label>
               <i class="fa-solid fa-user"></i>
             </div>
 
@@ -114,6 +114,44 @@
               </button>
             </div>
           </form>
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              const usernameInput = document.getElementById('id_username');
+              const label = usernameInput.nextElementSibling; 
+              const errorDiv = document.createElement('div');
+              errorDiv.className = 'error-message';
+              errorDiv.style.color = 'var(--main-color)';
+              errorDiv.style.fontWeight = 'bold';
+              errorDiv.style.textAlign = 'left';
+              errorDiv.style.paddingLeft = '10px';
+              errorDiv.style.fontSize = '12px';
+              errorDiv.style.marginTop = '2px';
+              errorDiv.style.marginBottom = '5px';
+              label.parentNode.insertBefore(errorDiv, label.nextSibling);
+          
+              usernameInput.addEventListener('input', function() {
+                const username = this.value;
+                errorDiv.textContent = '';
+
+                if (username.includes(' ')) {
+                  errorDiv.textContent = 'Username cannot contain spaces';
+                  return;
+                }
+                if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                  errorDiv.textContent = 'Username can only contain letters, numbers, and underscores';
+                  return;
+                }
+                if (username.length < 3) {
+                  errorDiv.textContent = 'Username must be at least 3 characters long';
+                  return;
+                }
+                if (/^[a-zA-Z]+\s+[a-zA-Z]+$/.test(username)) {
+                  errorDiv.textContent = 'Username cannot be just first and last name';
+                  return;
+                }
+              });
+            });
+          </script>
           
           
           <div class="already-account">
