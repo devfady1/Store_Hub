@@ -754,8 +754,8 @@ nav form i:hover {
 }
 
 .search-result-item img {
-  width: 55px;
-  height: 55px;
+  max-width: 55px;
+  max-height: 55px;
   object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
@@ -1335,6 +1335,7 @@ form.header-form {
   justify-content: space-between;
 }
 
+
 .timer .clock h2 {
   font-size: 35px;
 }
@@ -1722,12 +1723,12 @@ section .container .browseCat h3 {
 }
 @media (max-width: 550px) {
   section .container .browseCat h3 {
-    font-size: 27px;
+    font-size: 25px;
   }
 }
-@media (max-width: 410px) {
+@media (max-width: 370px) {
   section .container .browseCat h3 {
-    font-size: 25px;
+    font-size: 20px;
   }
 }
 section#browseCat .container {
@@ -1812,6 +1813,11 @@ section#browseCat .container {
 @media (max-width: 410px) {
   .BestSellingProducts .container .top .bttn h4 {
     font-size: 25px;
+  }
+}
+@media (max-width: 350px) {
+  .BestSellingProducts .container .top .bttn h4 {
+    font-size: 20px;
   }
 }
 .BestSellingProducts .container .top .bttn a button {
