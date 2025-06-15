@@ -4306,6 +4306,11 @@ input[type="checkbox"]:checked::after {
   font-weight: 500;
 }
 
+.sign-form .already-account a:hover,
+.login-form .forgt-passwd a:hover {
+  color: var(--main-color);
+}
+
 /* Dark */
 
 .dark .sign-form h6,
