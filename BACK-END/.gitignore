@@ -1,4 +1,4 @@
-# Python
+
 __pycache__/
 *.py[cod]
 *.pyo
@@ -6,17 +6,5 @@ __pycache__/
 *.sqlite3
 *.log
 
-# Environments
-env/
-venv/
-ENV/
-*.env
 
-# Django Stuff:
-media/
-staticfiles/
 
-# Others
-.DS_Store
-.idea/
-.vscode/
