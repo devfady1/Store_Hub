@@ -821,6 +821,12 @@ nav form i:hover {
   }
 }
 
+@media (max-width: 500px) {
+  .side-menu {
+    width: 100%;
+    left: -100%;
+  }
+}
 
 /* Search Result Items */
 .search-results-container {
