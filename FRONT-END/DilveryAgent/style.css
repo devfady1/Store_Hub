@@ -1012,7 +1012,7 @@ section.container .btn:hover {
   transform: translateY(-2px);
 }
 
-/* @media (max-width: 768px) {
+ @media (max-width: 768px) {
   .order-Trick .container {
     flex-direction: column;
     width: 95%;
@@ -1025,7 +1025,7 @@ section.container .btn:hover {
   .order-Trick .container .orders-panel {
     padding: 15px;
   }
-} */
+} 
 
 /* ==> customer order <==*/
 /* body {
