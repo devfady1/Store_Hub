@@ -821,6 +821,12 @@ nav form i:hover {
   }
 }
 
+@media (max-width: 500px) {
+  .side-menu {
+    width: 100%;
+    left: -100%;
+  }
+}
 
 /* Search Result Items */
 .search-results-container {
@@ -4300,6 +4306,11 @@ input[type="checkbox"]:checked::after {
   font-weight: 500;
 }
 
+.sign-form .already-account a:hover,
+.login-form .forgt-passwd a:hover {
+  color: var(--main-color);
+}
+
 /* Dark */
 
 .dark .sign-form h6,
@@ -5482,6 +5493,7 @@ select.form-input-seller {
 /* ==> End Seller <== */
 
 /* ==> Start Comment <== */
+
 .comments-section {
   padding: 32px 16px;
   max-width: 1000px;
@@ -5628,6 +5640,9 @@ select.form-input-seller {
   border: 1px solid var(--main-color);
 }
 
+.dark .p-comment {
+  color: white;
+}
 /* Responsive */
 @media (max-width: 768px) {
   .comments-grid {
