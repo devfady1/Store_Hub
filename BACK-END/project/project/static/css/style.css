@@ -1582,6 +1582,13 @@ form.header-form {
   transition: 0.3s;
 }
 
+.pro-div .container .pro .icons .icon i.liked,
+.BestSellingProducts .container .bttom .pro .icons .icon i.liked,
+.RelatedItem .container .products .pro .icons .icon i.liked {
+  color: white;
+  background-color: var(--main-color);
+}
+
 .pro-div .container .pro .icons .icon i:hover,
 .BestSellingProducts .container .bttom .pro .icons .icon i:hover,
 .ourproduct .container .products .pro .icons .icon i:hover,
