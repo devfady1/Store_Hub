@@ -5488,6 +5488,7 @@ select.form-input-seller {
 /* ==> End Seller <== */
 
 /* ==> Start Comment <== */
+
 .comments-section {
   padding: 32px 16px;
   max-width: 1000px;
@@ -5634,6 +5635,9 @@ select.form-input-seller {
   border: 1px solid var(--main-color);
 }
 
+.dark .p-comment {
+  color: white;
+}
 /* Responsive */
 @media (max-width: 768px) {
   .comments-grid {
