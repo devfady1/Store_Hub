@@ -4187,14 +4187,14 @@ input[type="checkbox"]:checked::after {
 
 .sign-form .already-account a,
 .login-form .forgt-passwd a {
-  color: var(--dark-color);
+  color: var(--main-color);
   text-decoration: none;
   font-weight: 500;
 }
 
 .sign-form .already-account a:hover,
 .login-form .forgt-passwd a:hover {
-  color: var(--main-color);
+   transform: scale(1.5); 
 }
 
 /* Dark */
