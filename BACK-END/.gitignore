@@ -5,6 +5,9 @@ __pycache__/
 *.pyd
 *.sqlite3
 *.log
+*.pyc
+__pycache__/
+
 
 # Environments
 env/
