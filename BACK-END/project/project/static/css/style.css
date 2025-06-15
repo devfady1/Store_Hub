@@ -1888,6 +1888,7 @@ section#browseCat .container {
   color: var(--text-color);
   font-weight: bold;
   padding: 15px;
+  text-align: center;
 }
 
 #browseCat .container .categ .cat:hover {
