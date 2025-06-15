@@ -26,7 +26,21 @@
   animation: fadeInUp 1s ease forwards;
   text-align: center;
 }
-
+ @media (max-width : 430px) {
+  .welcome-message h3 {
+    font-size: 1.9rem;
+  }
+ }
+ @media (max-width : 376px) {
+   .welcome-message h3 {
+     font-size: 1.6rem;
+   }
+ }
+ @media (max-width : 325px) {
+   .welcome-message h3 {
+     font-size: 1.4rem;
+   }
+ }
 .banner-section .container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -925,8 +939,8 @@ nav form i:hover {
   }
 
   .search-result-item img {
-    width: 45px;
-    height: 45px;
+    max-width: 45px;
+    max-height: 45px;
   }
 
   .product-meta {
@@ -1260,30 +1274,47 @@ form.header-form {
 
 .swiper {
   width: 90%;
-  border: 2px solid var(--white-color);
+  height: 600px;
+  max-width: 1200px;
+  margin:  0 auto;
+  position: relative;
+  overflow: hidden;
   box-shadow: 2px 3px 5px #777;
   border-radius: 5px;
 }
 
 .swiper .swiper-wrapper img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   display: block;
   margin: auto;
 }
 
-@media (max-width: 900px) {
-  .slider .container {
-    flex-direction: column;
+@media (max-width: 768px) {
+  .slider {
+    margin: 0 10px;
+    border-radius: 10px;
   }
-
-  .slider .container .swiper {
-    width: 100%;
-    height: 400px;
+  
+  .slider .swiper {
+    height: 280px;
   }
 }
-
+@media (max-width: 480px) {
+  .swiper {
+    width: 100%;
+  }
+  .slider .swiper {
+    height: 200px;
+  }
+}
+@media (max-width: 325px) {
+  .slider .swiper {
+    height: 160px;
+  }
+}
 .offer .container .dayOffers {
   display: flex;
   align-items: center;
@@ -1405,6 +1436,7 @@ form.header-form {
   flex-direction: column;
   position: relative;
 }
+
 .pro-div .products .product .pro .img,
 .BestSellingProducts .container .bttom .pro .img,
 .ourproduct .container .products .pro .img,
@@ -1436,15 +1468,14 @@ form.header-form {
   display: block;
   margin: 0 auto;
 }
-
+@media (max-width: 1440px) {
+  .BestSellingProducts .container .bttom .pro {
+    width: 50%;
+  }
+}
 @media (max-width: 500px) {
   .pro-div .products .product .pro .img img {
     width: 100%;
-  }
-
-  .pro-div .products .product .pro .img img[src="images/game.png"],
-  .pro-div .products .product .pro .img img[src="images/chair.png"] {
-    width: 35% !important;
   }
 
   .pro-div .products .product .pro .img {
@@ -1817,7 +1848,10 @@ section#browseCat .container {
     font-size: 27px;
   }
 }
-@media (max-width: 410px) {
+@media (max-width: 430px) {
+  .BestSellingProducts .container .top .bttn {
+    width: 100%;
+  }
   .BestSellingProducts .container .top .bttn h4 {
     font-size: 25px;
   }
@@ -1906,16 +1940,15 @@ section#browseCat .container {
   }
 }
 
-@media (max-width: 550px) {
+@media (max-width: 430px) {
+  .BestSellingProducts .container .bttom .pro {
+      width: 100%;
+  }
   .BestSellingProducts .container .bttom .pro .img img {
     width: 100%;
   }
 }
-@media (max-width: 410px) {
-  .BestSellingProducts .container .bttom .pro {
-    width: 100%;
-  }
-}
+
 .ourproduct .container .ourprotext {
   display: flex;
   align-items: center;
@@ -1932,7 +1965,16 @@ section#browseCat .container {
   font-size: 35px;
   margin-bottom: 15px;
 }
-
+@media (max-width: 430px) {
+  .ourproduct .container h3 {
+    font-size: 30px;
+  }
+}
+@media (max-width: 377px) {
+  .ourproduct .container h3 {
+    font-size: 25px;
+  }
+}
 .ourproduct .container .products {
   display: flex;
   justify-content: space-between;
@@ -1946,7 +1988,7 @@ section#browseCat .container {
   position: relative;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 768px) {
   .ourproduct .container .products .pro {
     width: 30%;
   }
@@ -1962,7 +2004,7 @@ section#browseCat .container {
   }
 }
 
-@media (max-width: 410px) {
+@media (max-width: 430px) {
   .ourproduct .container .products .pro {
     width: 100%;
   }
@@ -2234,7 +2276,6 @@ section#browseCat .container {
   transition: 0.3s;
 }
 .imgAndDetailes .container .detailes .buyLove div i:hover {
-  background-color: var(--main-color);
   cursor: pointer;
 }
 @media (max-width: 870px) {
@@ -4187,14 +4228,9 @@ input[type="checkbox"]:checked::after {
 
 .sign-form .already-account a,
 .login-form .forgt-passwd a {
-  color: var(--main-color);
+  color: var(--text-color);
   text-decoration: none;
   font-weight: 500;
-}
-
-.sign-form .already-account a:hover,
-.login-form .forgt-passwd a:hover {
-   transform: scale(1.5); 
 }
 
 /* Dark */
