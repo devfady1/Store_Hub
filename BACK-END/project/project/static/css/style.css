@@ -4785,6 +4785,11 @@ body.dark .filters h3 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
+  .wishlist-header .move-all-btn,
+  .just-for-you-section .see-all {
+    padding: 8px 20px;
+    font-size: 12px;
+  }
 }
 @media (max-width: 550px) {
   .wishlist-row {
@@ -4793,6 +4798,7 @@ body.dark .filters h3 {
   }
   .wishlist-header .move-all-btn,
   .just-for-you-section .see-all {
+
     padding: 8px 20px;
     font-size: 9px;
   }
