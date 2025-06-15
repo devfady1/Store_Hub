@@ -98,9 +98,10 @@
                   <span class="discount"></span>
                 </div>
                 <div class="icon">
-                  <i class="fa-regular fa-heart" id="iconheart-{{ pro.product.id }}" data-id="{{ pro.product.id }}" onclick="toggleLike({{ pro.product.id }}, this, event)">
+                  <i class="fa-heart iconheart fa-regular {% if pro.product.id in liked_products %}fa-solid liked{% endif %}" 
+                  onclick="toggleLike({{ pro.product.id }}, this, event)">
                   </i>
-                                    
+
                   <i class="fa-regular fa-eye" onclick="window.location.href='/product/{{ pro.product.id }}/'; return false; {% if pro.product.id in liked_products %}style="color: #9f1239;"{% endif %}"></i>
                 </div>
               </div>
@@ -225,7 +226,9 @@
           <div class="pro">
             <div class="icons">
               <div class="icon" >
-                <i class="fa-regular fa-heart iconheart" onclick="toggleLike({{ product.id }}, this, event)" {% if product.id in liked_products %}style="color: #9f1239;  "{% endif %}></i>
+                <i class="fa-heart iconheart fa-regular {% if product.id in liked_products %}fa-solid liked{% endif %}" 
+                  onclick="toggleLike({{ product.id }}, this, event)">
+                </i>
                 <a href="/product/{{ product.id }}/">
                   <i class="fa-regular fa-eye"></i>
                 </a>
@@ -295,7 +298,37 @@
             <div class="pro">
               <div class="icons">
                 <div class="icon">
-                  <i class="fa-regular fa-heart iconheart" onclick="toggleLike({{ product.id }}, this, event)" {% if product.id in liked_products %}style="color: #9f1239;  "{% endif %}></i>
+                  <i class="fa-heart iconheart fa-regular {% if product.id in liked_products %}fa-solid liked{% endif %}" 
+                  onclick="toggleLike({{ product.id }}, this, event)">
+                  </i>
+                  <style>
+                    .iconheart {
+                      font-size: 24px;
+                      color: #ccc;
+                      transition: transform 0.3s ease, color 0.3s ease;
+                      cursor: pointer;
+                    }
+
+                    
+
+                    .iconheart.liked {
+                      color: var(--main-color);
+                      animation: pop 0.3s ease;
+                    }
+
+                    @keyframes pop {
+                      0% {
+                        transform: scale(1);
+                      }
+                      50% {
+                        transform: scale(1.5);
+                      }
+                      100% {
+                        transform: scale(1);
+                      }
+                    }
+                  </style>
+
                     <i class="fa-regular fa-eye" onclick="window.location.href='/product/{{ product.id }}/'"></i>
                 </div>
               </div>

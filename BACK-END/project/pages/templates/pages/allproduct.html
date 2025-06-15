@@ -76,33 +76,31 @@
   </section>
 
   <!-- Pagination -->
-  <div class="pagination">
-    {% if page_obj.has_previous %}
-      <button class="pagination-btn" onclick="window.location.href='?page={{ page_obj.previous_page_number }}'">
-        <i class="fas fa-angle-double-left"></i>
-      </button>
-    {% else %}
-      <button class="pagination-btn disabled" disabled>
-        <i class="fas fa-angle-double-left"></i>
-      </button>
-    {% endif %}
+{% with request.GET.urlencode as query_params %}
+  {% with query_params|cut:'page='|cut:'&page=' as clean_query %}
+    <div class="pagination">
+      {% if page_obj.has_previous %}
+        <a class="pagination-btn" href="?{{ clean_query }}&page={{ page_obj.previous_page_number }}">
+          <i class="fas fa-angle-double-left"></i>
+        </a>
+      {% endif %}
 
-    {% for num in page_obj.paginator.page_range %}
-      <button class="pagination-number {% if page_obj.number == num %}active{% endif %}" onclick="window.location.href='?page={{ num }}'">
-        {{ num }}
-      </button>
-    {% endfor %}
+      {% for num in page_obj.paginator.page_range %}
+        <a class="pagination-number {% if page_obj.number == num %}active{% endif %}"
+           href="?{{ clean_query }}&page={{ num }}">
+          {{ num }}
+        </a>
+      {% endfor %}
 
-    {% if page_obj.has_next %}
-      <button class="pagination-btn" onclick="window.location.href='?page={{ page_obj.next_page_number }}'">
-        <i class="fas fa-angle-double-right"></i>
-      </button>
-    {% else %}
-      <button class="pagination-btn disabled" disabled>
-        <i class="fas fa-angle-double-right"></i>
-      </button>
-    {% endif %}
-  </div>
+      {% if page_obj.has_next %}
+        <a class="pagination-btn" href="?{{ clean_query }}&page={{ page_obj.next_page_number }}">
+          <i class="fas fa-angle-double-right"></i>
+        </a>
+      {% endif %}
+    </div>
+  {% endwith %}
+{% endwith %}
+
 <audio id="likeSound" src="{% static 'sounds/videoplayback.m4a' %}" preload="auto"></audio>
 
 <script>

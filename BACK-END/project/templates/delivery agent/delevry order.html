@@ -123,8 +123,6 @@
     const hasClientLocation = clientLat !== "null" && clientLng !== "null";
     let centerLat = clientLat !== "null" ? parseFloat(clientLat) : 0;
     let centerLng = clientLng !== "null" ? parseFloat(clientLng) : 0;
-
-    // أيقونات عصرية
     const driverIcon = L.icon({
         iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048314.png',
         iconSize: [40, 40]
@@ -208,10 +206,9 @@
         }
     }
 
-    // تهيئة الخريطة
     initMap();
 
-    // تحديث موقع السائق والبائع والعميل دورياً
+
     setInterval(() => {
         fetch(`/live-location/${orderId}/`)
             .then(response => response.json())
@@ -254,7 +251,7 @@
     }
     setInterval(sendMyLocation, 10000);
 
-    // أزرار بدء/إنهاء التوصيل
+   
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('startDeliveryBtn').onclick = function() {
             fetch(`/orders/${orderId}/update-status/`, {

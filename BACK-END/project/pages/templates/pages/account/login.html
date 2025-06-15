@@ -63,11 +63,17 @@
             <div class="forgt-passwd">
               <a href="{% url 'account_reset_password' %}">Forgot Password?</a>
             </div>
+            
 
             <div class="input-box">
               <button type="submit" class="btn btn-primary"><span>Login</span></button>
             </div>
+            <div class="input-box">
+              <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'register' %}'"><span>Sign Up</span></button>
+            </div>
           </form>
+          
+          
 
         </div>
       </div>

@@ -20,206 +20,25 @@
       rel="stylesheet" />
     <title>Store Hub | {{ product.name }}</title>
     <style>
-      .comments-section {
-        padding: 2rem 1rem;
-        max-width: 1000px;
-        margin: 0 auto;
-      }
-      .comments-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-        margin-bottom: 1.5rem;
-      }
-      .comment-container {
-        background: var(--comment-bg);
-        border-radius: 12px;
-        padding: 1rem;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-      }
-      .light .comment-container {
-        --comment-bg: #ffffff;
-        border: 1px solid #e9ecef;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-      }
-      .dark .comment-container {
-        --comment-bg: #2d3436;
-        border: 1px solid #4a4a4a;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      }
-      .comment-container:hover {
-        transform: translateY(-2px);
-      }
-      .light .comment-container:hover {
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-      }
-      .dark .comment-container:hover {
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      }
-      .comment-header {
-        display: flex;
-        align-items: center;
-        margin-bottom: 0.75rem;
-        position: relative;
-      }
-      .user-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        margin-right: 0.75rem;
-        object-fit: cover;
-        border: 2px solid var(--avatar-border);
-      }
-      .light .user-avatar {
-        --avatar-border: #e9ecef;
-      }
-      .dark .user-avatar {
-        --avatar-border: #4a4a4a;
-      }
-      .comment-metadata {
-        flex-grow: 1;
-      }
-      .user-name {
-        font-weight: 600;
-        margin: 0;
-        font-size: 0.95rem;
-        color: var(--user-name-color);
-      }
-      .light .user-name {
-        --user-name-color: #2d3436;
-      }
-      .dark .user-name {
-        --user-name-color: #f8f9fa;
-      }
-      .comment-date {
-        font-size: 0.8rem;
-        color: #6c757d;
-        display: block;
-        margin-top: 0.2rem;
-      }
-      .comment-text {
-        color: var(--text-color);
-        line-height: 1.5;
-        font-size: 0.9rem;
-        margin: 0;
-      }
-      .light .comment-text {
-        --text-color: #4a4a4a;
-      }
-      .dark .comment-text {
-        --text-color: #e9ecef;
-      }
-      .sentiment-badge {
-        position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 500;
-      }
-      .sentiment-positive {
-        background-color: rgba(25, 135, 84, 0.1);
-        color: #198754;
-      }
-      .sentiment-neutral {
-        background-color: rgba(255, 193, 7, 0.1);
-        color: #ffc107;
-      }
-      .sentiment-negative {
-        background-color: rgba(220, 53, 69, 0.1);
-        color: #dc3545;
-      }
-      .show-more-btn {
-        display: block;
-        width: 200px;
-        margin: 2rem auto;
-        padding: 0.75rem 1.5rem;
-        border: none;
-        border-radius: 25px;
-        cursor: pointer;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        background: var(--btn-bg);
-        color: var(--btn-color);
-      }
-      .light .show-more-btn {
-        --btn-bg: #9f1239;
-        --btn-color: white;
-      }
-      .dark .show-more-btn {
-        --btn-bg: #e74c3c;
-        --btn-color: white;
-      }
-      .show-more-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      }
-      .comment-form-container {
-        margin-top: 2rem;
-        padding: 1.5rem;
-        border-radius: 12px;
-        background: var(--form-bg);
-      }
-      .light .comment-form-container {
-        --form-bg: #f8f9fa;
-        border: 1px solid #e9ecef;
-      }
-      .dark .comment-form-container {
-        --form-bg: #2d3436;
-        border: 1px solid #4a4a4a;
-      }
-      .comment-textarea {
-        width: 100%;
-        padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 1rem;
-        resize: vertical;
-        min-height: 80px;
-        background: var(--textarea-bg);
-        border: 1px solid var(--textarea-border);
-        color: var(--textarea-color);
-      }
-      .light .comment-textarea {
-        --textarea-bg: white;
-        --textarea-border: #ced4da;
-        --textarea-color: #4a4a4a;
-      }
-      .dark .comment-textarea {
-        --textarea-bg: #1a1a1a;
-        --textarea-border: #4a4a4a;
-        --textarea-color: #e9ecef;
-      }
-      @media (max-width: 768px) {
-        .comments-grid {
-          grid-template-columns: 1fr;
-        }
-        .comment-container {
-          margin-bottom: 1rem;
-        }
-      }
+      /* Like Icon (heart) */
+.ico .fa-heart {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
 
-      /* تنسيقات أيقونة القلب */
-      .ico .fa-heart {
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
+.ico .fa-heart.fa-solid,
+.ico .fa-heart.liked {
+  color: #9f1239 !important;
+}
 
-      .ico .fa-heart.fa-solid,
-      .ico .fa-heart.liked {
-        color: #9f1239 !important;
-      }
+.dark .ico .fa-heart.fa-solid,
+.dark .ico .fa-heart.liked {
+  color: #e74c3c !important;
+}
 
-      .dark .ico .fa-heart.fa-solid,
-      .dark .ico .fa-heart.liked {
-        color: #e74c3c !important;
-      }
-
-      .ico .fa-heart:hover {
-        transform: scale(1.1);
-      }
+.ico .fa-heart:hover {
+  transform: scale(1.1);
+}
     </style>
   </head>
 
@@ -346,6 +165,8 @@
         </div>
       </div>
     </section>
+
+    <!-- ==> Start Comment <== -->
     <section class="comments-section">
       <div class="comments-grid">
         {% for pair in comment_pairs %}
@@ -412,11 +233,11 @@
             <button type="submit" class="show-more-btn">Add Comment</button>
           </form>
         {% else %}
-          <p style="text-align: center;">يرجى <a href="{% url 'login' %}" style="color: #9f1239; text-decoration: underline;">تسجيل الدخول</a> لكتابة تعليق.</p>
+          <p style="text-align: center;">Please <a href="{% url 'login' %}" style="color: var(--main-color); text-decoration: underline;">Login </a>to write a comment.</p>
         {% endif %}
       </div>
     </section>
-
+    <!-- ==> End Comment <== -->
 
     <section class="RelatedItem">
       <div class="container">
@@ -538,10 +359,10 @@
             showMoreBtn.addEventListener('click', function() {
                 if (hiddenComments.style.display === 'none') {
                     hiddenComments.style.display = 'block';
-                    showMoreBtn.textContent = 'عرض تعليقات أقل';
+                    showMoreBtn.textContent = 'Show Fewer Comments';
                 } else {
                     hiddenComments.style.display = 'none';
-                    showMoreBtn.textContent = 'عرض المزيد من التعليقات';
+                    showMoreBtn.textContent = 'Show More Comments';
                 }
             });
         }
