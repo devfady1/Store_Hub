@@ -12,15 +12,12 @@ def analyze_sentiment(comment_text):
             return "neutral"
             
         result = response.json()
+
         print("API Response:", result)
 
-        # Get the label from the first result
         label = result[0][0]["label"].lower()
         
-        # Convert label to numeric value
         rating = int(label.split()[0])
-        
-        # Classify based on 5-star rating
         if rating <= 2:
             return "negative"
         elif rating == 3:
