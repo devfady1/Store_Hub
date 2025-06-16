@@ -3,6 +3,8 @@ from .models import *
 from django.contrib.auth.forms import *
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
+from .models import Subscriber
+
 
 
 class ContactForm(forms.ModelForm):
@@ -90,3 +92,12 @@ class ProductForm(forms.ModelForm):
             'price': forms.NumberInput(attrs={'class': 'form-input-seller', 'placeholder': ''}),
             'image': forms.FileInput(attrs={'class': 'file-input'}),
         }
+
+
+from django import forms
+from .models import Subscriber
+
+class SubscriberForm(forms.ModelForm):
+    class Meta:
+        model = Subscriber
+        fields = ['email']

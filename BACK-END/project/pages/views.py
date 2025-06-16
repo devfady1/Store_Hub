@@ -38,6 +38,19 @@ from .models import Order, UserProfile
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.conf import settings
+from .models import Subscriber
+from .forms import SubscriberForm
+from django.utils import timezone
+import random, string
+from .models import Subscriber, Coupon
+from datetime import timedelta
+
+
+
+
+
+
+
 
 
 def is_seler(user):
@@ -69,19 +82,62 @@ def custom_redirect_view(request):
 
 
 
+def generate_coupon_code():
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
+
+from django.utils import timezone
+from datetime import timedelta
+import random, string
+
+def generate_coupon_code():
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
 
 @login_required
 def index(request):
+    message = request.session.pop('message', None)
+    message_type = request.session.pop('message_type', None)
+
     categories = Category.objects.all()
     top_products = Product.objects.filter(name="banner").annotate(likes_count=Count('likes__id')).order_by('-likes_count')[:5]
     flash_sales = FlashSale.objects.all()
     max_time = flash_sales.aggregate(max_end_time=Max('end_date'))['max_end_time'] if flash_sales else None
     all_products = list(Product.objects.all())
-    random_products = sample(all_products, min(len(all_products), 8))  #
+    random_products = random.sample(all_products, min(len(all_products), 8))  
     username = request.user.username 
-    liked_products = []
-    if request.user.is_authenticated:
-        liked_products = request.user.product_likes.values_list('id', flat=True)
+    liked_products = request.user.product_likes.values_list('id', flat=True) if request.user.is_authenticated else []
+
+    if request.method == "POST":
+        form = SubscriberForm(request.POST)
+        email = request.POST.get('email')
+
+        if Subscriber.objects.filter(email=email).exists():
+            request.session['message'] = "هذا البريد مستخدم من قبل."
+            request.session['message_type'] = "error"
+        else:
+            if form.is_valid():
+                subscriber = form.save(commit=False)
+                code = generate_coupon_code()
+                now = timezone.now()
+                coupon = Coupon.objects.create(
+                    code=code,
+                    discount_percentage=10,
+                    active_from=now,
+                    notActve_until=now + timedelta(days=7),
+                    is_active=True
+                )
+                subscriber.coupon = coupon
+                subscriber.save()
+
+                request.session['message'] = f"مبروك! حصلت على خصم 10٪ ✅. كودك: {code}"
+                request.session['message_type'] = "success"
+            else:
+                request.session['message'] = "حدث خطأ أثناء الاشتراك."
+                request.session['message_type'] = "error"
+
+        return redirect('index')
+
+    else:
+        form = SubscriberForm()
 
     return render(request, 'pages/index.html', {
         'categories': categories,
@@ -91,7 +147,12 @@ def index(request):
         'username': username,
         'random_products': random_products,
         'liked_products': liked_products,  
+        'form': form,
+        'message': message,
+        'message_type': message_type,
     })
+
+
 
 
 def logout_view(request):
@@ -1031,4 +1092,5 @@ def test_email(request):
         )
         return HttpResponse('Test email sent successfully! Check your console for the email content.')
     except Exception as e:
-        return HttpResponse(f'Error sending email: {str(e)}')
+        return HttpResponse(f'Error sending email: {str(e)}') 
+    
