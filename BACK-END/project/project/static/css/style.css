@@ -1946,10 +1946,6 @@ section#browseCat .container {
 }
 
 @media (max-width: 410px) {
-  .ourproduct .container .products .pro .icons .icon i {
-    width: 84%;
-    height: 30px;
-  }
   .BestSellingProducts .container .top .bttn a button {
     width: 100px;
     height: 40px;
@@ -2018,8 +2014,8 @@ section#browseCat .container {
   .BestSellingProducts .container .bttom .pro {
     width: 100%;
   }
-  .BestSellingProducts .container .bttom .pro .img img {
-    width: 100%;
+  .BestSellingProducts .container .bttom .pro .icons .icon i {
+    width: 80%;
   }
 }
 
@@ -2084,6 +2080,9 @@ section#browseCat .container {
   }
   .ourproduct .container .products .pro .img img {
     width: 100%;
+  }
+  .ourproduct .container .products .pro .icons .icon i {
+    width: 70%;
   }
 }
 
@@ -2487,7 +2486,7 @@ section#browseCat .container {
 .product-info img {
   width: 55px;
   height: 55px;
-  object-fit: cover;
+  object-fit: contain;
   position: relative;
   z-index: 1;
 }
@@ -2759,10 +2758,6 @@ section#browseCat .container {
   .product-info img {
     width: 60px;
     height: 60px;
-  }
-
-  .product-info .remove {
-    left: 45px;
   }
 
   .product-info span {
@@ -3159,6 +3154,7 @@ body.dark .breadcrumb .a2 {
 
 .form-group label span {
   color: var(--main-color);
+  margin-left: 3px;
 }
 
 .dark .form-group label span {
@@ -3422,6 +3418,15 @@ input[type="checkbox"]:checked::after {
   }
 }
 @media (max-width: 550px) {
+  .breadcrumb-checkout {
+    margin-bottom: 0;
+    font-size: 10px;
+    font-weight: 370;
+  }
+  .breadcrumb-checkout .check1  , .check{
+    font-size: 15px;
+    font-weight: 450;
+  }
   .coupon-container {
     flex-direction: column;
   }
@@ -3430,6 +3435,11 @@ input[type="checkbox"]:checked::after {
   }
   .apply-btn {
     width: 100%;
+  }
+}
+@media (max-width : 430px) {
+  input[type="checkbox"]:checked::after {
+    width: 3px;
   }
 }
 /*      --End CheckOut--   */
@@ -3736,6 +3746,10 @@ input[type="checkbox"]:checked::after {
   .breadcrumb-account .check {
     font-size: 18px;
   }
+  
+  .container-account {
+    padding: 20px 5%;
+  }
   .profile-picture {
     width: 130px;
     height: 130px;
@@ -3766,16 +3780,47 @@ input[type="checkbox"]:checked::after {
 
 @media screen and (max-width: 450px) {
   .breadcrumb-account {
-    gap: 100px;
+    padding: 20px 5%;
+  }
+  .profile-picture {
+    width: 120px;
+    height: 120px;
+  }
+  .upload-btn {
+    padding: 8px 6px;
   }
   .breadcrumb-account .a1 {
-    font-size: 18px;
+    font-size: 15px;
   }
   .breadcrumb-account .check {
-    font-size: 18px;
+    font-size: 15px;
+    font-weight: 500;
   }
 }
+@media screen and  (max-width: 377px) {
+  .breadcrumb-account  {
+    gap: 100px;
+  }
+}
+@media screen and (max-width: 322px) {
+  .breadcrumb-account {
+    gap: 50px;
+    padding: 20px 10%;
+  }
+  .profile-picture {
+    width: 100px;
+    height: 100px;
+  }
 
+  .upload-btn {
+    padding: 6px 3px;
+    font-size: 11px;
+  }
+  .breadcrumb-account .check {
+    font-weight: 400;
+    gap: 100px;
+  }
+}
 /*      --End Account--   */
 
 /* ==> Start Contact <== */

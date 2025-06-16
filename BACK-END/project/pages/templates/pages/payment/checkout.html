@@ -1,8 +1,8 @@
 {% extends 'pages/base.html' %} {% load static %} {% block content %}
 
 <div class="breadcrumb-checkout">
-  <a href="{% url 'account' %}">My Account</a> /
-  <a href="{% url 'allproducts' %}">Product</a> / <a href="{% url 'cart' %}">View Cart</a>
+  <a href="{% url 'account' %}">My Account</a> <span class="check1">/</span>
+  <a href="{% url 'allproducts' %}">Product</a> <span class="check1">/</span> <a href="{% url 'cart' %}">View Cart</a>
   <span class="check">/</span> <a href="{% url 'checkout' %}" class="check">Checkout</a>
 </div>
 
