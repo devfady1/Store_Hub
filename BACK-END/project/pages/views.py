@@ -64,11 +64,23 @@ def custom_redirect_view(request):
             messages.info(request, f"مرحباً بك {user.username}")
             return redirect('index')
     except AttributeError:
-        messages.error(request, "لم يتم العثور على الملف الشخصي للمستخدم")
-        return redirect('login')
+        if request.user.is_authenticated:
+            return redirect('select_role')
+        else:
+            messages.error(request, "لم يتم العثور على الملف الشخصي للمستخدم")
+            return redirect('login')
 
 
-
+@login_required
+def select_role(request):
+    if request.method == 'POST':
+        role = request.POST.get('role')
+        if role in ['user', 'delivery_agent', 'saler']:
+            profile, created = UserProfile.objects.get_or_create(user=request.user)
+            profile.role = role
+            profile.save()
+            return redirect('/')  # أو لأي صفحة بعد الاختيار
+    return render(request, 'account/select_role.html')
 
 @login_required
 def index(request):

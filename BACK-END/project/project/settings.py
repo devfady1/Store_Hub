@@ -80,8 +80,8 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type': 'online',
         },
         'APP': {
-            'client_id': '631760675060-815heqausl09tnmu9vajrc099mk6mnn6.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': '1082526950831-pp90ki66g5dmodn72rlkfeapdgfpjgtb.apps.googleusercontent.com',
+            'secret': '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',
             'key': ''
         },
         'OAUTH_PKCE_ENABLED': True, 
@@ -223,6 +223,8 @@ SOCIALACCOUNT_AUTO_SIGNUP = False
 LOGIN_REDIRECT_URL = 'custom_redirect'
 LOGOUT_REDIRECT_URL = 'login'
 LOGIN_URL = 'login'
+ACCOUNT_SIGNUP_REDIRECT_URL = '/select-role/'
+SOCIALACCOUNT_SIGNUP_REDIRECT_URL = '/select-role/'
 
 # Add default URL
 DEFAULT_REDIRECT_URL = 'custom_redirect'

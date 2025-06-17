@@ -26,14 +26,13 @@
             {{ field.errors }}
           </div>
         {% endfor %}
-
         <div class="input-box">
           <button type="submit"><span>Continue</span></button>
         </div>
       </form>
 
       <div class="already-account">
-        Already have an account? <a href="{% url 'account_login' %}">Login</a>
+        Already have an account? <a href="{% url 'login' %}">Login</a>
       </div>
     </div>
   </div>

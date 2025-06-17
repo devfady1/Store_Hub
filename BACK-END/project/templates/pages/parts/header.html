@@ -64,41 +64,42 @@
                 <a href="/admin/" class="{% if request.resolver_match.url_name == 'admin' %}active{% endif %}">
                   <p><i class="fas fa-shield-alt"></i> Admin Panel</p>
                 </a>
-                <a href="{% url 'product-management' %}" class="{% if request.resolver_match.url_name == 'product-management' %}active{% endif %}">
-                  <p><i class="fas fa-cog"></i> Manage Products</p>
+                <a href="{% url 'allproducts' %}" class="{% if request.resolver_match.url_name == 'allproducts' %}active{% endif %}">
+                  <p></i> All Product</p>
                 </a>
-                <a href="{% url 'my_orders' %}" class="{% if request.resolver_match.url_name == 'my_orders' %}active{% endif %}">
-                  <p><i class="fas fa-box"></i> All Orders</p>
+                <a href="{% url 'about' %}" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">
+                  <p></i> About</p>
                 </a>
-                <a href="{% url 'account' %}" class="{% if request.resolver_match.url_name == 'account' %}active{% endif %}">
-                  <p><i class="fas fa-user"></i> My Account</p>
+                <a href="{% url 'contact' %}" class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">
+                  <p></i> Contact</p>
                 </a>
               {% else %}
-                <a href="{% url 'wishlist' %}" class="{% if request.resolver_match.url_name == 'wishlist' %}active{% endif %}">
-                  <p><i class="fas fa-heart"></i> Wishlist</p>
+                
+                <a href="{% url 'index' %}" class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+                  <p></i> Home</p>
                 </a>
-                <a href="{% url 'cart' %}" class="{% if request.resolver_match.url_name == 'cart' %}active{% endif %}">
-                  <p><i class="fas fa-shopping-cart"></i> Cart</p>
+                <a href="{% url 'allproducts' %}" class="{% if request.resolver_match.url_name == 'allproducts' %}active{% endif %}">
+                  <p></i> All Product</p>
                 </a>
-                <a href="{% url 'my_orders' %}" class="{% if request.resolver_match.url_name == 'my_orders' %}active{% endif %}">
-                  <p><i class="fas fa-box"></i> My Orders</p>
+                <a href="{% url 'about' %}" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">
+                  <p></i> About</p>
                 </a>
-                <a href="{% url 'account' %}" class="{% if request.resolver_match.url_name == 'account' %}active{% endif %}">
-                  <p><i class="fas fa-user"></i> My Account</p>
+                <a href="{% url 'contact' %}" class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">
+                  <p></i> Contact</p>
                 </a>
               {% endif %}
             {% else %}
               <a href="{% url 'login' %}" class="{% if request.resolver_match.url_name == 'login' %}active{% endif %}">
-                <p><i class="fas fa-sign-in-alt"></i> Login</p>
+                <p></i> Login</p>
               </a>
               <a href="{% url 'register' %}" class="{% if request.resolver_match.url_name == 'register' %}active{% endif %}">
-                <p><i class="fas fa-user-plus"></i> Register</p>
+                <p></i> Register</p>
               </a>
               <a href="{% url 'about' %}" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">
-                <p><i class="fas fa-info-circle"></i> About</p>
+                <p></i> About</p>
               </a>
               <a href="{% url 'contact' %}" class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">
-                <p><i class="fas fa-envelope"></i> Contact</p>
+                <p></i> Contact</p>
               </a>
             {% endif %}
           </div>
