@@ -48,6 +48,8 @@ class Category(models.Model):
         verbose_name_plural = "تصنيفات"
 
 
+
+        
 class Product(models.Model):
     name = models.CharField(max_length=255, verbose_name="اسم المنتج", blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="السعر", default=0.00)
