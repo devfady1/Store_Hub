@@ -31,7 +31,7 @@
             <i class="fas fa-bars"></i>
           </div>
 
-          <h1 id="store-title"></h1>
+          <a href="{% url 'index' %}"><h1 id="store-title"></h1></a>
           <div class="linkes">
             {% if user.is_authenticated %}
               {% if user.userprofile.role == 'saler' %}

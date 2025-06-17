@@ -593,7 +593,7 @@
 
 /* Main Class in Any div parent */
 .container {
-  width: 80%;
+  width: 90%;
   margin: 15px auto;
   overflow-x: hidden;
 }
@@ -646,9 +646,9 @@ nav {
 }
 
 nav .linkes {
+  width: 40%;
   display: flex;
   justify-content: space-between;
-  width: 30%;
 }
 
 nav .linkes p {
@@ -1209,15 +1209,6 @@ form.header-form {
     font-size: 35px;
   }
 
-  nav .linkes {
-    width: 100%;
-    margin: 20px 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-  }
-
   nav .linkes p {
     font-size: 18px;
     margin: 10px;
@@ -1274,10 +1265,6 @@ form.header-form {
 }
 
 @media (max-width: 450px) {
-  nav .linkes p {
-    font-size: 15px;
-  }
-
   nav form i {
     font-size: 15px;
   }
