@@ -684,8 +684,8 @@ nav form i:hover {
 
 .seacrch {
   background-color: #ddd;
-  padding: 7px;
-  border-radius: 10px;
+  padding: 9px;
+  border-radius: 25px;
   margin-right: 9px;
   transition: 0.3s;
   margin: 15px;
@@ -1157,6 +1157,19 @@ footer .container h5:hover {
 form.header-form {
   display: flex;
   align-items: center;
+}
+.Subscribe {
+  padding: 9px;
+  border-radius: 25px;
+  cursor: pointer;
+  background-color: var(--main-color);
+  color: white;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+.Subscribe:hover {
+  background-color: white;
+  color: var(--main-color);
 }
 /* start Responsive */
 @media (max-width: 1024px) {
