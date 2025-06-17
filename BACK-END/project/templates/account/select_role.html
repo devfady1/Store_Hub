@@ -1,0 +1,57 @@
+{% extends 'pages/base.html' %}
+
+{% block content %}
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <title>Select Role</title>
+  </head>
+  <body class="light">
+    <div class="login">
+      <div class="login-container">
+        <div class="login-image">
+          <img src="{% static 'images/Login.png' %}" alt="Login Image">
+        </div>
+        <div class="login-form">
+          <h6>Select Your Role</h6>
+          <p>Choose your user type to continue</p>
+
+          <form method="post">
+            {% csrf_token %}
+            <div class="input-box">
+              <select name="role" required>
+                <option value="">-- Select Role --</option>
+                <option value="user">User</option>
+                <option value="delivery_agent">Delivery Agent</option>
+                <option value="saler">Saler</option>
+              </select>
+              <i class="fa-solid fa-user-tag"></i>
+            </div>
+
+            <div class="input-box">
+              <button type="submit"><span>Continue</span></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
+{% endblock %}

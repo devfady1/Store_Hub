@@ -2,6 +2,10 @@ from django.urls import path, include
 from . import views
 from .views import *
 
+
+
+
+
 urlpatterns = [
     path('', views.custom_redirect_view, name='root'),
     path('custom-redirect/', views.custom_redirect_view, name='custom_redirect'),
@@ -41,4 +45,7 @@ urlpatterns = [
     path('live-location/<int:order_id>/', views.live_location_view, name='live_location'),
     path('orderss/<int:order_id>/', order_detail, name='accept_order'),
     path('orders/<int:order_id>/update-status/', update_order_status, name='update_order_status'),
-    path('delivery/orders/<int:order_id>/details/', views.delivery_order_detail_view, name='delivery_order_detail'),]
+    path('delivery/orders/<int:order_id>/details/', views.delivery_order_detail_view, name='delivery_order_detail'),
+    path('index/', views.index, name='index'),
+    path('index/', views.index, name='index'),
+    path('create-checkout-session/', views.create_checkout_session, name='create_checkout_session'),]

@@ -1,0 +1,55 @@
+{% extends 'pages/base.html' %}
+
+{% block content %}
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <title>Store Hub | Third-Party Login Error</title>
+  </head>
+  <body class="light">
+    <!-- Start Error Page -->
+    <div class="login">
+      <div class="login-container">
+        <div class="login-image">
+          <img src="{% static 'images/Login.png' %}" alt="Login Image">
+        </div>
+        <div class="login-form">
+          <h6>Login Failed</h6>
+          <p>We couldn’t log you in via your third-party account.</p>
+
+          <div class="messages">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <strong>Oops!</strong> An error occurred during the third-party login process.
+              <button type="button" data-dismiss="alert" aria-label="Close" id="close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="input-box">
+            <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'account_login' %}'"><span>Back to Login</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Error Page -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
+{% endblock %}

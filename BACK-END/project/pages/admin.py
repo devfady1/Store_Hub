@@ -3,6 +3,8 @@ from .models import *
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from .models import Coupon
+from .models import Subscriber
+
 
 
 # تسجيل نموذج User
@@ -157,3 +159,10 @@ class ProductCommentAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'product__name', 'comment_text')
     ordering = ('-created_at',)
     readonly_fields = ('created_at',)
+
+
+
+@admin.register(Subscriber)
+class SubscriberAdmin(admin.ModelAdmin):
+    list_display = ['email', 'coupon']
+    search_fields = ['email']

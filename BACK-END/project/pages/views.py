@@ -1,5 +1,6 @@
 from django.shortcuts import render , redirect
 from .models import *
+import stripe
 from django.db.models import Count , Max 
 from .forms import *
 from .forms import ProductForm
@@ -38,6 +39,19 @@ from .models import Order, UserProfile
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.conf import settings
+from .models import Subscriber
+from .forms import SubscriberForm
+from django.utils import timezone
+import random, string
+from .models import Subscriber, Coupon
+from datetime import timedelta
+
+
+
+
+
+
+
 
 
 def is_seler(user):
@@ -71,6 +85,7 @@ def custom_redirect_view(request):
             return redirect('login')
 
 
+
 @login_required
 def select_role(request):
     if request.method == 'POST':
@@ -79,21 +94,60 @@ def select_role(request):
             profile, created = UserProfile.objects.get_or_create(user=request.user)
             profile.role = role
             profile.save()
-            return redirect('/')  # أو لأي صفحة بعد الاختيار
+            return redirect('/')
     return render(request, 'account/select_role.html')
+
+
+def generate_coupon_code():
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
+
 
 @login_required
 def index(request):
+    message = request.session.pop('message', None)
+    message_type = request.session.pop('message_type', None)
+
     categories = Category.objects.all()
     top_products = Product.objects.filter(name="banner").annotate(likes_count=Count('likes__id')).order_by('-likes_count')[:5]
     flash_sales = FlashSale.objects.all()
     max_time = flash_sales.aggregate(max_end_time=Max('end_date'))['max_end_time'] if flash_sales else None
     all_products = list(Product.objects.all())
-    random_products = sample(all_products, min(len(all_products), 8))  #
+    random_products = random.sample(all_products, min(len(all_products), 8))  
     username = request.user.username 
-    liked_products = []
-    if request.user.is_authenticated:
-        liked_products = request.user.product_likes.values_list('id', flat=True)
+    liked_products = request.user.product_likes.values_list('id', flat=True) if request.user.is_authenticated else []
+
+    if request.method == "POST":
+        form = SubscriberForm(request.POST)
+        email = request.POST.get('email')
+
+        if Subscriber.objects.filter(email=email).exists():
+            request.session['message'] = "هذا البريد مستخدم من قبل."
+            request.session['message_type'] = "error"
+        else:
+            if form.is_valid():
+                subscriber = form.save(commit=False)
+                code = generate_coupon_code()
+                now = timezone.now()
+                coupon = Coupon.objects.create(
+                    code=code,
+                    discount_percentage=10,
+                    active_from=now,
+                    notActve_until=now + timedelta(days=7),
+                    is_active=True
+                )
+                subscriber.coupon = coupon
+                subscriber.save()
+
+                request.session['message'] = f"مبروك! حصلت على خصم 10٪ ✅. كودك: {code}"
+                request.session['message_type'] = "success"
+            else:
+                request.session['message'] = "حدث خطأ أثناء الاشتراك."
+                request.session['message_type'] = "error"
+
+        return redirect('index')
+
+    else:
+        form = SubscriberForm()
 
     return render(request, 'pages/index.html', {
         'categories': categories,
@@ -103,7 +157,12 @@ def index(request):
         'username': username,
         'random_products': random_products,
         'liked_products': liked_products,  
+        'form': form,
+        'message': message,
+        'message_type': message_type,
     })
+
+
 
 
 def logout_view(request):
@@ -417,6 +476,8 @@ def add_to_cart(request):
 
     return JsonResponse({'status': 'success', 'cart': cart})
 
+@login_required
+@csrf_exempt
 def update_cart(request):
     if request.method == "POST":
         try:
@@ -427,8 +488,8 @@ def update_cart(request):
                 if product_id in cart:
                     cart[product_id]["quantity"] = int(new_quantity)
 
-            request.session["cart"] = cart  # تحديث الجلسة
-            request.session.modified = True  # تأكيد حفظ التغييرات
+            request.session["cart"] = cart
+            request.session.modified = True
 
             return JsonResponse({"status": "success", "cart": cart})
         except Exception as e:
@@ -439,12 +500,24 @@ def update_cart(request):
 def cart(request):
     cart = request.session.get('cart', {})
     total = 0
+    discount_percentage = request.session.get('discount_percentage', 0)
 
     for product_id, item in cart.items():
-        item['subtotal'] = float(item['price']) * int(item['quantity'])  # حساب الـ subtotal
+        item['subtotal'] = float(item['price']) * int(item['quantity'])
         total += item['subtotal']
 
-    return render(request, 'pages/payment/cart.html', {'cart': cart, 'total': total})
+    discount_amount = (discount_percentage / 100) * total
+    final_price = total - discount_amount
+
+    context = {
+        'cart': cart,
+        'total': total,
+        'discount': discount_amount,
+        'final_price': final_price,
+        'discount_percentage': discount_percentage
+    }
+
+    return render(request, 'pages/payment/cart.html', context)
 
 
 
@@ -627,6 +700,54 @@ def cart_view(request):
         'coupon_code': coupon_code
     })
 
+
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+@csrf_exempt
+def create_checkout_session(request):
+    cart = request.session.get('cart', {})
+    line_items = []
+
+    for item in cart.values():
+        line_items.append({
+            'price_data': {
+                'currency': 'usd',
+                'product_data': {
+                    'name': item['name'],
+                },
+                'unit_amount': int(float(item['price']) * 100),  # بالسنت
+            },
+            'quantity': int(item['quantity']),
+        })
+
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=line_items,
+        mode='payment',
+        success_url='https://localhost:8000/order_success/',
+        cancel_url='https://localhost:8000/cart/',
+    )
+
+
+    return redirect(session.url, code=303)
+
+def payment_success(request):
+    session_id = request.GET.get('session_id')
+    if not session_id:
+        return redirect('cart')
+
+    try:
+        session = stripe.checkout.Session.retrieve(session_id)
+
+        # تأكد إن الدفع تم
+        if session.payment_status == 'paid':
+            return place_order(request)  
+
+        else:
+            return HttpResponse('الدفع لم يكتمل')
+    except Exception as e:
+        return HttpResponse(f'حدث خطأ: {str(e)}')
 
 def delivery_order_view(request):
     assignments = DeliveryAssignment.objects.filter(DeliveryAgent=request.user)
@@ -1043,4 +1164,5 @@ def test_email(request):
         )
         return HttpResponse('Test email sent successfully! Check your console for the email content.')
     except Exception as e:
-        return HttpResponse(f'Error sending email: {str(e)}')
+        return HttpResponse(f'Error sending email: {str(e)}') 
+    

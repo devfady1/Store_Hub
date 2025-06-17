@@ -1,0 +1,28 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="login">
+  <div class="login-container">
+    <div class="login-image">
+      <img src="{% static 'images/Login.png' %}" alt="Login Failed Image">
+    </div>
+    <div class="login-form">
+      <h6 style="color: red;">Login via Google Failed</h6>
+      <p>Something went wrong while trying to sign you in with your Google account.</p>
+
+      <div class="input-box">
+        <button onclick="window.location.href='{% url 'account_login' %}'" class="btn btn-primary">
+          <span>Try Again</span>
+        </button>
+      </div>
+
+      <div class="input-box">
+        <button onclick="window.location.href='{% url 'account_signup' %}'" class="btn btn-primary">
+          <span>Create New Account</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

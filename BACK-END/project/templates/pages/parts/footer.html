@@ -5,8 +5,15 @@
       <h3>STOREHUB</h3>
       <a href="#"><p>Subscribe</p></a>
       <a href="#"><p>Get 10% off your first order</p></a>
-      <input type="email" class="seacrch" placeholder="Enter Your Email : "/>
+
+      <!-- فورم الاشتراك -->
+      <form method="post" action="{% url 'index' %}">
+        {% csrf_token %}
+        <input type="email" name="email" class="seacrch" placeholder="Enter Your Email :" required>
+        <button type="submit">Subscribe</button>
+      </form>
     </div>
+
     <div class="foot2">
       <h3>Support</h3>
       <a href="#"><p>NATU - NEW ASSUIT</p></a>
@@ -14,14 +21,16 @@
       <a href="#"><p>+201551803645</p></a>
       <a href="#"><p>+201551954315</p></a>
     </div>
+
     <div class="foot3">
-        <h3>Account</h3>
-        <a href="{% url 'account' %}"><p>My Account</p></a>
-        <a href="{% url 'login' %}"><p>Login / Register</p></a>
-        <a href="{% url 'cart' %}"><p>Cart</p></a>
-        <a href="{% url 'allproducts' %}"><p>All Product</p></a>
-        <a href="#"><p>Shop</p></a>
+      <h3>Account</h3>
+      <a href="{% url 'account' %}"><p>My Account</p></a>
+      <a href="{% url 'login' %}"><p>Login / Register</p></a>
+      <a href="{% url 'cart' %}"><p>Cart</p></a>
+      <a href="{% url 'allproducts' %}"><p>All Product</p></a>
+      <a href="#"><p>Shop</p></a>
     </div>
+
     <div class="foot4">
       <h3>Quick Link</h3>
       <a href="#"><p>Privacy Policy</p></a>
@@ -30,8 +39,30 @@
       <a href="{% url 'contact' %}"><p>Contact</p></a>
     </div>
   </div>
-  <p style="text-align: center; padding-bottom: 8px;">Copyright &copy;<span> STOREHUB </span>all right reserved</p>
+
+  <p style="text-align: center; padding-bottom: 8px;">
+    Copyright &copy;<span> STOREHUB </span> all rights reserved
+  </p>
 </footer>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{% if message %}
+  <script>
+    Swal.fire({
+      {% if message_type == 'success' %}
+        title: "🎉 تم الاشتراك",
+        icon: "success",
+      {% else %}
+        title: "❌ حدث خطأ",
+        icon: "error",
+      {% endif %}
+      text: "{{ message|escapejs }}",
+      confirmButtonText: "حسنًا"
+    });
+  </script>
+{% endif %}
+
 <script src="{% static 'js/darkmode.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
-

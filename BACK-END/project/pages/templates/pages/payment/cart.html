@@ -44,10 +44,13 @@
 
     <div class="cart-bottom-section">
         <div class="left-section">
-            <div class="coupon-section-cart">
-                <input type="text" class="coupon-input-cart" placeholder="Coupon Code" />
-                 <button class="btn btn-primary">Apply Coupon</button>
-            </div>
+            <form id="coupon-form" method="post">
+                {% csrf_token %}
+                <div class="coupon-section-cart">
+                    <input type="text" class="coupon-input-cart" placeholder="Coupon Code" />
+                    <button type="button" class="btn btn-primary apply-coupon-btn">Apply Coupon</button>
+                </div>
+            </form>
         </div>
 
         <div class="cart-total">
@@ -57,13 +60,15 @@
                     <span>Subtotal:</span>
                     <span>${{ total|floatformat:2 }}</span>
                 </div>
+                {% if discount %}
                 <div class="total-row row2">
-                    <span>Shipping:</span>
-                    <span>Free</span>
+                    <span>Discount ({{ discount_percentage }}%):</span>
+                    <span>-${{ discount|floatformat:2 }}</span>
                 </div>
+                {% endif %}
                 <div class="total-row">
                     <span>Total:</span>
-                    <span>${{ total|floatformat:2 }}</span>
+                    <span>${{ final_price|floatformat:2 }}</span>
                 </div>
             {% else %}
                 <div class="total-row">
@@ -72,55 +77,41 @@
                 </div>
             {% endif %}
         
-            <div class="total-row row2">
-                <span>Coupon Discount:</span>
-                <span>$0.00</span> 
-            </div>
-        
             <a href="{% url 'checkout' %}">
                 <button class="btn btn-primary" style="width: 100%; margin-top: 20px">
                     Process to checkout
                 </button>
             </a>
         </div>
-        
+    </div>
 </main>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll(".remove").forEach(button => {
-          button.addEventListener("click", function () {
-              let productId = this.getAttribute("data-id");
-
-              fetch(`/remove_from_cart/${productId}/`, {
-                  method: "POST",
-                  headers: {
-                      "X-CSRFToken": getCSRFToken(),  
-                      "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify({})
-              })
-              .then(response => response.json())
-              .then(data => {
-                  if (data.success) {
-                      location.reload(); 
-                  }
-              })
-              .catch(error => console.error("Error:", error));
-          });
-      });
-
-      function getCSRFToken() {
-          return document.cookie.split('; ')
-              .find(row => row.startsWith('csrftoken='))
-              ?.split('=')[1];
-      }
-  });
-</script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    const updateCartButton = document.getElementById("update-cart-btn");
+    // Remove item from cart
+    document.querySelectorAll(".remove").forEach(button => {
+        button.addEventListener("click", function() {
+            let productId = this.getAttribute("data-id");
+            fetch(`/remove_from_cart/${productId}/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": getCSRFToken(),
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    });
 
+    // Update cart quantities
+    const updateCartButton = document.getElementById("update-cart-btn");
     if (updateCartButton) {
         updateCartButton.addEventListener("click", function() {
             let cartItems = document.querySelectorAll(".quantity-input");
@@ -140,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "X-CSRFToken": getCookie("csrftoken")
+                        "X-CSRFToken": getCSRFToken()
                     },
                     body: JSON.stringify(cartData)
                 })
@@ -148,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 .then(data => {
                     if (data.status === "success") {
                         alert("✅ تم تحديث السلة بنجاح!");
-                        location.reload(); 
+                        location.reload();
                     } else {
                         alert("❌ فشل التحديث: " + data.message);
                     }
@@ -160,62 +151,60 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== "") {
-            let cookies = document.cookie.split(";");
-            cookies.forEach(cookie => {
-                let trimmedCookie = cookie.trim();
-                if (trimmedCookie.startsWith(name + "=")) {
-                    cookieValue = decodeURIComponent(trimmedCookie.substring(name.length + 1));
-                }
-            });
-        }
-        return cookieValue;
-    }
-});
-document.addEventListener("DOMContentLoaded", function() {
-    const applyCouponButton = document.querySelector(".coupon-section-cart button");
-    const couponInput = document.querySelector(".coupon-input-cart");
-
-    if (applyCouponButton) {
-        applyCouponButton.addEventListener("click", function() {
+    // Apply coupon
+    const applyCouponBtn = document.querySelector('.apply-coupon-btn');
+    const couponInput = document.querySelector('.coupon-input-cart');
+    
+    if (applyCouponBtn) {
+        applyCouponBtn.addEventListener('click', function() {
             const couponCode = couponInput.value.trim();
-
-            if (couponCode) {
-                fetch('/apply_coupon/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCSRFToken()
-                    },
-                    body: JSON.stringify({ coupon_code: couponCode })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        
-                        document.querySelector('.cart-total .total-row.row1 span:nth-child(2)').innerText = `$${data.new_total.toFixed(2)}`;
-                        document.querySelector('.cart-total .total-row.row2 span:nth-child(2)').innerText = `$${data.discount_amount.toFixed(2)}`;
-                    } else {
-                        alert('❌ ' + data.message);
-                    }
-                })
-                .catch(error => console.error('❌ Error:', error));
-            } else {
-                alert(' من فضلك أدخل رمز الكوبون');
+            if (!couponCode) {
+                alert('⚠️ من فضلك أدخل رمز الكوبون');
+                return;
             }
+
+            const formData = new FormData();
+            formData.append('coupon_code', couponCode);
+
+            fetch('/apply_coupon/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('✅ ' + data.message);
+                    location.reload();
+                } else {
+                    alert('❌ ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('❌ حدث خطأ أثناء تطبيق الكوبون');
+            });
         });
     }
 
     function getCSRFToken() {
-        return document.cookie.split('; ')
-            .find(row => row.startsWith('csrftoken='))
-            ?.split('=')[1];
+        const name = 'csrftoken';
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
     }
 });
-
 </script>
 
 <title>Cart</title>

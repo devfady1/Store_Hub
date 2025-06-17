@@ -262,8 +262,7 @@ class ContactMessage(models.Model):
 
 #this for cuopn
 
-# models.py
-from django.db import models
+
 
 class Coupon(models.Model):
     code = models.CharField(max_length=20, unique=True) 
@@ -275,4 +274,11 @@ class Coupon(models.Model):
     def __str__(self):
         return f"{self.code} - {self.discount_percentage}%"
 
+# this part for NewUser
+class Subscriber(models.Model):
+    email = models.EmailField(unique=True)
+    coupon = models.OneToOneField(Coupon, null=True, blank=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return self.email
 
