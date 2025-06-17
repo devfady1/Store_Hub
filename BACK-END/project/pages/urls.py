@@ -46,6 +46,4 @@ urlpatterns = [
     path('orderss/<int:order_id>/', order_detail, name='accept_order'),
     path('orders/<int:order_id>/update-status/', update_order_status, name='update_order_status'),
     path('delivery/orders/<int:order_id>/details/', views.delivery_order_detail_view, name='delivery_order_detail'),
-    path('index/', views.index, name='index'),
-    path('index/', views.index, name='index'),
     path('create-checkout-session/', views.create_checkout_session, name='create_checkout_session'),]

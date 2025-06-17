@@ -49,7 +49,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=255, verbose_name="اسم المنتج", blank=True, null=True, default="منتج بدون اسم")
+    name = models.CharField(max_length=255, verbose_name="اسم المنتج", blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="السعر", default=0.00)
     description = models.TextField(verbose_name="الوصف", blank=True, null=True)
     quantity = models.PositiveIntegerField(verbose_name="الكمية", default=0)
