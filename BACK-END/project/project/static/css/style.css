@@ -593,7 +593,7 @@
 
 /* Main Class in Any div parent */
 .container {
-  width: 80%;
+  width: 90%;
   margin: 15px auto;
   overflow-x: hidden;
 }
@@ -632,7 +632,7 @@ nav h1 {
   position: relative;
   min-width: 12ch;
   display: inline-block;
-  min-height: 1.5em;
+  min-height: 1.5rem;
   margin-left: 10px;
   background-color: transparent;
   text-shadow: 0 0 2px var(--main-color), 0 0 4px var(--main-color),
@@ -643,12 +643,13 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 2.6rem;
 }
 
 nav .linkes {
+  width: 40%;
   display: flex;
   justify-content: space-between;
-  width: 30%;
 }
 
 nav .linkes p {
@@ -684,8 +685,8 @@ nav form i:hover {
 
 .seacrch {
   background-color: #ddd;
-  padding: 7px;
-  border-radius: 10px;
+  padding: 9px;
+  border-radius: 25px;
   margin-right: 9px;
   transition: 0.3s;
   margin: 15px;
@@ -1158,6 +1159,19 @@ form.header-form {
   display: flex;
   align-items: center;
 }
+.Subscribe {
+  padding: 9px;
+  border-radius: 25px;
+  cursor: pointer;
+  background-color: var(--main-color);
+  color: white;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+.Subscribe:hover {
+  background-color: white;
+  color: var(--main-color);
+}
 /* start Responsive */
 @media (max-width: 1024px) {
   .linkesRes ul a {
@@ -1207,15 +1221,6 @@ form.header-form {
   nav h1 {
     margin: 5px;
     font-size: 35px;
-  }
-
-  nav .linkes {
-    width: 100%;
-    margin: 20px 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
   }
 
   nav .linkes p {
@@ -1274,10 +1279,6 @@ form.header-form {
 }
 
 @media (max-width: 450px) {
-  nav .linkes p {
-    font-size: 15px;
-  }
-
   nav form i {
     font-size: 15px;
   }
