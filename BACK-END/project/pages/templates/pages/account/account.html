@@ -29,38 +29,37 @@
       <p>Manage My Account</p>
       <ul class="sidebar-menu-account">
         <li class="active" onclick="window.location.href='{% url 'account' %}'">My Profile</li>
-        <li onclick="window.location.href='#'">Address Book</li>
         <li onclick="window.location.href='{% url 'cart' %}'">My Payment Options</li>
-        <li onclick="window.location.href='#'">Saved Cards</li>
-        <li onclick="window.location.href='#'">Security Settings</li>
+        <li onclick="window.location.href='{% url 'checkout' %}'">Checkout</li>
+        <li onclick="window.location.href='{% url 'allproducts' %}'">Browse Products</li>
       </ul>
     
       <p>My Orders</p>
       <ul class="sidebar-menu-account">
         <li onclick="window.location.href='{% url 'my_orders' %}'">Order History</li>
-        <li onclick="window.location.href='#'">Track My Order</li>
-        <li onclick="window.location.href='#'">My Returns</li>
-        <li onclick="window.location.href='#'">My Cancellations</li>
+        <li onclick="window.location.href='{% url 'order_detail' order_id=1 %}'">Track My Order</li>
+        <li onclick="window.location.href='{% url 'order_success' %}'">Order Success</li>
+        <li onclick="window.location.href='{% url 'place_order' %}'">Place New Order</li>
       </ul>
     
       <p>My Activity</p>
       <ul class="sidebar-menu-account">
         <li onclick="window.location.href='{% url 'wishlist' %}'">Wishlist</li>
-        <li onclick="window.location.href='#'">Recently Viewed</li>
-        <li onclick="window.location.href='#'">Product Reviews</li>
+        <li onclick="window.location.href='{% url 'allproducts' %}'">Recently Viewed</li>
+        <li onclick="window.location.href='{% url 'search_products' %}'">Search Products</li>
+        <li onclick="window.location.href='{% url 'rate_product' product_id=1 %}'">Rate Products</li>
       </ul>
     
       <p>Support</p>
       <ul class="sidebar-menu-account">
         <li onclick="window.location.href='{% url 'contact' %}'">Help & Support</li>
-        <li onclick="window.location.href='#'">FAQs</li>
-        <li onclick="window.location.href='#'">Live Chat</li>
+        <li onclick="window.location.href='{% url 'about' %}'">About Us</li>
       </ul>
     
       <p>Account Actions</p>
       <ul class="sidebar-menu-account">
         <li onclick="window.location.href='{% url 'logout' %}'">Logout</li>
-        <li onclick="window.location.href='#'">Delete My Account</li>
+        <li onclick="window.location.href='{% url 'index' %}'">Back to Home</li>
       </ul>
     </aside>
     <div class="profile-form">

@@ -94,7 +94,7 @@ def select_role(request):
             profile, created = UserProfile.objects.get_or_create(user=request.user)
             profile.role = role
             profile.save()
-            return redirect('/')
+            return redirect('custom_redirect')
     return render(request, 'account/select_role.html')
 
 
@@ -712,7 +712,7 @@ def create_checkout_session(request):
     for item in cart.values():
         line_items.append({
             'price_data': {
-                'currency': 'usd',
+                'currency': 'egp',
                 'product_data': {
                     'name': item['name'],
                 },
