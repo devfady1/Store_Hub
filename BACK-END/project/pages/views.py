@@ -3,6 +3,7 @@ from .models import *
 import stripe
 from django.db.models import Count , Max 
 from .forms import *
+from rest_framework.authtoken.models import Token
 from .forms import ProductForm
 from django.contrib.auth.decorators import user_passes_test 
 from django.contrib import messages 
@@ -101,9 +102,15 @@ def select_role(request):
 def generate_coupon_code():
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
 
+from rest_framework.authtoken.models import Token
 
 @login_required
 def index(request):
+    
+    if request.user.is_authenticated:
+        Token.objects.get_or_create(user=request.user)
+
+
     message = request.session.pop('message', None)
     message_type = request.session.pop('message_type', None)
 
@@ -576,9 +583,12 @@ def product_list(request):
         return JsonResponse(products_list, safe=False)
     else:
         return JsonResponse({'error': 'User not authenticated'}, status=401)
+    
+from rest_framework.authtoken.models import Token
 
 @login_required
 def ProductManagement(request):
+    
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         products = Product.objects.filter(saler=request.user)
         products_list = [
@@ -592,8 +602,12 @@ def ProductManagement(request):
             for product in products
         ]
         print(products_list)  
+        
+        
         return JsonResponse(products_list, safe=False)
     
+    
+
     products = Product.objects.filter(saler=request.user)
     return render(request, 'pages/saler/ProductManagment.html', {'products': products})
 
@@ -1230,7 +1244,10 @@ def test_email(request):
 def role_required(roles=[]):
     def decorator(view_func):
         def wrapper(request, *args, **kwargs):
+            print("User:", request.user)
+            print("User Role:", request.user.userprofile.role)
             if request.user.userprofile.role not in roles:
+                print("Role not allowed!")
                 return Response({'error': 'Unauthorized'}, status=403)
             return view_func(request, *args, **kwargs)
         return wrapper

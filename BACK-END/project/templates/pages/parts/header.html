@@ -61,47 +61,153 @@
         {% endif %}
       {% endif %}
 
-
-      <!-- Saler Wallet -->
-      {% if user.is_authenticated %}
-        {% if user.userprofile.role == 'saler'%}
-        <div id="customerWallet" class="wallet-sidebar">
-          <div class="wallet-header">
-              <h2>My Wallet</h2>
-              <button onclick="closeCustomerWallet()" class="close-btn-wallet">&times;</button>
-          </div>
-  
-          <div class="wallet-section">
-              <p>Available Balance:</p>
-              <p class="wallet-balance">2500 EGP</p>
-          </div>
-  
-          <div class="wallet-section">
-              <button onclick="showRechargeForm()" class="charge-btn">Recharge Balance</button>
-              <div id="rechargeForm" class="recharge-form">
-                  <input type="number" class="recharge-input" id="rechargeAmount" placeholder="Enter amount">
-                  <p id="errorMessage" class="error-message">Please enter an amount!</p>
-                  <button onclick="rechargeWallet()" class="charge-btn  Confirm-wallet">Confirm Recharge</button>
-              </div>
-              <p id="successMessage" class="success-message">Recharge completed successfully!</p>
-          </div>
-          <div class="wallet-section">
-             <a href="#" class="charge-btn  Confirm-wallet" style="display: block; text-decoration: none;">Withdraw Funds</a>
-          </div>
-
-  
-          <div class="wallet-section">
-              <h3>Recent Transactions:</h3>
-              <ul class="transaction-list">
-                  <li>+500 EGP - Recharge</li>
-                  <li>-1000 EGP - Product Order</li>
-                  <li>-50 EGP - Delivery</li>
-              </ul>
-          </div>
+      {% if user.is_authenticated and user.userprofile.role == 'saler' %}
+      <div id="customerWallet" class="wallet-sidebar">
+        <div class="wallet-header">
+          <h2>My Wallet</h2>
+          <button onclick="closeCustomerWallet()" class="close-btn-wallet">&times;</button>
+        </div>
+    
+        <div class="wallet-section">
+          <p>Available Balance:</p>
+          <p class="wallet-balance" id="walletBalance">Loading...</p>
+        </div>
+    
+        <div class="wallet-section">
+          <button onclick="showRechargeForm()" class="charge-btn">Recharge Balance</button>
+    
+          <form id="rechargeForm" class="recharge-form" style="display: none;" onsubmit="submitRecharge(event)">
+            <input type="number" class="recharge-input" id="rechargeAmount" placeholder="Enter amount">
+            <p id="errorMessage" class="error-message" style="display: none;">Please enter an amount!</p>
+            <button type="submit" class="charge-btn Confirm-wallet">Confirm Recharge</button>
+          </form>
+    
+          <p id="successMessage" class="success-message" style="display: none;">Recharge completed successfully!</p>
+        </div>
+    
+        <div class="wallet-section">
+          <a href="#" onclick="withdrawFunds()" class="charge-btn Confirm-wallet" style="display: block; text-decoration: none;">Withdraw Funds</a>
+        </div>
+    
+        <div class="wallet-section">
+          <h3>Recent Transactions:</h3>
+          <ul class="transaction-list" id="transactionList">
+            <li>Loading...</li>
+          </ul>
+        </div>
       </div>
-        {% endif %}
-      {% endif %}
+     
+      <script>
+        const authToken = "Token {{ request.user.auth_token.key|default:'' }}";
+      </script>
+      
 
+    
+      <script>
+        const token = '{{ user.is_authenticated|yesno:"Token " }}{{ request.user.auth_token.key|default:"" }}';
+    
+        document.addEventListener('DOMContentLoaded', function () {
+          fetch('/api/wallet/', {
+            headers: {
+              'Authorization': token
+            }
+          })
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById("walletBalance").innerText = data.balance + " EGP";
+            const list = document.getElementById("transactionList");
+            list.innerHTML = "";
+            data.transactions.forEach(tx => {
+              let sign = tx.transaction_type === "charge" || tx.transaction_type === "earning" ? "+" : "-";
+              let item = `<li>${sign}${tx.amount} EGP - ${tx.description}</li>`;
+              list.innerHTML += item;
+            });
+          })
+          .catch(err => {
+            console.error("فشل في تحميل المحفظة:", err);
+          });
+        });
+    
+        function showRechargeForm() {
+          document.getElementById("rechargeForm").style.display = "block";
+          document.getElementById("errorMessage").style.display = "none";
+          document.getElementById("successMessage").style.display = "none";
+        }
+    
+        function submitRecharge(event) {
+          event.preventDefault();
+    
+          const amount = document.getElementById("rechargeAmount").value;
+          if (!amount) {
+            document.getElementById("errorMessage").style.display = "block";
+            return;
+          }
+    
+          fetch('/api/wallet/charge/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': authToken
+            },
+            body: JSON.stringify({ amount: amount })
+          })
+          .then(res => res.json())
+          .then(data => {
+            console.log("Stripe URL:", data.url);
+            if (data.url) {
+              window.location.href = data.url;
+            } else {
+              alert("حدث خطأ أثناء محاولة الشحن");
+            }
+          })
+          .catch(error => {
+            console.error("خطأ في الشحن:", error);
+            alert("فشل في تنفيذ الشحن");
+          });
+        }
+    
+        function withdrawFunds() {
+          const amount = prompt("Enter amount to withdraw:");
+          if (!amount || isNaN(amount)) {
+            alert("يرجى إدخال مبلغ صحيح.");
+            return;
+          }
+    
+          fetch('/api/wallet/withdraw/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': authToken
+            },
+            body: JSON.stringify(
+              {
+                "amount": amount
+              }
+            )
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.message) {
+              alert("تم إرسال طلب السحب بنجاح ✅");
+              location.reload();
+            } else {
+              alert(data.error || "فشل في تنفيذ السحب");
+            }
+          })
+          .catch(error => {
+            console.error("خطأ في السحب:", error);
+            alert("فشل في تنفيذ السحب");
+          });
+        }
+    
+        function closeCustomerWallet() {
+          document.getElementById("customerWallet").style.display = "none";
+        }
+      </script>
+    {% endif %}
+    
+    
+    
 
       <!-- Delivery Agent Wallet -->
       {% if user.is_authenticated %}
