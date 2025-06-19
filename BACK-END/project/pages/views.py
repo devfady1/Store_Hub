@@ -762,28 +762,41 @@ def order_success(request):
     return render(request, 'pages/payment/order_success.html')
 
 
-
 @login_required
+@csrf_exempt
 def place_order(request):
     if request.method == 'POST':
         cart = request.session.get('cart', {})
         user = request.user
 
         if not cart:
+            messages.error(request, "السلة فارغة.")
             return redirect('cart')
 
-        # Get lat/lng values with defaults
-        client_lat = request.POST.get('client_lat')
-        client_lng = request.POST.get('client_lng')
+        pay_with_wallet = request.POST.get('pay_with_wallet') == 'true'
 
-        # Convert to float if not empty, otherwise use default coordinates
         try:
-            client_lat = float(client_lat) if client_lat else 0.0
-            client_lng = float(client_lng) if client_lng else 0.0
+            client_lat = float(request.POST.get('client_lat', 0.0))
+            client_lng = float(request.POST.get('client_lng', 0.0))
         except ValueError:
             client_lat = 0.0
             client_lng = 0.0
 
+        total_price = 0
+        for item in cart.values():
+            total_price += float(item['price']) * int(item['quantity'])
+
+        if pay_with_wallet:
+            from .models import WalletTransaction
+            credit = sum(t.amount for t in WalletTransaction.objects.filter(user=user) if t.is_credit())
+            debit = sum(t.amount for t in WalletTransaction.objects.filter(user=user) if not t.is_credit())
+            balance = credit - debit
+
+            if total_price > balance:
+                messages.error(request, "الرصيد غير كافي للدفع من المحفظة.")
+                return redirect('cart')
+
+        # إنشاء الطلب
         order = Order.objects.create(
             customer=user,
             status='pending',
@@ -802,10 +815,56 @@ def place_order(request):
             except Product.DoesNotExist:
                 continue
 
+        # لو الدفع بالمحفظة → خصم المبلغ من العميل
+        if pay_with_wallet:
+            WalletTransaction.objects.create(
+                user=user,
+                amount=total_price,
+                transaction_type='purchase',
+                description=f'شراء طلب رقم #{order.id}'
+            )
+
+        # توزيع الأرباح على البائعين
+        seller_earnings = {}
+
+        for item in order.items.all():
+            product = item.product
+            saler = product.saler
+            quantity = item.quantity
+            total = float(product.price) * quantity
+
+            if saler not in seller_earnings:
+                seller_earnings[saler] = 0
+            seller_earnings[saler] += total
+
+        for saler, total_sale in seller_earnings.items():
+            commission = total_sale * 0.12
+            earning = total_sale - commission
+
+            # أرباح البائع
+            WalletTransaction.objects.create(
+                user=saler,
+                amount=earning,
+                transaction_type='earning',
+                description=f'أرباح من طلب #{order.id}'
+            )
+
+            # عمولة المنصة
+            WalletTransaction.objects.create(
+                user=saler,
+                amount=commission,
+                transaction_type='commission',
+                description=f'عمولة على طلب #{order.id}'
+            )
+
+        # تنظيف السلة
         request.session['cart'] = {}
+        messages.success(request, "تم تنفيذ الطلب بنجاح.")
         return redirect('order_success')
 
     return redirect('cart')
+
+
 
 
 
@@ -1166,6 +1225,17 @@ def test_email(request):
     except Exception as e:
         return HttpResponse(f'Error sending email: {str(e)}') 
     
+
+
+def role_required(roles=[]):
+    def decorator(view_func):
+        def wrapper(request, *args, **kwargs):
+            if request.user.userprofile.role not in roles:
+                return Response({'error': 'Unauthorized'}, status=403)
+            return view_func(request, *args, **kwargs)
+        return wrapper
+    return decorator
+
 #wallet
 def get_user_wallet_balance(user):
     from .models import WalletTransaction
@@ -1175,7 +1245,7 @@ def get_user_wallet_balance(user):
     total_debit = sum(t.amount for t in transactions if not t.is_credit())
     return total_credit - total_debit
 
-# views.py
+
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -1252,11 +1322,50 @@ def stripe_success(request):
     except Exception as e:
         return Response({'error': str(e)}, status=500)
 
-def role_required(roles=[]):
-    def decorator(view_func):
-        def wrapper(request, *args, **kwargs):
-            if request.user.userprofile.role not in roles:
-                return Response({'error': 'Unauthorized'}, status=403)
-            return view_func(request, *args, **kwargs)
-        return wrapper
-    return decorator
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@role_required(['saler'])
+def vendor_withdraw(request):
+    amount = float(request.data.get('amount'))
+    transactions = WalletTransaction.objects.filter(user=request.user)
+    credit = sum(t.amount for t in transactions if t.is_credit())
+    debit = sum(t.amount for t in transactions if not t.is_credit())
+    balance = credit - debit
+
+    if amount > balance:
+        return Response({'error': 'الرصيد غير كافي للسحب'}, status=400)
+
+    WalletTransaction.objects.create(
+        user=request.user,
+        amount=amount,
+        transaction_type='withdrawal',
+        description='سحب الأرباح إلى الفيزا'
+    )
+
+    return Response({'message': 'تم تسجيل طلب السحب بنجاح', 'amount': amount})
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@role_required(['delivery_agent'])
+def driver_earnings(request):
+    driver = request.user
+
+    assignments = Order.objects.filter(delivery_agent=driver ,status='completed')  # حسب حالتك
+    total_earnings = sum(a.total_price for a in assignments)
+    total_orders = Order.objects.filter(delivery_agent=driver).count()
+
+    for a in assignments:
+        distance = a.distance_km  
+        if distance <= 5:
+            total_earnings += 25
+        else:
+            total_earnings += distance * 6
+
+    return Response({
+        'driver': driver.username,
+        'total_earnings': round(total_earnings, 2),
+        'total_orders': total_orders,
+    })
