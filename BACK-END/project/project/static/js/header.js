@@ -245,3 +245,13 @@ searchInput.addEventListener("keydown", (e) => {
     nextActive.scrollIntoView({ block: "nearest" });
   }
 });
+
+var x = new Swiper(".xx", {
+  slidesPerView: 1,
+  spaceBetween: 30,
+  autoplay: { delay: 3000 },
+  navigation: {
+    nextEl: ".nxt",
+    prevEl: ".bc",
+  },
+});
