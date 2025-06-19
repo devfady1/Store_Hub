@@ -49,39 +49,18 @@
   padding: 60px 40px;
   align-items: center;
   border-radius: 8px;
+  overflow-y: hidden;
 }
 .banner-text h5 {
   color: #22c55e;
   font-weight: 600;
   margin-bottom: 10px;
 }
-.banner-text h1 {
+.banner-text h3 {
   font-size: 3rem;
   margin-bottom: 30px;
 }
-.banner-text .timer {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 30px;
-}
-.banner-text .timer .time-box {
-  background-color: #fff;
-  color: #000;
-  padding: 10px 15px;
-  border-radius: 50px;
-  text-align: center;
-  font-weight: bold;
-}
-.banner-text button {
-  padding: 12px 30px;
-  background-color: var(--btn-color);
-  border: none;
-  border-radius: 6px;
-  color: #fff;
-  font-size: 1rem;
-  cursor: pointer;
-  background-color: #16a34a;
-}
+
 .image-container {
   position: relative;
   width: fit-content;
@@ -114,20 +93,20 @@
     text-align: left;
   }
 
-  .banner-text h1 {
+  .banner-text h3 {
     font-size: 2.5rem;
   }
-
-  .banner-text .timer {
-    justify-content: center;
-  }
-
-  .banner-image-placeholder {
-    height: 200px;
-    margin-top: 30px;
+}
+@media (max-width: 600px){
+  .banner-text h3 {
+    font-size: 1.5rem;
   }
 }
-
+@media (max-width: 400px){
+  .banner-text h3 {
+    font-size: 1.0rem;
+  }
+}
 .ourproduct .container .ourprotext {
   display: flex;
   align-items: center;
@@ -2008,6 +1987,7 @@ section#browseCat .container {
 
   .BestSellingProducts .container .bttom .pro {
     width: 50%;
+    margin-bottom: 20px;
   }
 }
 
@@ -2077,13 +2057,13 @@ section#browseCat .container {
 
 @media (max-width: 430px) {
   .ourproduct .container .products .pro {
-    width: 100%;
+    width: 40%;
   }
   .ourproduct .container .products .pro .img img {
     width: 100%;
   }
   .ourproduct .container .products .pro .icons .icon i {
-    width: 70%;
+    width: 150%;
   }
 }
 
