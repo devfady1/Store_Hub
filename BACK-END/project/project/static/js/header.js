@@ -61,7 +61,7 @@ function typeWriter() {
   } else {
     title.textContent = text.substring(0, index - 1);
     index--;
-    if (index === 0) {
+    if (index === 1) {
       deleting = false;
     }
   }
