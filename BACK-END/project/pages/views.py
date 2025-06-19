@@ -1166,3 +1166,97 @@ def test_email(request):
     except Exception as e:
         return HttpResponse(f'Error sending email: {str(e)}') 
     
+#wallet
+def get_user_wallet_balance(user):
+    from .models import WalletTransaction
+
+    transactions = WalletTransaction.objects.filter(user=user)
+    total_credit = sum(t.amount for t in transactions if t.is_credit())
+    total_debit = sum(t.amount for t in transactions if not t.is_credit())
+    return total_credit - total_debit
+
+# views.py
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from .models import WalletTransaction
+from .serializers import WalletTransactionSerializer
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def wallet_summary(request):
+    user = request.user
+    transactions = WalletTransaction.objects.filter(user=user).order_by('-created_at')
+
+    credit = sum(t.amount for t in transactions if t.is_credit())
+    debit = sum(t.amount for t in transactions if not t.is_credit())
+    balance = credit - debit
+
+    serializer = WalletTransactionSerializer(transactions, many=True)
+
+    return Response({
+        'balance': round(balance, 2),
+        'transactions': serializer.data
+    })
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_wallet_checkout_session(request):
+    try:
+        amount = float(request.data.get('amount'))
+        amount_cents = int(amount * 100)
+
+        session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price_data': {
+                    'currency': 'egp',
+                    'product_data': {'name': 'شحن رصيد المحفظة'},
+                    'unit_amount': amount_cents,
+                },
+                'quantity': 1,
+            }],
+            mode='payment',
+            success_url='https://localhost:8000/wallet/charge/success/?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url='https://localhost:8000/',
+            metadata={'user_id': str(request.user.id)},
+        )
+
+        return Response({'url': session.url})
+    except Exception as e:
+        return Response({'error': str(e)}, status=400)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def stripe_success(request):
+    session_id = request.GET.get('session_id')
+    if not session_id:
+        return Response({'error': 'Session ID missing'}, status=400)
+
+    try:
+        session = stripe.checkout.Session.retrieve(session_id)
+        amount = session.amount_total / 100
+
+        if session.payment_status == 'paid':
+            WalletTransaction.objects.create(
+                user=request.user,
+                amount=amount,
+                transaction_type='charge',
+                description='شحن رصيد عبر Stripe',
+            )
+            return Response({'message': 'تم الشحن بنجاح', 'amount': amount})
+        else:
+            return Response({'error': 'الدفع لم يكتمل'}, status=400)
+
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)
+
+def role_required(roles=[]):
+    def decorator(view_func):
+        def wrapper(request, *args, **kwargs):
+            if request.user.userprofile.role not in roles:
+                return Response({'error': 'Unauthorized'}, status=403)
+            return view_func(request, *args, **kwargs)
+        return wrapper
+    return decorator

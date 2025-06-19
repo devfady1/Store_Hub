@@ -282,3 +282,25 @@ class Subscriber(models.Model):
     def __str__(self):
         return self.email
 
+
+class WalletTransaction(models.Model):
+    TRANSACTION_TYPES = [
+        ('charge', 'شحن'),
+        ('purchase', 'شراء'),
+        ('delivery_fee', 'رسوم توصيل'),
+        ('commission', 'عمولة'),
+        ('withdrawal', 'سحب'),
+        ('earning', 'ربح'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPES)
+    description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def is_credit(self):
+        return self.transaction_type in ['charge', 'earning']
+
+    def __str__(self):
+        return f"{self.user.username} - {self.transaction_type} - {self.amount} EGP"

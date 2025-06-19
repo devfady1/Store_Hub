@@ -25,6 +25,258 @@
   <body class="light">
     <!--Header-->
     <header>
+      <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Wallet Sidebar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        .wallet-toggle {
+            background: none;
+            border: none;
+            color: #9f1239;
+            cursor: pointer;
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            font-size: 20px;
+            z-index: 1100;
+            transition: color 0.3s ease;
+        }
+
+        .wallet-toggle.hidden {
+            display: none;
+        }
+
+        .wallet-sidebar {
+            position: fixed;
+            top: 0;
+            right: -350px;
+            width: 320px;
+            height: 100%;
+            background-color: #fff;
+            border-left: 1px solid #e0e0e0;
+            box-shadow: -2px 0 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            transition: right 0.4s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .wallet-sidebar.open {
+            right: 0;
+        }
+
+        .wallet-sidebar:hover {
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .wallet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .wallet-header h2 {
+            color: #333;
+            font-size: 22px;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 26px;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        .wallet-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .wallet-section:hover {
+            background-color: #f1f1f1;
+        }
+
+        .wallet-balance {
+            font-size: 30px;
+            color: #9f1239;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .charge-btn {
+            background-color: #9f1239;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .charge-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .recharge-form {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .recharge-input {
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            width: 95%;
+            margin-bottom: 10px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .recharge-input:focus {
+            border-color: #9f1239;
+            outline: none;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 16px;
+            display: none;
+            margin-bottom: 10px;
+        }
+
+        .success-message {
+            color: #2E7D32;
+            margin-top: 10px;
+            display: none;
+            text-align: center;
+            padding: 10px;
+            background-color: #E8F5E9;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .transaction-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .transaction-list li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            color: #424242;
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+            transition: background-color 0.3s ease;
+        }
+
+        .transaction-list li:hover {
+            background-color: #f0f0f0;
+        }
+
+        .transaction-list li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Wallet Icon Button -->
+    <button onclick="toggleCustomerWallet()" id="walletIcon" class="wallet-toggle">
+        <i class="fas fa-wallet"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div id="customerWallet" class="wallet-sidebar">
+        <div class="wallet-header">
+            <h2>My Wallet</h2>
+            <button onclick="closeCustomerWallet()" class="close-btn">&times;</button>
+        </div>
+
+        <div class="wallet-section">
+            <p>Available Balance:</p>
+            <p class="wallet-balance">2500 EGP</p>
+        </div>
+
+        <div class="wallet-section">
+            <button onclick="showRechargeForm()" class="charge-btn">Recharge Balance</button>
+            <div id="rechargeForm" class="recharge-form">
+                <input type="number" class="recharge-input" id="rechargeAmount" placeholder="Enter amount">
+                <p id="errorMessage" class="error-message">Please enter an amount!</p>
+                <button onclick="rechargeWallet()" class="charge-btn">Confirm Recharge</button>
+            </div>
+            <p id="successMessage" class="success-message">Recharge completed successfully!</p>
+        </div>
+
+        <div class="wallet-section">
+            <h3>Recent Transactions:</h3>
+            <ul class="transaction-list">
+                <li>+500 EGP - Recharge</li>
+                <li>-1000 EGP - Product Order</li>
+                <li>-50 EGP - Delivery</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleCustomerWallet() {
+            document.getElementById("customerWallet").classList.add("open");
+            document.getElementById("walletIcon").classList.add("hidden");
+        }
+
+        function closeCustomerWallet() {
+            document.getElementById("customerWallet").classList.remove("open");
+            document.getElementById("walletIcon").classList.remove("hidden");
+        }
+
+        function showRechargeForm() {
+            document.getElementById('rechargeForm').style.display = 'block';
+        }
+
+        function rechargeWallet() {
+            const amount = document.getElementById('rechargeAmount').value;
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+
+            if (!amount) {
+                errorMsg.style.display = 'block';
+                successMsg.style.display = 'none';
+            } else {
+                errorMsg.style.display = 'none';
+                successMsg.style.display = 'block';
+                document.getElementById('rechargeForm').style.display = 'none';
+
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+
+</html>
       <div class="container">
         <nav>
           <div class="menu-toggle" onclick="toggleSideMenu()">
