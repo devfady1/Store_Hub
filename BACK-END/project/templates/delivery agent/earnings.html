@@ -85,24 +85,25 @@
               <th>Total Earnings</th>
             </tr>
           </thead>
-          <tbody id="earnings-tbody">
-            {% for order in orders %}
-            <tr>
-              <td data-label="Order ID" class="earnings-table-id">#{{ order.id }}</td>
-              <td data-label="Date & Time" class="earnings-table-DateTime">{{ order.date }}</td>
-              <td data-label="Customer" class="earnings-table-customer">{{ order.customer }}</td>
-              <td data-label="Status">
-                <span class="earnings-status-badge earnings-status-{{ order.status }}">{{ order.status|title }}</span>
-              </td>
-              <td data-label="Distance" class="earnings-table-distance">{{ order.distance }}</td>
-              <td data-label="Base Rate" class="earnings-table-BaseRate">{{ order.base_rate }}</td>
-              <td data-label="Commission" class="earnings-table-negative">{{ order.commission }}</td>
-              <td data-label="Total Earnings" class="earnings-table-positive">{{ order.total_earning }}</td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="8">No orders found.</td></tr>
-            {% endfor %}
-          </tbody>
+  <tbody id="earnings-tbody">
+  {% for order in orders %}
+  <tr data-status="{{ order.status|lower }}">
+    <td data-label="Order ID" class="earnings-table-id">#{{ order.id }}</td>
+    <td data-label="Date & Time" class="earnings-table-DateTime">{{ order.date }}</td>
+    <td data-label="Customer" class="earnings-table-customer">{{ order.customer }}</td>
+    <td data-label="Status">
+      <span class="earnings-status-badge earnings-status-{{ order.status }}">{{ order.status|title }}</span>
+    </td>
+    <td data-label="Distance" class="earnings-table-distance">{{ order.distance }}</td>
+    <td data-label="Base Rate" class="earnings-table-BaseRate">{{ order.base_rate }}</td>
+    <td data-label="Commission" class="earnings-table-negative">{{ order.commission }}</td>
+    <td data-label="Total Earnings" class="earnings-table-positive">{{ order.total_earning }}</td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="8">No orders found.</td></tr>
+  {% endfor %}
+</tbody>
+
         </table>
       </div>
 
@@ -111,6 +112,10 @@
         <div class="pagination-controls">
           <button class="earnings-pagination" disabled><i class="fas fa-chevron-left"></i></button>
           <button class="earnings-pagination active">1</button>
+          <button class="earnings-pagination active">2</button>
+          <button class="earnings-pagination active">3</button>
+          <button class="earnings-pagination active">4</button>
+          <button class="earnings-pagination active">5</button>
         </div>
       </div>
       <div class="summary-container">
@@ -183,23 +188,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-let selectStatus = document.getElementById("selectStatus");
-
-selectStatus.addEventListener("change", () => {
-  const selected = selectStatus.value;
-  const rows = document.querySelectorAll(".table table tbody tr");
-
-  rows.forEach((row) => {
-    const statusSpan = row.querySelector(".status");
-
-    if (selected === "all") {
-      row.style.display = "";
-    } else {
-      const rowStatus = statusSpan.classList.contains(selected);
-      row.style.display = rowStatus ? "" : "none";
-    }
-  });
-});
 
 const tableBody = document.getElementById('earnings-tbody');
 const paginationInfo = document.querySelector('.pagination-info');
@@ -224,7 +212,7 @@ function fetchEarnings(page = 1) {
       tableBody.innerHTML = '';
       data.orders.forEach(order => {
         tableBody.innerHTML += `
-          <tr>
+            <tr data-status="${order.status.toLowerCase()}">
             <td data-label="Order ID" class="earnings-table-id">#${order.id}</td>
             <td data-label="Date & Time" class="earnings-table-DateTime">${order.date}</td>
             <td data-label="Customer" class="earnings-table-customer">${order.customer}</td>
@@ -236,6 +224,7 @@ function fetchEarnings(page = 1) {
           </tr>
         `;
       });
+      document.getElementById('selectStatus').dispatchEvent(new Event('change'));
     }
     // تحديث ملخص الصفحة
     if (paginationInfo) {
@@ -273,29 +262,31 @@ function changePage(page) {
   fetchEarnings(page);
 }
 
-// تحميل الصفحة الأولى عند التحميل
-document.addEventListener('DOMContentLoaded', function() {
+//فلتر ال status
+document.addEventListener('DOMContentLoaded', function () {
   fetchEarnings(1);
-});
 
-document.addEventListener('DOMContentLoaded', function() {
   const selectStatus = document.getElementById('selectStatus');
-  selectStatus.addEventListener('change', function() {
-    const selected = selectStatus.value;
-    const rows = document.querySelectorAll('.earnings-table tbody tr');
+
+  selectStatus.addEventListener('change', function () {
+    const selected = selectStatus.value.toLowerCase();
+    const rows = document.querySelectorAll('#earnings-tbody tr');
+
     rows.forEach(row => {
-      const statusSpan = row.querySelector('.earnings-status-badge');
-      if (!statusSpan) return;
-      const rowStatus = statusSpan.classList.contains('earnings-status-' + selected);
-      if (selected === 'all') {
+      const status = row.dataset.status?.toLowerCase();
+      if (selected === 'all' || status === selected) {
         row.style.display = '';
       } else {
-        row.style.display = rowStatus ? '' : 'none';
+        row.style.display = 'none';
       }
     });
   });
+
+  // بعد ما الصفحة تحمل، شغل الفلتر لأول مرة عشان يشتغل
+  selectStatus.dispatchEvent(new Event('change'));
 });
-    </script>
+
+   </script>
     <script src="mainDelivery.js"></script>
   </body>
 </html>
