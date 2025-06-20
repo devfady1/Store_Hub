@@ -231,16 +231,20 @@
 
     // إرسال موقع اليوزر الحالي (customer, delivery, seller) كل فترة قصيرة
     function sendMyLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                fetch(`/live-location/${orderId}/`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ lat: position.coords.latitude, lng: position.coords.longitude })
-                });
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            fetch(`/live-location/${orderId}/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                })
             });
-        }
+        });
     }
-    setInterval(sendMyLocation, 10000);
+}
+setInterval(sendMyLocation, 10000); // ← كل 10 ثواني
+
 </script>
 {% endblock %}

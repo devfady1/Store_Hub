@@ -1061,13 +1061,15 @@ def available_order_view(request):
 @login_required
 def live_location_view(request, order_id):
     order = get_object_or_404(Order, id=order_id)
+
     if request.method == 'GET':
         customer_profile = UserProfile.objects.filter(user=order.customer).first()
         driver_profile = UserProfile.objects.filter(user=order.delivery_agent).first()
-        # seller: من أول منتج في الطلب
+
         items = order.items.all()
         product = items[0].product if items else None
         seller_profile = UserProfile.objects.filter(user=product.saler).first() if product and product.saler else None
+
         return JsonResponse({
             'customer': {
                 'lat': customer_profile.lat if customer_profile else None,
@@ -1082,18 +1084,24 @@ def live_location_view(request, order_id):
                 'lng': seller_profile.lng if seller_profile else (product.seller_lng if product else None),
             },
         })
+
     elif request.method == 'POST':
         try:
             data = json.loads(request.body)
             lat = data.get('lat')
             lng = data.get('lng')
+
             if lat is None or lng is None:
                 return JsonResponse({'status': 'error', 'message': 'Missing coordinates'}, status=400)
-            user_profile = UserProfile.objects.get(user=request.user)
+
+            user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
             user_profile.lat = lat
             user_profile.lng = lng
             user_profile.save()
-            # لو بائع، حدث كمان أول منتج ليه في الطلب
+
+            print(f"[Location Update] User: {request.user.username}, Role: {user_profile.role}, Lat: {lat}, Lng: {lng}")
+
+            # تحديث مكان المنتج لو اليوزر بائع
             if user_profile.role == 'saler':
                 items = order.items.all()
                 for item in items:
@@ -1101,14 +1109,17 @@ def live_location_view(request, order_id):
                         item.product.seller_lat = lat
                         item.product.seller_lng = lng
                         item.product.save()
+                        print(f"[Product Update] Product ID: {item.product.id} - Updated with seller location")
+
             return JsonResponse({'status': 'success'})
+
         except Exception as e:
+            print(f"[Error] {str(e)}")
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid HTTP method'}, status=405)
-
-
-
+        
 @login_required
 @csrf_exempt
 def update_order_status(request, order_id):

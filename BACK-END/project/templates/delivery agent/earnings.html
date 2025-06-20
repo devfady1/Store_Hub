@@ -11,23 +11,18 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
       crossorigin="anonymous"
-      referrerpolicy="no-referrer"
     />
-    <link
-      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
     <title>Store Hub | Delivery Earnings</title>
   </head>
 
   <body class="light">
-    <!-- ==> Start Delivary Earnings <== -->
     <div class="earnings-containar">
       <div class="earnings-container">
         <div class="earnings-box">
@@ -50,7 +45,6 @@
             <option selected>Custom Range</option>
           </select>
         </div>
-        
         <div class="earnings-filter-group">
           <label class="earnings-filter-label">From</label>
           <input type="date" class="earnings-filter-input" />
@@ -72,7 +66,7 @@
       </div>
 
       <div class="earnings-table-container">
-        <table class="earnings-table">
+        <table class="earnings-table" id="earningsTable">
           <thead>
             <tr>
               <th>Order ID</th>
@@ -85,39 +79,25 @@
               <th>Total Earnings</th>
             </tr>
           </thead>
-  <tbody id="earnings-tbody">
-  {% for order in orders %}
-  <tr data-status="{{ order.status|lower }}">
-    <td data-label="Order ID" class="earnings-table-id">#{{ order.id }}</td>
-    <td data-label="Date & Time" class="earnings-table-DateTime">{{ order.date }}</td>
-    <td data-label="Customer" class="earnings-table-customer">{{ order.customer }}</td>
-    <td data-label="Status">
-      <span class="earnings-status-badge earnings-status-{{ order.status }}">{{ order.status|title }}</span>
-    </td>
-    <td data-label="Distance" class="earnings-table-distance">{{ order.distance }}</td>
-    <td data-label="Base Rate" class="earnings-table-BaseRate">{{ order.base_rate }}</td>
-    <td data-label="Commission" class="earnings-table-negative">{{ order.commission }}</td>
-    <td data-label="Total Earnings" class="earnings-table-positive">{{ order.total_earning }}</td>
-  </tr>
-  {% empty %}
-  <tr><td colspan="8">No orders found.</td></tr>
-  {% endfor %}
-</tbody>
-
+          <tbody>
+            {% for order in orders %}
+            <tr data-status="{{ order.status|lower }}">
+              <td>#{{ order.id }}</td>
+              <td>{{ order.date }}</td>
+              <td>{{ order.customer }}</td>
+              <td><span class="earnings-status-badge earnings-status-{{ order.status }}">{{ order.status|title }}</span></td>
+              <td>{{ order.distance }}</td>
+              <td>{{ order.base_rate }}</td>
+              <td>{{ order.commission }}</td>
+              <td>{{ order.total_earning }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="8">No orders found.</td></tr>
+            {% endfor %}
+          </tbody>
         </table>
       </div>
 
-      <div class="pagination-containar">
-        <div class="pagination-info">Showing 1-{{ orders|length }} of {{ total_orders }} orders</div>
-        <div class="pagination-controls">
-          <button class="earnings-pagination" disabled><i class="fas fa-chevron-left"></i></button>
-          <button class="earnings-pagination active">1</button>
-          <button class="earnings-pagination active">2</button>
-          <button class="earnings-pagination active">3</button>
-          <button class="earnings-pagination active">4</button>
-          <button class="earnings-pagination active">5</button>
-        </div>
-      </div>
       <div class="summary-container">
         <div class="summary-box">
           <div class="summary-item">
@@ -135,159 +115,27 @@
         </div>
       </div>
     </div>
+
+    <!-- jQuery & DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
     <script>
-      "use strict";
-const accountIcon = document.getElementById("user-icon");
-const accountDropdown = document.getElementById("accountDropdown");
-let isDropdownVisible = false;
-
-// Toggle dropdown when account icon is clicked
-accountIcon.addEventListener("click", (e) => {
-  e.stopPropagation();
-  isDropdownVisible = !isDropdownVisible;
-  if (isDropdownVisible) accountDropdown.classList.add("active");
-  else accountDropdown.classList.remove("active");
-});
-
-// Close dropdown when clicking elsewhere
-document.addEventListener("click", (e) => {
-  if (
-    isDropdownVisible &&
-    e.target !== accountIcon &&
-    !accountDropdown.contains(e.target)
-  ) {
-    accountDropdown.classList.remove("active");
-    isDropdownVisible = false;
-  }
-});
-
-const body = document.querySelector("body");
-const toggle = document.querySelector("#toggle");
-const sunIcon = document.querySelector(".toggle .bxs-sun");
-const moonIcon = document.querySelector(".toggle .bx-moon");
-
-toggle.addEventListener("change", () => {
-  body.classList.toggle("dark");
-  sunIcon.className =
-    sunIcon.className == "bx bxs-sun" ? "bx bx-sun" : "bx bxs-sun";
-  moonIcon.className =
-    moonIcon.className == "bx bxs-moon" ? "bx bx-moon" : "bx bxs-moon";
-  if (body.classList.contains("dark")) {
-    localStorage.setItem("DarkToogle", "Dark");
-  } else {
-    localStorage.removeItem("DarkToogle");
-  }
-});
-document.addEventListener("DOMContentLoaded", () => {
-  if (localStorage.getItem("DarkToogle")) {
-    body.classList.add("dark");
-    sunIcon.className =
-      sunIcon.className == "bx bxs-sun" ? "bx bx-sun" : "bx bxs-sun";
-    moonIcon.className =
-      moonIcon.className == "bx bxs-moon" ? "bx bx-moon" : "bx bxs-moon";
-  }
-});
-
-
-const tableBody = document.getElementById('earnings-tbody');
-const paginationInfo = document.querySelector('.pagination-info');
-const paginationControls = document.querySelector('.pagination-controls');
-const totalEarningsElem = document.querySelector('.total-earnings');
-const totalOrdersElem = document.querySelector('.summary-value:nth-child(2)');
-const avgEarningElem = document.querySelector('.summary-value:nth-child(4)');
-const commissionRateElem = document.querySelector('.summary-value:nth-child(6)');
-
-let currentPage = 1;
-const pageSize = 8;
-
-function fetchEarnings(page = 1) {
-  fetch(`/api/delivery_agent/earnings/details/?page=${page}&page_size=${pageSize}`, {
-    headers: {
-      'Authorization': token
-    }
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.orders && data.orders.length > 0) {
-      tableBody.innerHTML = '';
-      data.orders.forEach(order => {
-        tableBody.innerHTML += `
-            <tr data-status="${order.status.toLowerCase()}">
-            <td data-label="Order ID" class="earnings-table-id">#${order.id}</td>
-            <td data-label="Date & Time" class="earnings-table-DateTime">${order.date}</td>
-            <td data-label="Customer" class="earnings-table-customer">${order.customer}</td>
-            <td data-label="Status"><span class="earnings-status-badge earnings-status-${order.status}">${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</span></td>
-            <td data-label="Distance" class="earnings-table-distance">${order.distance}</td>
-            <td data-label="Base Rate" class="earnings-table-BaseRate">${order.base_rate}</td>
-            <td data-label="Commission" class="earnings-table-negative">${order.commission}</td>
-            <td data-label="Total Earnings" class="earnings-table-positive">${order.total_earning}</td>
-          </tr>
-        `;
+      $(document).ready(function () {
+        $('#earningsTable').DataTable({
+          pageLength: 8,
+          lengthChange: false,
+          ordering: true,
+          language: {
+            emptyTable: "No orders available",
+            paginate: {
+              next: '<i class="fas fa-chevron-right"></i>',
+              previous: '<i class="fas fa-chevron-left"></i>'
+            }
+          }
+        });
       });
-      document.getElementById('selectStatus').dispatchEvent(new Event('change'));
-    }
-    // تحديث ملخص الصفحة
-    if (paginationInfo) {
-      const start = (data.page - 1) * pageSize + 1;
-      const end = start + data.orders.length - 1;
-      paginationInfo.textContent = `Showing ${start}-${end} of ${data.total_orders} orders`;
-    }
-    if (totalEarningsElem) totalEarningsElem.textContent = data.total_earnings;
-    if (totalOrdersElem) totalOrdersElem.textContent = data.total_orders;
-    if (avgEarningElem) avgEarningElem.textContent = data.avg_earning;
-    if (commissionRateElem) commissionRateElem.textContent = data.commission_rate;
-
-    // تحديث أزرار الصفحات
-    if (paginationControls) {
-      paginationControls.innerHTML = '';
-      // زر السابق
-      paginationControls.innerHTML += `<button class="earnings-pagination" ${data.page === 1 ? 'disabled' : ''} onclick="changePage(${data.page - 1})"><i class="fas fa-chevron-left"></i></button>`;
-      // أزرار الأرقام
-      for (let i = 1; i <= data.total_pages; i++) {
-        paginationControls.innerHTML += `<button class="earnings-pagination ${i === data.page ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
-      }
-      // زر التالي
-      paginationControls.innerHTML += `<button class="earnings-pagination" ${data.page === data.total_pages ? 'disabled' : ''} onclick="changePage(${data.page + 1})"><i class="fas fa-chevron-right"></i></button>`;
-    }
-    currentPage = data.page;
-  })
-  .catch(err => {
-    // في حالة الخطأ، اترك البيانات الافتراضية من Django تظهر
-    console.error('Error fetching earnings:', err);
-  });
-}
-
-function changePage(page) {
-  if (page < 1) return;
-  fetchEarnings(page);
-}
-
-//فلتر ال status
-document.addEventListener('DOMContentLoaded', function () {
-  fetchEarnings(1);
-
-  const selectStatus = document.getElementById('selectStatus');
-
-  selectStatus.addEventListener('change', function () {
-    const selected = selectStatus.value.toLowerCase();
-    const rows = document.querySelectorAll('#earnings-tbody tr');
-
-    rows.forEach(row => {
-      const status = row.dataset.status?.toLowerCase();
-      if (selected === 'all' || status === selected) {
-        row.style.display = '';
-      } else {
-        row.style.display = 'none';
-      }
-    });
-  });
-
-  // بعد ما الصفحة تحمل، شغل الفلتر لأول مرة عشان يشتغل
-  selectStatus.dispatchEvent(new Event('change'));
-});
-
-   </script>
-    <script src="mainDelivery.js"></script>
+    </script>
   </body>
 </html>
-{%endblock%}
+{% endblock %}
