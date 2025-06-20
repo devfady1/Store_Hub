@@ -23,8 +23,295 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
   </head>
   <body class="light">
-    <!--Header-->
     <header>
+
+      <!-- User Wallet -->
+      {% if user.is_authenticated and user.userprofile.role == 'user' %}
+      <style>
+        #successMessage {
+          position: fixed;
+          top: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          background-color: #4CAF50;
+          color: white;
+          padding: 12px 24px;
+          border-radius: 8px;
+          font-weight: bold;
+          z-index: 9999;
+          display: none;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+      </style>
+      
+      <div id="customerWallet" class="wallet-sidebar">
+        <div class="wallet-header">
+          <h2>My Wallet</h2>
+          <button onclick="closeCustomerWallet()" class="close-btn-wallet">&times;</button>
+        </div>
+      
+        <div class="wallet-section">
+          <p>Available Balance:</p>
+          <p class="wallet-balance" id="walletBalance">Loading...</p>
+        </div>
+      
+        <div class="wallet-section">
+          <button onclick="showRechargeForm()" class="charge-btn">Recharge Balance</button>
+      
+          <form id="rechargeForm" class="recharge-form" style="display: none;" onsubmit="submitRecharge(event)">
+            <input type="number" class="recharge-input" id="rechargeAmount" placeholder="Enter amount">
+            <p id="errorMessage" class="error-message" style="display: none;">Please enter an amount!</p>
+            <button type="submit" class="charge-btn Confirm-wallet">Confirm Recharge</button>
+          </form>
+      
+          <p id="successMessage" class="success-message">Recharge completed successfully!</p>
+        </div>
+      
+        <div class="wallet-section">
+          <h3>Recent Transactions:</h3>
+          <ul class="transaction-list" id="transactionList">
+            <li>Loading...</li>
+          </ul>
+        </div>
+      </div>
+      
+      <script>
+        var token = "";
+        {% if user.is_authenticated and user.auth_token %}
+          token = "Token {{ user.auth_token.key }}";
+        {% endif %}
+      
+        document.addEventListener('DOMContentLoaded', function () {
+          fetch('/api/wallet/', {
+            headers: {
+              'Authorization': token,
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById("walletBalance").innerText = data.balance + " EGP";
+            const list = document.getElementById("transactionList");
+            list.innerHTML = "";
+            data.transactions.forEach(tx => {
+              let sign = tx.transaction_type === "charge" || tx.transaction_type === "earning" ? "+" : "-";
+              let item = `<li>${sign}${tx.amount} EGP - ${tx.description}</li>`;
+              list.innerHTML += item;
+            });
+          })
+          .catch(err => {
+            console.error("فشل في تحميل المحفظة:", err);
+          });
+        });
+      
+        function showRechargeForm() {
+          document.getElementById("rechargeForm").style.display = "block";
+          document.getElementById("errorMessage").style.display = "none";
+          document.getElementById("successMessage").style.display = "none";
+        }
+      
+        function submitRecharge(event) {
+          event.preventDefault();
+      
+          const amount = document.getElementById("rechargeAmount").value;
+          if (!amount) {
+            document.getElementById("errorMessage").style.display = "block";
+            return;
+          }
+      
+          fetch('/api/wallet/charge/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': token
+            },
+            body: JSON.stringify({ amount: amount })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.url) {
+              document.getElementById("successMessage").innerText = "Recharge request created successfully!";
+              document.getElementById("successMessage").style.display = "block";
+              setTimeout(() => {
+                document.getElementById("successMessage").style.display = "none";
+                window.location.href = data.url;
+              }, 2000); // عرض الرسالة ثم الانتقال خلال ثانيتين
+            } else {
+              alert("حدث خطأ أثناء محاولة الشحن");
+            }
+          })
+          .catch(error => {
+            console.error("خطأ في الشحن:", error);
+            alert("فشل في تنفيذ الشحن");
+          });
+        }
+      
+        function closeCustomerWallet() {
+          document.getElementById("customerWallet").style.display = "none";
+        }
+      </script>
+      {% endif %}
+      
+
+      {% if user.is_authenticated and user.userprofile.role == 'saler'  or user.userprofile.role == 'delivery_agent'%}
+      <div id="customerWallet" class="wallet-sidebar">
+        <div class="wallet-header">
+          <h2>My Wallet</h2>
+          <button onclick="closeCustomerWallet()" class="close-btn-wallet">&times;</button>
+        </div>
+    
+        <div class="wallet-section">
+          <p>Available Balance:</p>
+          <p class="wallet-balance" id="walletBalance">Loading...</p>
+        </div>
+    
+        <div class="wallet-section">
+          <button onclick="showRechargeForm()" class="charge-btn">Recharge Balance</button>
+    
+          <form id="rechargeForm" class="recharge-form" style="display: none;" onsubmit="submitRecharge(event)">
+            <input type="number" class="recharge-input" id="rechargeAmount" placeholder="Enter amount">
+            <p id="errorMessage" class="error-message" style="display: none;">Please enter an amount!</p>
+            <button type="submit" class="charge-btn Confirm-wallet">Confirm Recharge</button>
+          </form>
+    
+          <p id="successMessage" class="success-message" style="display: none;">Recharge completed successfully!</p>
+        </div>
+    
+        <div class="wallet-section">
+          <a href="#" onclick="withdrawFunds()" class="charge-btn Confirm-wallet" style="display: block; text-decoration: none;">Withdraw Funds</a>
+        </div>
+    
+        <div class="wallet-section">
+          <h3>Recent Transactions:</h3>
+          <div class="mySwiper xx">
+            <ul class="transaction-list swiper-wrapper" id="transactionList">
+              <li>Loading...</li>
+            </ul>
+            <div class="swiper-button-next btn_swip nxt"></div>
+            <div class="swiper-button-prev btn_swip bc"></div>
+          </div>
+        </div>
+      </div>
+     
+ 
+      
+
+    
+      <script>
+        var token = "";
+        {% if user.is_authenticated and user.auth_token %}
+          token = "Token {{ user.auth_token.key }}";
+        {% endif %}
+        console.log("Token sent:", token);
+    
+        document.addEventListener('DOMContentLoaded', function () {
+          fetch('/api/wallet/', {
+            headers: {
+              'Authorization': token,
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById("walletBalance").innerText = data.balance + " EGP";
+            const list = document.getElementById("transactionList");
+            list.innerHTML = "";
+            data.transactions.forEach(tx => {
+              let sign = tx.transaction_type === "charge" || tx.transaction_type === "earning" ? "+" : "-";
+              let item = `<li class="swiper-slide">${sign}${tx.amount} EGP - ${tx.description}</li>`;
+              list.innerHTML += item;
+            });
+          })
+          .catch(err => {
+            console.error("فشل في تحميل المحفظة:", err);
+          });
+        });
+    
+        function showRechargeForm() {
+          document.getElementById("rechargeForm").style.display = "block";
+          document.getElementById("errorMessage").style.display = "none";
+          document.getElementById("successMessage").style.display = "none";
+        }
+    
+        function submitRecharge(event) {
+          event.preventDefault();
+    
+          const amount = document.getElementById("rechargeAmount").value;
+          if (!amount) {
+            document.getElementById("errorMessage").style.display = "block";
+            return;
+          }
+    
+          fetch('/api/wallet/charge/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': token
+            },
+            body: JSON.stringify(
+              {
+                amount: amount
+              }
+            )
+          })
+          .then(res => res.json())
+          .then(data => {
+            console.log("Stripe URL:", data.url);
+            if (data.url) {
+              window.location.href = data.url;
+            } else {
+              alert("حدث خطأ أثناء محاولة الشحن");
+            }
+          })
+          .catch(error => {
+            console.error("خطأ في الشحن:", error);
+            alert("فشل في تنفيذ الشحن");
+          });
+        }
+    
+        function withdrawFunds() {
+          const amount = prompt("Enter amount to withdraw:");
+          if (!amount || isNaN(amount)) {
+            alert("يرجى إدخال مبلغ صحيح.");
+            return;
+          }
+    
+          fetch('/api/wallet/withdraw/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': token
+            },
+            body: JSON.stringify(
+              {
+                "amount": amount
+              }
+            )
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.message) {
+              alert("تم إرسال طلب السحب بنجاح ✅");
+              location.reload();
+            } else {
+              alert(data.error || "فشل في تنفيذ السحب");
+            }
+          })
+          .catch(error => {
+            console.error("خطأ في السحب:", error);
+            alert("فشل في تنفيذ السحب");
+          });
+        }
+    
+        function openCustomerWallet() {
+          const wallet = document.getElementById("customerWallet");
+          wallet.style.display = "block";
+          wallet.style.opacity = 1;
+        }
+      </script>
+    {% endif %}
+    
+
       <div class="container">
         <nav>
           <div class="menu-toggle" onclick="toggleSideMenu()">
@@ -206,6 +493,8 @@
                 ><i class="fa-solid fa-cart-shopping"></i
               ></a>
               <a href="#" id="user-icon"> <i class="fa-regular fa-user"></i></a>
+              <a onclick="toggleCustomerWallet()" id="walletIcon"><i class="fas fa-wallet"></i></a>
+              
             </div>
 
             <div class="user-menu" id="accountDropdown">
@@ -275,6 +564,41 @@
         </nav>
       </div>
     </header>
+    
+    <script>
+      function toggleCustomerWallet() {
+          document.getElementById("customerWallet").classList.add("open");
+          document.getElementById("walletIcon").classList.add("hidden");
+      }
+
+      function closeCustomerWallet() {
+          document.getElementById("customerWallet").classList.remove("open");
+          document.getElementById("walletIcon").classList.remove("hidden");
+      }
+
+      function showRechargeForm() {
+          document.getElementById('rechargeForm').style.display = 'block';
+      }
+
+      function rechargeWallet() {
+          const amount = document.getElementById('rechargeAmount').value;
+          const errorMsg = document.getElementById('errorMessage');
+          const successMsg = document.getElementById('successMessage');
+
+          if (!amount) {
+              errorMsg.style.display = 'block';
+              successMsg.style.display = 'none';
+          } else {
+              errorMsg.style.display = 'none';
+              successMsg.style.display = 'block';
+              document.getElementById('rechargeForm').style.display = 'none';
+
+              setTimeout(() => {
+                  successMsg.style.display = 'none';
+              }, 3000);
+          }
+      }
+  </script>
 <script src="{% static 'js/header.js' %}"></script>
   </body>
 </html>

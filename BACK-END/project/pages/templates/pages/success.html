@@ -1,0 +1,81 @@
+{% if user.is_authenticated %}
+
+{% extends 'pages/base.html' %}
+{% block content %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Recharge Successful</title>
+  <style>
+    body {
+      background-color: #f3f4f6;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .success-card {
+      background-color: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .success-icon {
+      font-size: 60px;
+      color: #4CAF50;
+      margin-bottom: 20px;
+    }
+
+    .success-card h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .success-card p {
+      font-size: 18px;
+      color: #555;
+      margin: 8px 0;
+    }
+
+    .redirect-note {
+      margin-top: 25px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="success-card">
+    <div class="success-icon">✅</div>
+    <h1>Recharge Successful!</h1>
+    {% if amount %}
+      <p><strong>Amount:</strong> {{ amount }} EGP</p>
+    {% endif %}
+    {% if tx_id %}
+      <p><strong>Transaction ID:</strong> {{ tx_id }}</p>
+    {% endif %}
+    <div class="redirect-note">
+      You will be redirected shortly...
+    </div>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      window.location.href = "/?wallet_open=true"; 
+    }, 5000);
+  </script>
+  
+</body>
+</html>
+{% endblock content %}
+{% endif %}

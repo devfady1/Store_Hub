@@ -49,39 +49,18 @@
   padding: 60px 40px;
   align-items: center;
   border-radius: 8px;
+  overflow-y: hidden;
 }
 .banner-text h5 {
   color: #22c55e;
   font-weight: 600;
   margin-bottom: 10px;
 }
-.banner-text h1 {
+.banner-text h3 {
   font-size: 3rem;
   margin-bottom: 30px;
 }
-.banner-text .timer {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 30px;
-}
-.banner-text .timer .time-box {
-  background-color: #fff;
-  color: #000;
-  padding: 10px 15px;
-  border-radius: 50px;
-  text-align: center;
-  font-weight: bold;
-}
-.banner-text button {
-  padding: 12px 30px;
-  background-color: var(--btn-color);
-  border: none;
-  border-radius: 6px;
-  color: #fff;
-  font-size: 1rem;
-  cursor: pointer;
-  background-color: #16a34a;
-}
+
 .image-container {
   position: relative;
   width: fit-content;
@@ -114,20 +93,20 @@
     text-align: left;
   }
 
-  .banner-text h1 {
+  .banner-text h3 {
     font-size: 2.5rem;
   }
-
-  .banner-text .timer {
-    justify-content: center;
-  }
-
-  .banner-image-placeholder {
-    height: 200px;
-    margin-top: 30px;
+}
+@media (max-width: 600px) {
+  .banner-text h3 {
+    font-size: 1.5rem;
   }
 }
-
+@media (max-width: 400px) {
+  .banner-text h3 {
+    font-size: 1rem;
+  }
+}
 .ourproduct .container .ourprotext {
   display: flex;
   align-items: center;
@@ -745,8 +724,7 @@ nav form i:hover {
   }
 }
 
-
- .menu-toggle {
+.menu-toggle {
   display: none;
   font-size: 28px;
   color: var(--dark-color);
@@ -799,7 +777,7 @@ nav form i:hover {
   text-align: center;
 }
 
-.side-menu a.active{
+.side-menu a.active {
   color: var(--main-color);
 }
 .side-menu.active {
@@ -2012,6 +1990,7 @@ section#browseCat .container {
 
   .BestSellingProducts .container .bttom .pro {
     width: 50%;
+    margin-bottom: 20px;
   }
 }
 
@@ -2081,13 +2060,13 @@ section#browseCat .container {
 
 @media (max-width: 430px) {
   .ourproduct .container .products .pro {
-    width: 100%;
+    width: 40%;
   }
   .ourproduct .container .products .pro .img img {
     width: 100%;
   }
   .ourproduct .container .products .pro .icons .icon i {
-    width: 70%;
+    width: 150%;
   }
 }
 
@@ -3428,7 +3407,8 @@ input[type="checkbox"]:checked::after {
     font-size: 10px;
     font-weight: 370;
   }
-  .breadcrumb-checkout .check1  , .check{
+  .breadcrumb-checkout .check1,
+  .check {
     font-size: 15px;
     font-weight: 450;
   }
@@ -3442,7 +3422,7 @@ input[type="checkbox"]:checked::after {
     width: 100%;
   }
 }
-@media (max-width : 430px) {
+@media (max-width: 430px) {
   input[type="checkbox"]:checked::after {
     width: 3px;
   }
@@ -3751,7 +3731,7 @@ input[type="checkbox"]:checked::after {
   .breadcrumb-account .check {
     font-size: 18px;
   }
-  
+
   .container-account {
     padding: 20px 5%;
   }
@@ -3802,8 +3782,8 @@ input[type="checkbox"]:checked::after {
     font-weight: 500;
   }
 }
-@media screen and  (max-width: 377px) {
-  .breadcrumb-account  {
+@media screen and (max-width: 377px) {
+  .breadcrumb-account {
     gap: 100px;
   }
 }
@@ -5725,4 +5705,233 @@ select.form-input-seller {
   }
 }
 
-/* ==> End Comment Section Styling <== */
+/* ==> End Comment <== */
+
+/* ==> Start Wallet <== */
+
+.wallet-toggle {
+  background: none;
+  border: none;
+  color: var(--main-color);
+  cursor: pointer;
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  font-size: 20px;
+  z-index: 1100;
+  transition: color 0.3s ease;
+}
+
+.wallet-toggle.hidden {
+  display: none;
+}
+
+.wallet-sidebar {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 320px;
+  height: 100%;
+  background-color: #fff;
+  border-left: 1px solid #e0e0e0;
+  box-shadow: -2px 0 15px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  transition: right 0.4s ease;
+  z-index: 1000;
+  overflow-x: hidden;
+}
+
+.wallet-sidebar.open {
+  right: 0;
+}
+
+.wallet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.wallet-header h2 {
+  color: #333;
+  font-size: 22px;
+  margin: 0;
+}
+
+.close-btn-wallet {
+  background: none;
+  border: none;
+  font-size: 26px;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-btn-wallet:hover {
+  color: black;
+}
+
+.wallet-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.wallet-section:hover {
+  background-color: #f1f1f1;
+}
+
+.wallet-balance {
+  font-size: 30px;
+  color: var(--main-color);
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.charge-btn {
+  background-color: var(--main-color);
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.charge-btn:hover {
+  transform: translateY(-2px);
+}
+
+.Confirm-wallet {
+  background-color: white;
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+}
+
+.Confirm-wallet:hover {
+  background-color: var(--main-color);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.recharge-form {
+  display: none;
+  margin-top: 15px;
+}
+
+.recharge-input {
+  padding: 8px;
+  border: 2px solid #eee;
+  border-radius: 25px;
+  width: 100%;
+  margin-bottom: 10px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.recharge-input:focus {
+  border: 1px solid var(--main-color);
+  outline: none;
+}
+
+.error-message-wallet {
+  color: red;
+  font-size: 16px;
+  display: none;
+  margin-bottom: 10px;
+}
+
+.success-message {
+  color: #2e7d32;
+  margin-top: 10px;
+  display: none;
+  text-align: center;
+  padding: 10px;
+  background-color: #e8f5e9;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.transaction-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.transaction-list li {
+  padding: 10px;
+  color: #424242;
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+  transition: background-color 0.3s ease;
+}
+
+.mySwiper.xx .btn_swip{
+  background: var(--main-color);
+  color: #fff;
+  font-weight: bold;
+  height: 50px;
+  width: 40px;
+  border-radius: 5px;
+  position: absolute;
+  top: 62%;
+}
+.mySwiper.xx .btn_swip.nxt{
+  right: 10%;
+}
+.mySwiper.xx .btn_swip.bc{
+  left: 60%;
+}
+.transaction-list li:hover {
+  background-color: #f0f0f0;
+}
+
+.transaction-list li:last-child {
+  border-bottom: none;
+}
+
+/* Dark Wallet */
+
+.dark .wallet-sidebar.open,
+.dark .transaction-list li:hover {
+  background-color: #1d2839;
+}
+
+.dark .wallet-sidebar h2,
+.dark .close-btn-wallet:hover {
+  color: white;
+}
+
+.dark .close-btn-wallet,
+.dark .transaction-list li {
+  color: rgb(216, 213, 213);
+}
+
+.dark .wallet-section {
+  background-color: #151D2A;
+  color: white;
+}
+
+.dark .wallet-section:hover {
+  background-color: #131b29;
+}
+
+.dark .recharge-input,
+.dark .Confirm-wallet {
+  background-color: #1d2839;
+  color: white;
+}
+
+.dark .Confirm-wallet:hover {
+  background-color: var(--main-color);
+  color: white;
+}
+
+/* ==> End Wallet <== */
