@@ -1,12 +1,15 @@
-{% extends 'pages/base.html' %} {% load static %} {% block content %}
+{% extends 'pages/base.html' %}
+{% load static %}
+{% block content %}
 
 <div class="breadcrumb-checkout">
   <a href="{% url 'account' %}">My Account</a> <span class="check1">/</span>
-  <a href="{% url 'allproducts' %}">Product</a> <span class="check1">/</span> <a href="{% url 'cart' %}">View Cart</a>
-  <span class="check">/</span> <a href="{% url 'checkout' %}" class="check">Checkout</a>
+  <a href="{% url 'allproducts' %}">Product</a> <span class="check1">/</span> 
+  <a href="{% url 'cart' %}">View Cart</a> <span class="check">/</span> 
+  <a href="{% url 'checkout' %}" class="check">Checkout</a>
 </div>
 
-<form method="POST" action="{% url 'place_order' %}" class="checkout-form">
+<form id="checkout-form" method="POST" action="{% url 'place_order' %}" class="checkout-form">
   {% csrf_token %}
   <input type="hidden" name="client_lat" id="client_lat">
   <input type="hidden" name="client_lng" id="client_lng">
@@ -99,28 +102,25 @@
               <img src="{% static 'images/Bkash.png' %}" alt="Bank Card 2" />
             </div>
             <div class="payment-icon">
-              <img
-                src="{% static 'images/Mastercard.png' %}"
-                alt="Bank Card 3"
-              />
+              <img src="{% static 'images/Mastercard.png' %}" alt="Bank Card 3" />
             </div>
             <div class="payment-icon">
               <img src="{% static 'images/Nagad.png' %}" alt="Bank Card 4" />
             </div>
-            
           </div>
         </div>
 
         <div class="payment-method">
           <div class="payment-method-left">
-            <input
-              type="radio"
-              name="payment_method"
-              value="cod"
-              id="cod"
-              checked
-            />
+            <input type="radio" name="payment_method" value="cod" id="cod" checked />
             <label for="cod">Cash on delivery</label>
+          </div>
+        </div>
+
+        <div class="payment-method">
+          <div class="payment-method-left">
+            <input type="radio" name="payment_method" value="wallet" id="wallet" />
+            <label for="wallet">Pay with wallet</label>
           </div>
         </div>
       </div>
@@ -129,34 +129,49 @@
         <input type="text" name="coupon" placeholder="Coupon Code" />
         <button type="button" class="apply-btn">Apply Coupon</button>
       </div>
-      <input type="checkbox" name="pay_with_wallet" value="true">
-
 
       <button type="submit" class="place-order-btn">Place Order</button>
     </div>
   </div>
 </form>
-<form action="{% url 'create_checkout_session' %}" method="POST">
-  {% csrf_token %}
-  <button type="submit">Pay with Card</button>
-</form>
 
 <script>
-  let phoneNum = document.getElementById("phoneNum");
-  let submit = document.querySelector("button.place-order-btn");
+  // validate phone number
+  document.querySelector("form.checkout-form").addEventListener("submit", function(e) {
+    const phoneNum = document.getElementById("phoneNum").value;
+    if (phoneNum.length !== 11) {
+      alert("Your Number must be exactly 11 digits");
+      e.preventDefault();
+      return;
+    }
+    if (!(phoneNum.startsWith("01") && ["0", "1", "2", "5"].includes(phoneNum[2]))) {
+      alert("Your Number must start with 01 and a valid network code (0,1,2,5)");
+      e.preventDefault();
+      return;
+    }
 
-  submit.addEventListener("click", () => {
-    let phoneNumValue = phoneNum.value;
-    if (phoneNumValue.length != 11)
-      window.alert("Your Number Less than Or More Than 11 digit");
-    if (phoneNumValue[0] != "0" || phoneNumValue[1] != "1")
-      window.alert("Your Number Must be Start is 01");
-    if (!["0", "1", "2", "5"].includes(phoneNumValue[2]))
-      window.alert("Your Number is Invalid ");
+    // check payment method
+    const method = document.querySelector('input[name="payment_method"]:checked').value;
+    if (method === "bank") {
+      e.preventDefault(); // prevent normal form submission
+
+      // create and submit new form to Stripe route
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = "{% url 'create_checkout_session' %}";
+
+      const csrf = document.createElement("input");
+      csrf.type = "hidden";
+      csrf.name = "csrfmiddlewaretoken";
+      csrf.value = document.querySelector('[name=csrfmiddlewaretoken]').value;
+      form.appendChild(csrf);
+
+      document.body.appendChild(form);
+      form.submit();
+    }
   });
-</script>
-<script>
-  // جلب إحداثيات المستخدم تلقائيًا
+
+  // get user location
   window.onload = function () {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {

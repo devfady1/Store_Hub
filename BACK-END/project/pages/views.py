@@ -1,5 +1,6 @@
 from django.shortcuts import render , redirect
 from .models import *
+from .models import WalletTransaction
 import stripe
 from django.db.models import Count , Max 
 from .forms import *
@@ -46,6 +47,9 @@ from django.utils import timezone
 import random, string
 from .models import Subscriber, Coupon
 from datetime import timedelta
+from django.contrib.auth import get_user_model
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 
 
 
@@ -106,7 +110,7 @@ from rest_framework.authtoken.models import Token
 
 @login_required
 def index(request):
-    
+
     if request.user.is_authenticated:
         Token.objects.get_or_create(user=request.user)
 
@@ -739,8 +743,9 @@ def create_checkout_session(request):
         payment_method_types=['card'],
         line_items=line_items,
         mode='payment',
-        success_url='https://localhost:8000/order_success/',
-        cancel_url='https://localhost:8000/cart/',
+        success_url='http://127.0.0.1:8000/order_success/',
+        cancel_url='http://127.0.0.1:8000/cart/',
+        metadata={'user_id': str(request.user.id)},
     )
 
 
@@ -787,7 +792,8 @@ def place_order(request):
             messages.error(request, "السلة فارغة.")
             return redirect('cart')
 
-        pay_with_wallet = request.POST.get('pay_with_wallet') == 'true'
+        payment_method = request.POST.get('payment_method')
+        pay_with_wallet = payment_method == 'wallet'
 
         try:
             client_lat = float(request.POST.get('client_lat', 0.0))
@@ -801,7 +807,6 @@ def place_order(request):
             total_price += float(item['price']) * int(item['quantity'])
 
         if pay_with_wallet:
-            from .models import WalletTransaction
             credit = sum(t.amount for t in WalletTransaction.objects.filter(user=user) if t.is_credit())
             debit = sum(t.amount for t in WalletTransaction.objects.filter(user=user) if not t.is_credit())
             balance = credit - debit
@@ -1255,8 +1260,6 @@ def role_required(roles=[]):
 
 #wallet
 def get_user_wallet_balance(user):
-    from .models import WalletTransaction
-
     transactions = WalletTransaction.objects.filter(user=user)
     total_credit = sum(t.amount for t in transactions if t.is_credit())
     total_debit = sum(t.amount for t in transactions if not t.is_credit())
@@ -1305,8 +1308,8 @@ def create_wallet_checkout_session(request):
                 'quantity': 1,
             }],
             mode='payment',
-            success_url='https://localhost:8000/wallet/charge/success/?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url='https://localhost:8000/',
+            success_url='http://127.0.0.1:8000/wallet/charge/success/?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url='http://127.0.0.1:8000/',
             metadata={'user_id': str(request.user.id)},
         )
 
@@ -1314,8 +1317,11 @@ def create_wallet_checkout_session(request):
     except Exception as e:
         return Response({'error': str(e)}, status=400)
 
+
+from rest_framework.permissions import AllowAny
+
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def stripe_success(request):
     session_id = request.GET.get('session_id')
     if not session_id:
@@ -1326,13 +1332,21 @@ def stripe_success(request):
         amount = session.amount_total / 100
 
         if session.payment_status == 'paid':
+            user_id = session.metadata.get('user_id')
+            User = get_user_model()
+            try:
+                user = User.objects.get(id=user_id)
+            except User.DoesNotExist:
+                return Response({'error': 'User not found'}, status=404)
+
             WalletTransaction.objects.create(
-                user=request.user,
+                user=user,
                 amount=amount,
                 transaction_type='charge',
                 description='شحن رصيد عبر Stripe',
             )
-            return Response({'message': 'تم الشحن بنجاح', 'amount': amount})
+            # إعادة التوجيه لصفحة النجاح في الواجهة
+            return redirect('/wallet/success/')
         else:
             return Response({'error': 'الدفع لم يكتمل'}, status=400)
 
@@ -1386,3 +1400,116 @@ def driver_earnings(request):
         'total_earnings': round(total_earnings, 2),
         'total_orders': total_orders,
     })
+
+
+@login_required
+def wallet_success_page(request):
+    amount = request.GET.get("amount")
+    tx_id = request.GET.get("tx") 
+    return render(request, "pages/success.html")
+
+
+
+
+
+@role_required(['delivery_agent'])
+@login_required
+def delivery_earnings_view(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    driver_location = (user_profile.lat, user_profile.lng)
+
+    orders = Order.objects.filter(delivery_agent=request.user)
+
+    orders_data = []
+    total_earnings = 0
+
+    for order in orders:
+        items = order.items.all()
+        total_price = sum(item.product.price * item.quantity for item in items)
+
+        customer_location = (order.client_lat, order.client_lng)
+        distance_km = geodesic(driver_location, customer_location).km
+        distance_km = round(distance_km, 1)
+
+        base_rate = 25 if distance_km <= 5 else 25 + (distance_km - 5) * 6
+        base_rate = round(base_rate, 2)
+
+        commission = base_rate * 0.15
+        final_earning = base_rate - commission
+
+        if order.status == "completed":
+            total_earnings += final_earning
+
+        orders_data.append({
+            'id': order.id,
+            'date': 'not found',
+            'customer': order.customer.get_full_name() or order.customer.username,
+            'status': order.status,
+            'distance': f"{distance_km} km",
+            'base_rate': f"${base_rate:.2f}",
+            'commission': f"-${commission:.2f}",
+            'total_earning': f"${final_earning:.2f}",
+        })
+
+    avg_earning = round(total_earnings / len(orders_data), 2) if orders_data else 0
+
+    context = {
+        'orders': orders_data,
+        'total_earnings': f"${total_earnings:.2f}",
+        'total_orders': len(orders_data),
+        'avg_earning': f"${avg_earning:.2f}",
+        'commission_rate': "15%",
+    }
+    return render(request, 'delivery agent/earnings.html', context)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@role_required(['delivery_agent'])
+def driver_earnings_api(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    driver_location = (user_profile.lat, user_profile.lng)
+    orders = Order.objects.filter(delivery_agent=request.user)
+    orders_data = []
+    total_earnings = 0
+    for order in orders:
+        items = order.items.all()
+        total_price = sum(item.product.price * item.quantity for item in items)
+        customer_location = (order.client_lat, order.client_lng)
+        distance_km = geodesic(driver_location, customer_location).km
+        distance_km = round(distance_km, 1)
+        base_rate = 25 if distance_km <= 5 else 25 + (distance_km - 5) * 6
+        base_rate = round(base_rate, 2)
+        commission = base_rate * 0.15
+        final_earning = base_rate - commission
+        if order.status == "completed":
+            total_earnings += final_earning
+        orders_data.append({
+            'id': order.id,
+            'date': 'not found',
+            'customer': order.customer.get_full_name() or order.customer.username,
+            'status': order.status,
+            'distance': f"{distance_km} km",
+            'base_rate': f"${base_rate:.2f}",
+            'commission': f"-${commission:.2f}",
+            'total_earning': f"${final_earning:.2f}",
+        })
+    avg_earning = round(total_earnings / len(orders_data), 2) if orders_data else 0
+
+    # Pagination
+    page = int(request.GET.get('page', 1))
+    page_size = int(request.GET.get('page_size', 8))
+    start = (page - 1) * page_size
+    end = start + page_size
+    paginated_orders = orders_data[start:end]
+    total_pages = (len(orders_data) + page_size - 1) // page_size
+
+    data = {
+        'orders': paginated_orders,
+        'total_earnings': f"${total_earnings:.2f}",
+        'total_orders': len(orders_data),
+        'avg_earning': f"${avg_earning:.2f}",
+        'commission_rate': "15%",
+        'page': page,
+        'total_pages': total_pages,
+    }
+    return Response(data)
