@@ -630,9 +630,8 @@ nav h1 {
   color: #fff !important;
   font-size: 30px;
   position: relative;
-  min-width: 12ch;
+  min-width: 13ch;
   display: inline-block;
-  min-height: 1.5rem;
   margin-left: 10px;
   background-color: transparent;
   text-shadow: 0 0 2px var(--main-color), 0 0 4px var(--main-color),
@@ -1260,9 +1259,14 @@ form.header-form {
 
 @media (max-width: 551px) {
   nav h1 {
-    font-size: 30px;
+    font-size: 20px;
   }
-  footer .container {
+
+      nav a.z{
+        height: 50px !important;
+    display: block;
+  }
+    footer .container {
     flex-direction: column;
     justify-content: center;
     align-items: center;
