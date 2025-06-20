@@ -868,13 +868,7 @@ def place_order(request):
                 description=f'أرباح من طلب #{order.id}'
             )
 
-            # عمولة المنصة
-            WalletTransaction.objects.create(
-                user=saler,
-                amount=commission,
-                transaction_type='commission',
-                description=f'عمولة على طلب #{order.id}'
-            )
+            
 
         # تنظيف السلة
         request.session['cart'] = {}
