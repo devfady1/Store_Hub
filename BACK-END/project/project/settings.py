@@ -37,7 +37,6 @@ CSRF_COOKIE_HTTPONLY = True
 
 SITE_ID = 1
 INSTALLED_APPS = [
-    'saler.apps.SalerConfig',
     'jazzmin',
     'pages.apps.PagesConfig',
     'django.contrib.admin',
@@ -51,7 +50,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'products',
     'rest_framework',
     'rest_framework.authtoken',
 
