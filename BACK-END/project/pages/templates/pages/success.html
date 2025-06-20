@@ -1,4 +1,9 @@
 {% if user.is_authenticated %}
+
+{% extends 'pages/base.html' %}
+{% block content %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,4 +77,5 @@
   
 </body>
 </html>
+{% endblock content %}
 {% endif %}
