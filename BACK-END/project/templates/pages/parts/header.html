@@ -74,7 +74,7 @@
       <div id="customerWallet" class="wallet-sidebar">
         <div class="wallet-header">
           <h2>My Wallet</h2>
-          <button onclick="closeCustomerWallet()" class="close-btn-wallet">&times;</button>
+          <button class="close-btn-wallet">&times;</button>
         </div>
       
         <div class="wallet-section">
@@ -188,9 +188,6 @@
           });
         }
       
-        function closeCustomerWallet() {
-          document.getElementById("customerWallet").style.display = "none";
-        }
       </script>
       {% endif %}
       
@@ -199,7 +196,7 @@
       <div id="customerWallet" class="wallet-sidebar">
         <div class="wallet-header">
           <h2>My Wallet</h2>
-          <button onclick="closeCustomerWallet()" class="close-btn-wallet">&times;</button>
+          <button class="close-btn-wallet">&times;</button>
         </div>
     
         <div class="wallet-section">
@@ -367,7 +364,7 @@
 
       <div class="container">
         <nav>
-          <div class="menu-toggle" onclick="toggleSideMenu()">
+          <div class="menu-toggle" id="menu-toggle">
             <i class="fas fa-bars"></i>
           </div>
 
@@ -447,7 +444,7 @@
           </div>
 
           <div class="side-menu" id="sideMenu">
-            <div class="close-btn" onclick="toggleSideMenu()">
+            <div class="close-btn">
               <i class="fas fa-times"></i>
             </div>
             <div class="logo-write container"> 
@@ -687,7 +684,7 @@
               </script>
               
               
-              <a onclick="toggleCustomerWallet()" id="walletIcon"><i class="fas fa-wallet"></i></a>
+              <a id="walletIcon"><i class="fas fa-wallet"></i></a>
               
             </div>
 
@@ -770,15 +767,6 @@
     </header>
     
     <script>
-      function toggleCustomerWallet() {
-          document.getElementById("customerWallet").classList.add("open");
-          document.getElementById("walletIcon").classList.add("hidden");
-      }
-
-      function closeCustomerWallet() {
-          document.getElementById("customerWallet").classList.remove("open");
-          document.getElementById("walletIcon").classList.remove("hidden");
-      }
 
       function showRechargeForm() {
           document.getElementById('rechargeForm').style.display = 'block';
@@ -820,6 +808,119 @@
       box.style.display = 'none';
     }
   });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const wallet = document.querySelector(".wallet-sidebar");
+  const closeBtn = document.querySelector(".close-btn-wallet");
+  const walletIcon = document.getElementById("walletIcon");
+
+  if (walletIcon) {
+    walletIcon.addEventListener("click", () => {
+      wallet.classList.add("open");
+    });
+  }
+
+  let startX = null;
+  let isDragging = false;
+
+  document.addEventListener("touchstart", (e) => {
+    if (e.touches.length === 1) {
+      startX = e.touches[0].clientX;
+      isDragging = true;
+    }
+  });
+
+  document.addEventListener("touchmove", (e) => {
+    if (!isDragging || e.touches.length !== 1) return;
+    const currentX = e.touches[0].clientX;
+    const diff = currentX - startX;
+
+    if (diff < -70) {
+      wallet.classList.add("open");
+      isDragging = false;
+    }
+  });
+
+  document.addEventListener("touchend", () => {
+    startX = null;
+    isDragging = false;
+  });
+
+  document.addEventListener("click", (e) => {
+    if (
+      wallet.classList.contains("open") &&
+      !wallet.contains(e.target) &&
+      !e.target.closest("#walletIcon")
+    ) {
+      wallet.classList.remove("open");
+    }
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      wallet.classList.remove("open");
+    });
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const side = document.querySelector("#sideMenu");
+  const close = document.querySelector(".side-menu .close-btn");
+  const sideIcon = document.getElementById("menu-toggle");
+
+  // فتح بالآيكون
+  if (sideIcon) {
+    sideIcon.addEventListener("click", () => {
+      side.classList.add("active");
+    });
+  }
+
+  let startX = null;
+  let isDragging = false;
+
+  // فتح بالسحب من اليمين لليسار
+  document.addEventListener("touchstart", (e) => {
+    if (e.touches.length === 1) {
+      startX = e.touches[0].clientX;
+      isDragging = true;
+    }
+  });
+
+  document.addEventListener("touchmove", (e) => {
+    if (!isDragging || e.touches.length !== 1) return;
+    const currentX = e.touches[0].clientX;
+    const diff = currentX - startX;
+
+    if (diff < 70) {
+      side.classList.add("active");
+      isDragging = false;
+    }
+  });
+
+  document.addEventListener("touchend", () => {
+    startX = null;
+    isDragging = false;
+  });
+
+  // إغلاق عند الضغط خارج المحفظة
+  document.addEventListener("click", (e) => {
+    if (
+      side.classList.contains("active") &&
+      !side.contains(e.target) &&
+      !e.target.closest("#menu-toggle")
+    ) {
+      side.classList.remove("active");
+    }
+  });
+
+  // زر الإغلاق
+  if (close) {
+    close.addEventListener("click", () => {
+      side.classList.remove("active");
+    });
+  }
+});
+
 </script>
 
 

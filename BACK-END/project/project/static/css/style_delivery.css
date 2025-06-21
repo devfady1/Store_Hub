@@ -72,7 +72,7 @@
 }
 header .container{
   margin: 5px auto;
-  margin-top: 8px !important;
+  margin-top: 0px !important;
 }
 :root {
   --main-color: #9f1239;
@@ -91,12 +91,12 @@ body.dark {
 header {
   margin-bottom: 20px;
   border-bottom: 1px solid var(--text-color);
-  position: sticky;
+  position:sticky;
   top: 0;
   z-index: 100;
   background-color: #fafafa;
-}
-body.dark header {
+  width: 100%;
+}dy.dark header {
   background-color: #151d2a;
 }
 

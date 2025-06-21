@@ -5,7 +5,7 @@
   text-decoration: none;
   border: none;
   outline: none;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
 }
 
 .welcome-message {
@@ -25,11 +25,6 @@
   margin-bottom: 10px;
   animation: fadeInUp 1s ease forwards;
   text-align: center;
-}
-@media (max-width: 1000px) {
-  .welcome-message h3 {
-    margin-top: 170px;
-  }
 }
 @media (max-width: 430px) {
   .welcome-message h3 {
@@ -616,7 +611,7 @@ body.dark header {
 nav h1 {
   letter-spacing: 2px;
   color: #fff !important;
-  font-size: 30px;
+  font-size: 40px;
   position: relative;
   min-width: 10ch;
   display: inline-block;
@@ -785,6 +780,9 @@ nav form i:hover {
   text-align: center;
 }
 
+.side-menu a i{
+  margin-right: 15px;
+}
 .side-menu a.active {
   color: var(--main-color);
 }
@@ -1248,7 +1246,7 @@ form.header-form {
 
 @media (max-width: 551px) {
   nav h1 {
-    font-size: 20px;
+    font-size: 30px;
   }
 
   nav a.z {
@@ -5719,20 +5717,8 @@ select.form-input-seller {
 
 /* ==> Start Wallet <== */
 
-.wallet-toggle {
-  background: none;
-  border: none;
-  color: var(--main-color);
-  cursor: pointer;
-  position: fixed;
-  right: 20px;
-  top: 20px;
-  font-size: 20px;
-  z-index: 1100;
-  transition: color 0.3s ease;
-}
 
-.wallet-toggle.hidden {
+.wallet-toggle {
   display: none;
 }
 
