@@ -644,7 +644,7 @@ nav .linkes i {
 }
 nav .linkes p {
   color: var(--text-color);
-  font-size: 16px;
+  font-size: 20px;
   transition: 0.3s;
 }
 
@@ -692,7 +692,7 @@ nav form i:hover {
   padding: 10px;
   border-radius: 25px;
   font-size: 14px;
-  margin-top: 10px;
+  margin-bottom: 10px;
   transition: all 0.3s ease;
 }
 
@@ -1144,7 +1144,7 @@ footer .container h5:hover {
 form.header-form {
   display: flex;
   align-items: center;
-  flex-direction: column-reverse;
+  flex-direction: column;
   justify-content: center;
 }
 .Subscribe {
