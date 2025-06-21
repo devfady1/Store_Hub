@@ -21,6 +21,33 @@
       href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css"
     />
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+      <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <!-- Font (optional) -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+<style>
+  .logo-write {
+    width: 90%;
+    max-width: 800px;
+  }
+
+  .logo-svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .logo-text {
+    font-size: 60px;
+    font-family: 'Orbitron', sans-serif;
+    fill: none;
+    stroke: #9f1239;
+    stroke-width: 2;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    text-shadow: 0 0 10px #9f1239;
+  }</style>
+
   </head>
   <body class="light">
     <header>
@@ -348,11 +375,11 @@
                   <p><i class="fas fa-user"></i> My Account</p>
                 </a>
               {% elif user.userprofile.role == 'delivery_agent' %}
-                <a href="{% url 'delivery_orders' %}" class="{% if request.resolver_match.url_name == 'delivery_orders' %}active{% endif %}">
-                  <p><i class="fas fa-truck"></i> My Deliveries</p>
-                </a>
                 <a href="{% url 'available_orders' %}" class="{% if request.resolver_match.url_name == 'available_orders' %}active{% endif %}">
                   <p><i class="fas fa-box-open"></i> Available Orders</p>
+                </a>
+                <a href="{% url 'delivery_earnings' %}" class="{% if request.resolver_match.url_name == 'delivery_earnings' %}active{% endif %}">
+                  <p><i class="fas fa-truck"></i> My Deliveries</p>
                 </a>
                 <a href="{% url 'my_orders' %}" class="{% if request.resolver_match.url_name == 'my_orders' %}active{% endif %}">
                   <p><i class="fas fa-history"></i> Order History</p>
@@ -408,7 +435,35 @@
             <div class="close-btn" onclick="toggleSideMenu()">
               <i class="fas fa-times"></i>
             </div>
-            <h1 class="sidebar-title">STOREHUB</h1>
+            <div class="logo-write">
+              <svg viewBox="0 0 500 100" class="logo-svg">
+                <text x="10" y="70" class="logo-text">STOREHUB</text>
+              </svg>
+            </div>
+          
+            <script>
+              window.addEventListener("DOMContentLoaded", () => {
+                const text = document.querySelector(".logo-text");
+          
+                gsap.timeline({ repeat: -1, repeatDelay: 1 })
+                  .to(text, {
+                    strokeDashoffset: 0,
+                    duration: 3,
+                    ease: "power2.inOut",
+                  })
+                  .to(text, {
+                    opacity: 0,
+                    duration: 0.5,
+                    delay: 1
+                  })
+                  .set(text, { strokeDashoffset: 1000, opacity: 1 });
+              });
+            </script>
+
+            
+
+            
+            
           
             {% if user.is_authenticated %}
               {% if user.userprofile.role == 'saler' %}
@@ -499,6 +554,121 @@
               </div>
             </div>
             <div class="z">
+              <style>
+                /* الحاوية الرئيسية */
+                .message-dropdown {
+                  position: relative;
+                  display: inline-block;
+                }
+              
+                /* القائمة المنسدلة */
+                .message-box {
+                  display: none;
+                  position: fixed;
+                  right: 40px;;
+                  top: 90px;
+                  background-color: #fff;
+                  border: 1px solid #ddd;
+                  border-radius: 8px;
+                  width: 320px;
+                  max-height: 400px;
+                  overflow-y: auto;
+                  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+                  z-index: 9999;
+                  padding: 10px;
+                }
+              
+                .message-box .message {
+                  border-bottom: 1px solid #eee;
+                  padding: 8px 5px;
+                  font-size: 14px;
+                  position: relative;
+                }
+              
+                .message-box .message:last-child {
+                  border-bottom: none;
+                }
+              
+                .message-box .message .close-btn {
+                  position: absolute;
+                  right: 8px;
+                  top: 6px;
+                  cursor: pointer;
+                  color: #888;
+                  font-weight: bold;
+                  font-size: 16px;
+                }
+              
+                .message-box .message.error {
+                  background-color: #f8d7da;
+                  color: #842029;
+                  border-left: 3px solid #dc3545;
+                }
+              
+                .message-box .message.success {
+                  background-color: #d1e7dd;
+                  color: #0f5132;
+                  border-left: 3px solid #198754;
+                }
+              
+                .notification-badge {
+                  position: absolute;
+                  top: -5px;
+                  right: -10px;
+                  background: red;
+                  color: white;
+                  font-size: 10px;
+                  padding: 2px 6px;
+                  border-radius: 50%;
+                }
+              
+                .message-icon {
+                  font-size: 20px;
+                  cursor: pointer;
+                  position: relative;
+                }
+              </style>
+              
+              <div class="message-dropdown">
+                <a href="#" onclick="toggleMessageBox(event)">
+                  <i class="fa fa-envelope message-icon"></i>
+                  {% if messages %}
+                    <span class="notification-badge">{{ messages|length }}</span>
+                  {% endif %}
+                </a>
+              
+                {% if messages %}
+                  <div id="messageBox" class="message-box">
+                    {% for message in messages %}
+                      <div class="message {% if 'error' in message.tags %}error{% else %}success{% endif %}">
+                        {{ message }}
+                        <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+              
+              <script>
+                function toggleMessageBox(event) {
+                  event.preventDefault();
+                  const box = document.getElementById("messageBox");
+                  if (box) {
+                    box.style.display = (box.style.display === "block") ? "none" : "block";
+                  }
+                }
+              
+                // إخفاء القائمة عند الضغط خارجها
+                window.addEventListener('click', function (e) {
+                  const box = document.getElementById('messageBox');
+                  const icon = document.querySelector('.fa-envelope');
+                  if (box && !box.contains(e.target) && !icon.contains(e.target)) {
+                    box.style.display = 'none';
+                  }
+                });
+              </script>
+              
+              
               <a href="{% url 'wishlist' %}"
                 ><i class="fa-regular fa-heart"></i
               ></a>
@@ -612,6 +782,30 @@
           }
       }
   </script>
+<script>
+  function toggleFloatingMessages(event) {
+    event.preventDefault();
+    const dropdown = document.getElementById("floating-messages");
+    if (dropdown) {
+      dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+    }
+  }
+
+  // اختفاء القائمة لما تضغط في أي مكان خارجها
+  window.addEventListener('click', function (e) {
+    const box = document.getElementById('floating-messages');
+    const icon = document.querySelector('.fa-envelope');
+    if (box && !box.contains(e.target) && !icon.contains(e.target)) {
+      box.style.display = 'none';
+    }
+  });
+</script>
+
+
+
+
+
+
 <script src="{% static 'js/header.js' %}"></script>
   </body>
 </html>

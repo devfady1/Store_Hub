@@ -768,12 +768,7 @@ def payment_success(request):
     except Exception as e:
         return HttpResponse(f'حدث خطأ: {str(e)}')
 
-def delivery_order_view(request):
-    assignments = DeliveryAssignment.objects.filter(DeliveryAgent=request.user)
-    context = {
-        'assignments': assignments
-    }
-    return render(request, 'delivery agent/delivery_order.html', context)
+
 
 
 
