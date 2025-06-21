@@ -594,10 +594,11 @@ body.dark {
 header {
   margin-bottom: 20px;
   border-bottom: 1px solid var(--text-color);
-  position: sticky;
+  position: fixed;
   top: 0;
   z-index: 100;
   background-color: #fafafa;
+  width: 100%;
 }
 body.dark header {
   background-color: #151d2a;
@@ -1240,11 +1241,11 @@ form.header-form {
     font-size: 20px;
   }
 
-      nav a.z{
-        height: 50px !important;
+  nav a.z {
+    height: 50px !important;
     display: block;
   }
-    footer .container {
+  footer .container {
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -5883,7 +5884,7 @@ select.form-input-seller {
 }
 
 .mySwiper.xx .btn_swip,
-.mySwiper.z .btn_swip{
+.mySwiper.z .btn_swip {
   background: var(--main-color);
   color: #fff;
   font-weight: bold;
@@ -5919,7 +5920,7 @@ select.form-input-seller {
 }
 
 .dark .wallet-section {
-  background-color: #151D2A;
+  background-color: #151d2a;
   color: white;
 }
 
