@@ -129,11 +129,17 @@
             document.getElementById("walletBalance").innerText = data.balance + " EGP";
             const list = document.getElementById("transactionList");
             list.innerHTML = "";
+            let jhs = 0;
             data.transactions.forEach(tx => {
               let sign = tx.transaction_type === "charge" || tx.transaction_type === "earning" ? "+" : "-";
               let item = `<li class="swiper-slide">${sign}${tx.amount} EGP - ${tx.description}</li>`;
               list.innerHTML += item;
+              jhs++;
             });
+            if(jhs == 0){
+              document.querySelector(".wallet-section.none").style.display = "none";
+              document.querySelector(".wallet-section.none2").style.display = "none";
+            }
           })
           .catch(err => {
             console.error("فشل في تحميل المحفظة:", err);
@@ -217,7 +223,7 @@
           <a href="#" onclick="withdrawFunds()" class="charge-btn Confirm-wallet" style="display: block; text-decoration: none;">Withdraw Funds</a>
         </div>
     
-        <div class="wallet-section">
+        <div class="wallet-section none">
           <h3>Recent Transactions:</h3>
           <div class="mySwiper xx">
             <ul class="transaction-list swiper-wrapper" id="transactionList">
@@ -225,7 +231,8 @@
             </ul>
           </div>
         </div>
-        <div class="wallet-section">
+
+        <div class="wallet-section none2">
           <div class="mySwiper xx swiper-navigation-buttons">
             <div class="swiper-button-next btn_swip nxt"></div>
             <div class="swiper-button-prev btn_swip bc"></div>
@@ -256,11 +263,17 @@
             document.getElementById("walletBalance").innerText = data.balance + " EGP";
             const list = document.getElementById("transactionList");
             list.innerHTML = "";
+            let jhs = 0;
             data.transactions.forEach(tx => {
               let sign = tx.transaction_type === "charge" || tx.transaction_type === "earning" ? "+" : "-";
               let item = `<li class="swiper-slide">${sign}${tx.amount} EGP - ${tx.description}</li>`;
               list.innerHTML += item;
+              jhs++;
             });
+            if(jhs == 0){
+              document.querySelector(".wallet-section.none").style.display = "none";
+              document.querySelector(".wallet-section.none2").style.display = "none";
+            }
           })
           .catch(err => {
             console.error("فشل في تحميل المحفظة:", err);
@@ -805,10 +818,6 @@
     }
   });
 </script>
-
-
-
-
 
 
 <script src="{% static 'js/header.js' %}"></script>

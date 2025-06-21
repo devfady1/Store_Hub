@@ -63,6 +63,12 @@ class RSAPrivateKey(metaclass=abc.ABCMeta):
         Returns the key serialized as bytes.
         """
 
+    @abc.abstractmethod
+    def __copy__(self) -> RSAPrivateKey:
+        """
+        Returns a copy.
+        """
+
 
 RSAPrivateKeyWithSerialization = RSAPrivateKey
 RSAPrivateKey.register(rust_openssl.rsa.RSAPrivateKey)
@@ -125,6 +131,12 @@ class RSAPublicKey(metaclass=abc.ABCMeta):
     def __eq__(self, other: object) -> bool:
         """
         Checks equality.
+        """
+
+    @abc.abstractmethod
+    def __copy__(self) -> RSAPublicKey:
+        """
+        Returns a copy.
         """
 
 
@@ -223,6 +235,8 @@ def rsa_recover_prime_factors(n: int, e: int, d: int) -> tuple[int, int]:
     no more than two factors. This function is adapted from code in PyCrypto.
     """
     # reject invalid values early
+    if d <= 1 or e <= 1:
+        raise ValueError("d, e can't be <= 1")
     if 17 != pow(17, e * d, n):
         raise ValueError("n, d, e don't match")
     # See 8.2.2(i) in Handbook of Applied Cryptography.
