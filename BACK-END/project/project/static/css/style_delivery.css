@@ -70,7 +70,10 @@
   overflow-x: hidden;
   overflow-y: hidden;
 }
-
+header .container{
+  margin: 5px auto;
+  margin-top: 8px !important;
+}
 :root {
   --main-color: #9f1239;
   --dark-toogle: #222;
@@ -112,7 +115,7 @@ nav {
 nav .linkes {
   display: flex;
   justify-content: space-between;
-  width: 40%;
+  width: 50%;
 }
 
 nav .linkes p {

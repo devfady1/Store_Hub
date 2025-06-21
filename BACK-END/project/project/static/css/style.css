@@ -582,7 +582,10 @@
   margin: 15px auto;
   overflow-x: hidden;
 }
-
+header .container{
+  margin: 5px auto;
+  margin-top: 8px !important;
+}
 :root {
   --main-color: #9f1239;
   --dark-toogle: #222;
