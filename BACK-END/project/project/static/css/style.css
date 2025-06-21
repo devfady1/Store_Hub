@@ -15,6 +15,7 @@
 }
 
 .welcome-message h3 {
+  margin-top: 80px;
   font-size: 2rem;
   font-weight: bold;
   color: white;
@@ -25,6 +26,11 @@
   margin-bottom: 10px;
   animation: fadeInUp 1s ease forwards;
   text-align: center;
+}
+@media (max-width: 1000px) {
+  .welcome-message h3 {
+    margin-top: 170px;
+  }
 }
 @media (max-width: 430px) {
   .welcome-message h3 {
@@ -594,7 +600,7 @@ body.dark {
 header {
   margin-bottom: 20px;
   border-bottom: 1px solid var(--text-color);
-  position: fixed;
+  position:fixed;
   top: 0;
   z-index: 100;
   background-color: #fafafa;
@@ -630,7 +636,9 @@ nav .linkes {
   display: flex;
   justify-content: space-between;
 }
-
+nav .linkes i {
+  display: none;
+}
 nav .linkes p {
   color: var(--text-color);
   font-size: 16px;
