@@ -30,12 +30,11 @@
         margin-left: 20px;
         color: var(--main-color) !important;
       }
-      
       .dataTables_wrapper .dataTables_paginate {
         display: flex;
         justify-content: center;
         margin-bottom: 20px;
-        margin: 20px;
+        margin-top: 20px;
       }
 
       .dataTables_wrapper .dataTables_paginate .paginate_button {
@@ -49,10 +48,13 @@
         font-weight: bold !important;
         transition: all 0.3s ease !important;
         cursor: pointer;
-        box-shadow: none !important;
-        background-image: none !important;
       }
 
+      .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background-color: var(--main-color) !important;
+      }
+
+      /* Hover and focus for non-current buttons */
       .dataTables_wrapper
         .dataTables_paginate
         .paginate_button:not(.current):hover,
@@ -61,18 +63,13 @@
         .paginate_button:not(.current):focus {
         background-color: var(--main-color) !important;
         color: white !important;
-        box-shadow: none !important;
-        background-image: none !important;
       }
 
       .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-      .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
       .dataTables_wrapper .dataTables_paginate .paginate_button.current:focus {
         background-color: var(--main-color) !important;
         color: white !important;
         border: 1px solid var(--main-color) !important;
-        box-shadow: none !important;
-        background-image: none !important;
         cursor: default !important;
       }
 
@@ -82,44 +79,10 @@
         border: 1px solid var(--main-color) !important;
         opacity: 0.5 !important;
         cursor: not-allowed !important;
-        box-shadow: none !important;
-        background-image: none !important;
       }
 
-      /* Dark Mode */
       .dark .dataTables_wrapper .dataTables_paginate .paginate_button {
-        background-color: #151d2a !important;
-        color: var(--main-color) !important;
-        border: 1px solid var(--main-color) !important;
-      }
-
-      .dark
-        .dataTables_wrapper
-        .dataTables_paginate
-        .paginate_button:not(.current):hover,
-      .dark
-        .dataTables_wrapper
-        .dataTables_paginate
-        .paginate_button:not(.current):focus {
-        background-color: var(--main-color) !important;
-        color: white !important;
-      }
-
-      .dark .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-      .dark
-        .dataTables_wrapper
-        .dataTables_paginate
-        .paginate_button.current:hover,
-      .dark
-        .dataTables_wrapper
-        .dataTables_paginate
-        .paginate_button.current:focus {
-        background-color: var(--main-color) !important;
-        color: white !important;
-        border: 1px solid var(--main-color) !important;
-        box-shadow: none !important;
-        background-image: none !important;
-        cursor: default !important;
+        background-color: #151D2A !important;
       }
     </style>
 
@@ -140,33 +103,17 @@
       </div>
 
       <div class="earnings-filters">
-        <div class="earnings-filter-group">
-          <label class="earnings-filter-label">Date Range</label>
-          <select class="earnings-filter-select">
-            <option>Last 7 days</option>
-            <option>Last 30 days</option>
-            <option>Last 90 days</option>
-            <option selected>Custom Range</option>
-          </select>
-        </div>
-        <div class="earnings-filter-group">
-          <label class="earnings-filter-label">From</label>
-          <input type="date" class="earnings-filter-input" />
-        </div>
-        <div class="earnings-filter-group">
-          <label class="earnings-filter-label">To</label>
-          <input type="date" class="earnings-filter-input" />
-        </div>
+
         <div class="earnings-filter-group">
           <label class="earnings-filter-label">Status</label>
           <select class="earnings-filter-select" id="selectStatus">
             <option value="all">All Statuses</option>
+            <option value="accepted">Accepted</option>
             <option value="completed">Completed</option>
             <option value="pending">Pending</option>
-            <option value="cancelled">Cancelled</option>
+            <option value="in_progress">In_Progress</option>
           </select>
         </div>
-        <button class="earnings-filter-button">Apply Filters</button>
       </div>
 
       <div class="earnings-table-container">
@@ -232,20 +179,25 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
     <script>
-      $(document).ready(function () {
-        $("#earningsTable").DataTable({
-          pageLength: 8,
-          lengthChange: false,
-          ordering: true,
-          language: {
-            emptyTable: "No orders available",
-            paginate: {
-              next: '<i class="fas fa-chevron-right"></i>',
-              previous: '<i class="fas fa-chevron-left"></i>',
-            },
-          },
-        });
-      });
+      document.addEventListener('DOMContentLoaded', function () {
+    const table = $('#earningsTable').DataTable({
+      pageLength: 8,
+      lengthChange: false
+    });
+
+    // فلتر مخصص حسب status
+    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+      const selected = document.getElementById('selectStatus').value.toLowerCase();
+      const row = table.row(dataIndex).node(); // جيب صف الـ DOM
+      const status = row?.getAttribute('data-status')?.toLowerCase();
+      return selected === 'all' || status === selected;
+    });
+
+    // شغل الفلتر كل ما المستخدم يغير الاختيار
+    document.getElementById('selectStatus').addEventListener('change', function () {
+      table.draw();
+    });
+  });
     </script>
   </body>
 </html>
