@@ -15,7 +15,7 @@
 }
 
 .welcome-message h3 {
-  margin-top: 80px;
+  margin-top: 100px;
   font-size: 2rem;
   font-weight: bold;
   color: white;
@@ -616,7 +616,7 @@ nav h1 {
   color: #fff !important;
   font-size: 30px;
   position: relative;
-  min-width: 13ch;
+  min-width: 10ch;
   display: inline-block;
   margin-left: 10px;
   background-color: transparent;
@@ -632,7 +632,7 @@ nav {
 }
 
 nav .linkes {
-  width: 40%;
+  width: 50%;
   display: flex;
   justify-content: space-between;
 }
@@ -688,8 +688,8 @@ nav form i:hover {
   background-color: #ddd;
   padding: 10px;
   border-radius: 25px;
-  margin-right: 9px;
   font-size: 14px;
+  margin-top: 10px;
   transition: all 0.3s ease;
 }
 
@@ -698,9 +698,6 @@ nav form i:hover {
   font-size: 14px;
 }
 
-.search-input:focus {
-  scale: 1.05;
-}
 
 /* Search Results Dropdown */
 .search-results {
@@ -1144,6 +1141,8 @@ footer .container h5:hover {
 form.header-form {
   display: flex;
   align-items: center;
+  flex-direction: column-reverse;
+  justify-content: center;
 }
 .Subscribe {
   padding: 9px;

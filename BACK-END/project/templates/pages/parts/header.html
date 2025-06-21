@@ -371,7 +371,9 @@
             <i class="fas fa-bars"></i>
           </div>
 
-          <a href="{% url 'index' %}" class="z"><h1 id="store-title"></h1></a>
+          <div>
+            <a href="{% url 'index' %}" class="z"><h1 id="store-title"></h1></a>
+          </div>
           <div class="linkes">
             {% if user.is_authenticated %}
               {% if user.userprofile.role == 'saler' %}
