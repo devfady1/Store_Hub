@@ -1,6 +1,4 @@
-{% extends 'pages/base.html' %}
-{% block content %}
-{% load static %}
+{% extends 'pages/base.html' %} {% block content %} {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,11 +11,80 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
       crossorigin="anonymous"
     />
-    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
 
     <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"
+    />
+    <style>
+      .dataTables_info {
+        margin-left: 20px;
+        color: var(--main-color) !important;
+      }
+      .dataTables_wrapper .dataTables_paginate {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+        margin-top: 20px;
+      }
+
+      .dataTables_wrapper .dataTables_paginate .paginate_button {
+        color: var(--main-color) !important;
+        background-color: white !important;
+        padding: 8px 12px !important;
+        margin: 0 4px !important;
+        border: 1px solid var(--main-color) !important;
+        border-radius: 6px !important;
+        text-decoration: none !important;
+        font-weight: bold !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer;
+      }
+
+      .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background-color: var(--main-color) !important;
+      }
+
+      /* Hover and focus for non-current buttons */
+      .dataTables_wrapper
+        .dataTables_paginate
+        .paginate_button:not(.current):hover,
+      .dataTables_wrapper
+        .dataTables_paginate
+        .paginate_button:not(.current):focus {
+        background-color: var(--main-color) !important;
+        color: white !important;
+      }
+
+      .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+      .dataTables_wrapper .dataTables_paginate .paginate_button.current:focus {
+        background-color: var(--main-color) !important;
+        color: white !important;
+        border: 1px solid var(--main-color) !important;
+        cursor: default !important;
+      }
+
+      .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+        background-color: white !important;
+        color: var(--main-color) !important;
+        border: 1px solid var(--main-color) !important;
+        opacity: 0.5 !important;
+        cursor: not-allowed !important;
+      }
+
+      .dark .dataTables_wrapper .dataTables_paginate .paginate_button {
+        background-color: #151D2A !important;
+      }
+    </style>
 
     <title>Store Hub | Delivery Earnings</title>
   </head>
@@ -85,14 +152,21 @@
               <td>#{{ order.id }}</td>
               <td>{{ order.date }}</td>
               <td>{{ order.customer }}</td>
-              <td><span class="earnings-status-badge earnings-status-{{ order.status }}">{{ order.status|title }}</span></td>
+              <td>
+                <span
+                  class="earnings-status-badge earnings-status-{{ order.status }}"
+                  >{{ order.status|title }}</span
+                >
+              </td>
               <td>{{ order.distance }}</td>
               <td>{{ order.base_rate }}</td>
               <td>{{ order.commission }}</td>
               <td>{{ order.total_earning }}</td>
             </tr>
             {% empty %}
-            <tr><td colspan="8">No orders found.</td></tr>
+            <tr>
+              <td colspan="8">No orders found.</td>
+            </tr>
             {% endfor %}
           </tbody>
         </table>
@@ -122,7 +196,7 @@
 
     <script>
       $(document).ready(function () {
-        $('#earningsTable').DataTable({
+        $("#earningsTable").DataTable({
           pageLength: 8,
           lengthChange: false,
           ordering: true,
@@ -130,9 +204,9 @@
             emptyTable: "No orders available",
             paginate: {
               next: '<i class="fas fa-chevron-right"></i>',
-              previous: '<i class="fas fa-chevron-left"></i>'
-            }
-          }
+              previous: '<i class="fas fa-chevron-left"></i>',
+            },
+          },
         });
       });
     </script>
