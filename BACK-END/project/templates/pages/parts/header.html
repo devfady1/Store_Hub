@@ -864,62 +864,65 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  const side = document.querySelector("#sideMenu");
-  const close = document.querySelector(".side-menu .close-btn");
-  const sideIcon = document.getElementById("menu-toggle");
+  if (window.innerWidth <= 1000) {
+    const side = document.querySelector("#sideMenu");
+    const close = document.querySelector(".side-menu .close-btn");
+    const sideIcon = document.getElementById("menu-toggle");
 
-  // فتح بالآيكون
-  if (sideIcon) {
-    sideIcon.addEventListener("click", () => {
-      side.classList.add("active");
-    });
-  }
-
-  let startX = null;
-  let isDragging = false;
-
-  // فتح بالسحب من اليمين لليسار
-  document.addEventListener("touchstart", (e) => {
-    if (e.touches.length === 1) {
-      startX = e.touches[0].clientX;
-      isDragging = true;
+    // فتح بالآيكون
+    if (sideIcon) {
+      sideIcon.addEventListener("click", () => {
+        side.classList.add("active");
+      });
     }
-  });
 
-  document.addEventListener("touchmove", (e) => {
-    if (!isDragging || e.touches.length !== 1) return;
-    const currentX = e.touches[0].clientX;
-    const diff = currentX - startX;
+    let startX = null;
+    let isDragging = false;
 
-    if (diff < 70 && diff > 0) {
-      side.classList.add("active");
+    // فتح بالسحب من اليمين لليسار
+    document.addEventListener("touchstart", (e) => {
+      if (e.touches.length === 1) {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+      }
+    });
+
+    document.addEventListener("touchmove", (e) => {
+      if (!isDragging || e.touches.length !== 1) return;
+      const currentX = e.touches[0].clientX;
+      const diff = currentX - startX;
+
+      if (diff < 70 && diff > 0) {
+        side.classList.add("active");
+        isDragging = false;
+      }
+    });
+
+    document.addEventListener("touchend", () => {
+      startX = null;
       isDragging = false;
-    }
-  });
-
-  document.addEventListener("touchend", () => {
-    startX = null;
-    isDragging = false;
-  });
-
-  // إغلاق عند الضغط خارج المحفظة
-  document.addEventListener("click", (e) => {
-    if (
-      side.classList.contains("active") &&
-      !side.contains(e.target) &&
-      !e.target.closest("#menu-toggle")
-    ) {
-      side.classList.remove("active");
-    }
-  });
-
-  // زر الإغلاق
-  if (close) {
-    close.addEventListener("click", () => {
-      side.classList.remove("active");
     });
+
+    // إغلاق عند الضغط خارج المحفظة
+    document.addEventListener("click", (e) => {
+      if (
+        side.classList.contains("active") &&
+        !side.contains(e.target) &&
+        !e.target.closest("#menu-toggle")
+      ) {
+        side.classList.remove("active");
+      }
+    });
+
+    // زر الإغلاق
+    if (close) {
+      close.addEventListener("click", () => {
+        side.classList.remove("active");
+      });
+    }
   }
 });
+
 
 </script>
 
