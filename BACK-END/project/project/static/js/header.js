@@ -255,3 +255,13 @@ var x = new Swiper(".xx", {
     prevEl: ".bc",
   },
 });
+
+var xcxc = new Swiper(".z", {
+  slidesPerView: 1,
+  spaceBetween: 30,
+  autoplay: { delay: 3000 },
+  navigation: {
+    nextEl: ".nxt",
+    prevEl: ".bc",
+  },
+});

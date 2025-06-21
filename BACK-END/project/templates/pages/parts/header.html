@@ -69,9 +69,18 @@
       
         <div class="wallet-section">
           <h3>Recent Transactions:</h3>
-          <ul class="transaction-list" id="transactionList">
-            <li>Loading...</li>
-          </ul>
+          <div class="mySwiper z">
+            <ul class="transaction-list swiper-wrapper" id="transactionList">
+              <li>Loading...</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="wallet-section">
+          <div class="mySwiper z swiper-navigation-buttons">
+            <div class="swiper-button-next btn_swip nxt"></div>
+            <div class="swiper-button-prev btn_swip bc"></div>
+          </div>
         </div>
       </div>
       
@@ -95,7 +104,7 @@
             list.innerHTML = "";
             data.transactions.forEach(tx => {
               let sign = tx.transaction_type === "charge" || tx.transaction_type === "earning" ? "+" : "-";
-              let item = `<li>${sign}${tx.amount} EGP - ${tx.description}</li>`;
+              let item = `<li class="swiper-slide">${sign}${tx.amount} EGP - ${tx.description}</li>`;
               list.innerHTML += item;
             });
           })
@@ -187,6 +196,10 @@
             <ul class="transaction-list swiper-wrapper" id="transactionList">
               <li>Loading...</li>
             </ul>
+          </div>
+        </div>
+        <div class="wallet-section">
+          <div class="mySwiper xx swiper-navigation-buttons">
             <div class="swiper-button-next btn_swip nxt"></div>
             <div class="swiper-button-prev btn_swip bc"></div>
           </div>

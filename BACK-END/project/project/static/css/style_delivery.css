@@ -65,7 +65,7 @@
 
 /* Main Class in Any div parent */
 .container {
-  width: 80%;
+  width: 90%;
   margin: 15px auto;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -112,7 +112,7 @@ nav {
 nav .linkes {
   display: flex;
   justify-content: space-between;
-  width: 30%;
+  width: 40%;
 }
 
 nav .linkes p {
