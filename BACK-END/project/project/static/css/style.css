@@ -15,7 +15,6 @@
 }
 
 .welcome-message h3 {
-  margin-top: 100px;
   font-size: 2rem;
   font-weight: bold;
   color: white;
@@ -584,7 +583,7 @@
 }
 header .container{
   margin: 5px auto;
-  margin-top: 8px !important;
+  margin-top: 0px !important;
 }
 :root {
   --main-color: #9f1239;
@@ -603,7 +602,7 @@ body.dark {
 header {
   margin-bottom: 20px;
   border-bottom: 1px solid var(--text-color);
-  position:fixed;
+  position:sticky;
   top: 0;
   z-index: 100;
   background-color: #fafafa;
@@ -1142,6 +1141,7 @@ footer .container h5:hover {
   display: none;
 }
 form.header-form {
+  margin-top: 8px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -2791,7 +2791,6 @@ section#browseCat .container {
   font-size: 18px;
   font-weight: 500;
   margin-left: 140px;
-  margin-top: 60px;
 }
 
 .breadcrumb-about .a1 {
