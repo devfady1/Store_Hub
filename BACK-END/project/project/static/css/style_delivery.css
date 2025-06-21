@@ -1685,6 +1685,31 @@ button:hover {
   background: var(--main-color);
 }
 
+.dataTables_filter {
+  float: right;
+  margin: 15px;
+}
+
+.dataTables_filter label {
+  font-weight: bold;
+  color: #333 ;
+}
+
+.dataTables_filter input {
+  width: 200px;
+  padding: 8px 12px;
+  border: 1px solid #eee;
+  border-radius: 25px !important;
+  outline: none;
+  transition: border-color 0.3s ease;
+  margin-left: 10px; 
+}
+
+.dataTables_filter input:focus {
+  border-color: var(--main-color) !important;
+}
+
+
 /* Table */
 .earnings-table-container {
   overflow-x: auto;
@@ -1704,7 +1729,7 @@ button:hover {
   padding: 15px;
   background: #f8f9fa;
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--main-color);
   border-bottom: 2px solid #e0e0e0;
 }
 
@@ -1869,8 +1894,12 @@ button:hover {
 .dark .earnings-container,
 .dark .summary-container,
 .dark .earnings-filters,
-.dark .earnings-table tbody tr {
+.dark .earnings-table tbody tr,
+.dark .dataTables_wrapper,
+.dark .dataTables_filter input,
+.dark .dataTables_filter label {
   background-color: #1c2739;
+  color: white !important;
 }
 
 .dark .withdraw-btn,
@@ -1879,6 +1908,11 @@ button:hover {
 .dark .earnings-table-BaseRate,
 .dark .earnings-table-DateTime {
   color: white;
+}
+
+.dark .summary-title,
+.dark .earnings-text {
+  color: #7f8c8d;
 }
 
 .dark .earnings-filter-group .earnings-filter-input,

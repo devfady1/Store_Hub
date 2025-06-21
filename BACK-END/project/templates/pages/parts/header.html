@@ -435,11 +435,12 @@
             <div class="close-btn" onclick="toggleSideMenu()">
               <i class="fas fa-times"></i>
             </div>
-            <div class="logo-write">
-              <svg viewBox="0 0 500 100" class="logo-svg">
-                <text x="10" y="70" class="logo-text">STOREHUB</text>
+            <div class="logo-write container"> 
+              <svg viewBox="0 0 500 100" class="logo-svg" preserveAspectRatio="xMidYMid meet">
+                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="logo-text">STOREHUB</text>
               </svg>
             </div>
+
           
             <script>
               window.addEventListener("DOMContentLoaded", () => {
@@ -669,12 +670,6 @@
               </script>
               
               
-              <a href="{% url 'wishlist' %}"
-                ><i class="fa-regular fa-heart"></i
-              ></a>
-              <a href="{% url 'cart' %}"
-                ><i class="fa-solid fa-cart-shopping"></i
-              ></a>
               <a href="#" id="user-icon"> <i class="fa-regular fa-user"></i></a>
               <a onclick="toggleCustomerWallet()" id="walletIcon"><i class="fas fa-wallet"></i></a>
               
@@ -682,6 +677,16 @@
 
             <div class="user-menu" id="accountDropdown">
               <ul>
+                <li>
+                  <a href="{% url 'wishlist' %}">
+                    <i class="fa-regular fa-heart"></i>Wishlist
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'cart' %}">
+                    <i class="fa-solid fa-cart-shopping"></i>Cart
+                  </a>
+                </li>
                 {% if user.is_authenticated %}
                 <li>
                   <a href="{% url 'account' %}">
