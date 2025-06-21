@@ -531,7 +531,7 @@ def cart(request):
     return render(request, 'pages/payment/cart.html', context)
 
 
-
+@login_required
 def checkout(request):
     cart = request.session.get('cart', {})
     total = 0
@@ -540,8 +540,21 @@ def checkout(request):
         item['subtotal'] = float(item['price']) * int(item['quantity'])
         total += item['subtotal']
 
-    return render(request, 'pages/payment/checkout.html', {'cart': cart, 'total': total})
+    if request.method == 'POST':
+        lat = request.POST.get('lat')
+        lng = request.POST.get('lng')
 
+        # أنشئ الأوردر (ده مثال، غير حسب الموديل بتاعك)
+        order = Order.objects.create(
+            customer=request.user,
+            client_lat=lat,
+            client_lng=lng,
+            status='pending'
+        )
+        # أضف بقية التفاصيل من السلة (cart) زي items وغيره
+        return redirect('order_confirmation')  # غير الريدايركت حسب مشروعك
+
+    return render(request, 'pages/payment/checkout.html', {'cart': cart, 'total': total})
 @user_passes_test(is_seler)
 def add_product(request):  
     if request.method == 'POST':  
@@ -944,6 +957,16 @@ def order_details(request, order_id):
     
     return render(request, 'delivery agent/order_detail.html', {'order': order})
 
+# views.py
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.http import JsonResponse
+from .models import Order, UserProfile
+from geopy.distance import geodesic
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+import json
 
 @login_required
 def assign_order(request, order_id):
@@ -955,6 +978,15 @@ def assign_order(request, order_id):
     order.delivery_agent_lng = user_profile.lng
     order.status = 'in_progress'
     order.save()
+
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        f"order_{order.id}",
+        {
+            'type': 'send_status',
+            'message': json.dumps({'status': 'in_progress'})
+        }
+    )
 
     return redirect('order_detail', order_id=order.id)
 
@@ -980,6 +1012,14 @@ def available_order_view(request):
             order.delivery_agent_lng = user_profile.lng
             order.status = 'in_progress'
             order.save()
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                f"order_{order.id}",
+                {
+                    'type': 'send_status',
+                    'message': json.dumps({'status': 'in_progress'})
+                }
+            )
             request.session['rejected_order_ids'] = []
             return redirect('delivery_order_detail', order_id=order.id)
         elif action == 'decline':
@@ -1002,12 +1042,10 @@ def available_order_view(request):
     def calculate_delivery_fee(distance_km):
         base_fee = 25
         extra_km_fee = 6
-        
         if distance_km <= 5:
             return int(base_fee)
         else:
-            extra_distance = distance_km - 5
-            return int(base_fee + (extra_distance * extra_km_fee))
+            return int(base_fee + ((distance_km - 5) * extra_km_fee))
 
     def order_distance(order):
         return geodesic(driver_location, (order.client_lat, order.client_lng)).km
@@ -1018,15 +1056,12 @@ def available_order_view(request):
     orders_data = []
     for order in closest_orders:
         items = order.items.all()
-        # تحويل السعر الإجمالي إلى رقم صحيح
         total_price = int(sum(item.product.price * item.quantity for item in items))
         product = items[0].product if items else None
         seller_lat = product.seller_lat if product else 0
         seller_lng = product.seller_lng if product else 0
-        
         distance_km = order_distance(order)
-        estimated_time_hours = distance_km / 30
-        estimated_time_minutes = int(estimated_time_hours * 60)
+        estimated_time_minutes = int((distance_km / 30) * 60)
         delivery_fee = calculate_delivery_fee(distance_km)
 
         orders_data.append({

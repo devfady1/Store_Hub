@@ -129,6 +129,8 @@
         <input type="text" name="coupon" placeholder="Coupon Code" />
         <button type="button" class="apply-btn">Apply Coupon</button>
       </div>
+      <input type="hidden" name="lat" id="lat">
+      <input type="hidden" name="lng" id="lng">
 
       <button type="submit" class="place-order-btn">Place Order</button>
     </div>
@@ -185,5 +187,17 @@
     }
   };
 </script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function (position) {
+              // احفظ الإحداثيات في فورم خفي
+              document.getElementById("lat").value = position.coords.latitude;
+              document.getElementById("lng").value = position.coords.longitude;
+          });
+      }
+  });
+  </script>
+  
 
 {% endblock %}

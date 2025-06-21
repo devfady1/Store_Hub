@@ -31,29 +31,34 @@
         </div>
         <div class="delivery-status">
             <h3 style="margin-bottom: 25px;">Delivery Status</h3>
-            <div class="status-item">
+        
+            <div class="status-item" id="step-received">
                 <div class="status-item-span">
                     <span><i class="fa-solid fa-circle-check" style="color: var(--main-color); cursor: pointer;"></i>Order Received</span>
                     <span>{{ order.order_date|time:"H:i" }}</span>
                 </div>
             </div>
-            <div class="status-item">
+        
+            <div class="status-item" id="step-preparing">
                 <div class="status-item-span">
                     <span><i class="fa-solid fa-circle-check" style="color: var(--main-color); cursor: pointer;"></i>Preparing Order</span>
                     <span>{{ order.order_date|time:"H:i" }}</span>
                 </div>
             </div>
-            <div class="status-item">
+        
+            <div class="status-item" id="step-onway">
                 <div class="status-item-span">
-                    <span style="color: #2196F3;" ><i class="fa-regular fa-circle " style="color: #2196F3; cursor: pointer;"></i>On the Way</span>
-                    <span >{% if order.status == 'on_way' or order.status == 'completed' %}{{ order.order_date|time:"H:i" }}{% else %}-{% endif %}</span>
+                    <span><i class="fa-regular fa-circle" style="color: #2196F3; cursor: pointer;"></i>On the Way</span>
+                    <span id="onway-time">{% if order.status == 'on_way' or order.status == 'completed' %}{{ order.order_date|time:"H:i" }}{% else %}-{% endif %}</span>
                 </div>
             </div>
-            <div class="status-item" style="color: gray;">
-                <i class="fa-regular fa-circle "></i>
+        
+            <div class="status-item" id="step-delivered" style="color: gray;">
+                <i class="fa-regular fa-circle"></i>
                 <span>Delivered</span>
             </div>
         </div>
+        
     </div>
     <div class="right-panel">
         <div class="right-panel-1" style="width: 100%;
@@ -104,169 +109,128 @@
         </div>
     </div>
 </div>
-
+// ========== WebSocket JavaScript Code (frontend) =============
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
-    const userRole = "{{ request.user.userprofile.role }}";
-    let map;
-    let routeLayer;
-    let driverMarker, sellerMarker, clientMarker;
-    const orderId = "{{ order.id }}";
-    const driverLat = "{{ driver_lat|default:'null' }}";
-    const driverLng = "{{ driver_lng|default:'null' }}";
-    const sellerLat = "{{ seller_lat|default:'null' }}";
-    const sellerLng = "{{ seller_lng|default:'null' }}";
-    const clientLat = "{{ client_lat|default:'null' }}";
-    const clientLng = "{{ client_lng|default:'null' }}";
-    const hasDriverLocation = driverLat !== "null" && driverLng !== "null";
-    const hasSellerLocation = sellerLat !== "null" && sellerLng !== "null";
-    const hasClientLocation = clientLat !== "null" && clientLng !== "null";
-    let centerLat = clientLat !== "null" ? parseFloat(clientLat) : 0;
-    let centerLng = clientLng !== "null" ? parseFloat(clientLng) : 0;
-    const driverIcon = L.icon({
-        iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048314.png',
-        iconSize: [40, 40]
-    });
-    const sellerIcon = L.icon({
-        iconUrl: 'https://cdn-icons-png.flaticon.com/512/2972/2972185.png',
-        iconSize: [40, 40]
-    });
-    const customerIcon = L.icon({
-        iconUrl: 'https://cdn-icons-png.flaticon.com/512/1946/1946429.png',
-        iconSize: [40, 40]
-    });
+const orderId = "{{ order.id }}";
+const userRole = "{{ request.user.userprofile.role }}";
 
-    function initMap() {
-        map = L.map('map').setView([centerLat, centerLng], 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-        if (hasDriverLocation) {
-            driverMarker = L.marker([
-                parseFloat(driverLat),
-                parseFloat(driverLng)
-            ], {icon: driverIcon})
-                .addTo(map)
-                .bindPopup('🚚 Delivery');
-        }
-        if (hasSellerLocation) {
-            sellerMarker = L.marker([
-                parseFloat(sellerLat),
-                parseFloat(sellerLng)
-            ], {icon: sellerIcon})
-                .addTo(map)
-                .bindPopup('🏪 Seller');
-        }
-        if (hasClientLocation) {
-            clientMarker = L.marker([
-                parseFloat(clientLat),
-                parseFloat(clientLng)
-            ], {icon: customerIcon})
-                .addTo(map)
-                .bindPopup('👤 Customer');
-        }
-        if (hasDriverLocation && hasSellerLocation && hasClientLocation) {
-            updateRoute();
-        }
+const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
+const socket = new WebSocket(`${wsProtocol}://${window.location.host}/ws/order_tracking/${orderId}/`);
+
+let map = L.map('map').setView([{{ client_lat|default:0 }}, {{ client_lng|default:0 }}], 13);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+const icons = {
+    delivery_agent: L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/1048/1048314.png', iconSize: [40, 40] }),
+    saler: L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/2972/2972185.png', iconSize: [40, 40] }),
+    user: L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/1946/1946429.png', iconSize: [40, 40] })
+};
+
+const markers = {};
+
+function updateMarker(role, lat, lng) {
+    if (!markers[role]) {
+        markers[role] = L.marker([lat, lng], { icon: icons[role] }).addTo(map).bindPopup(role);
+    } else {
+        markers[role].setLatLng([lat, lng]);
+    }
+}
+
+socket.onmessage = function (event) {
+    const data = JSON.parse(event.data);
+
+    if (data.lat && data.lng && data.role) {
+        updateMarker(data.role, data.lat, data.lng);
     }
 
-    function updateRoute() {
-        if (!hasDriverLocation || !hasSellerLocation || !hasClientLocation) {
-            return;
+    if (data.status) {
+        const statusText = document.getElementById('orderStatus');
+        if (statusText) {
+            statusText.textContent = `🚚 حالة الطلب: ${data.status}`;
         }
-        if (userRole === "delivery_agent") {
-            const coordinates = [
-                [parseFloat(driverLng), parseFloat(driverLat)],
-                [parseFloat(sellerLng), parseFloat(sellerLat)],
-                [parseFloat(clientLng), parseFloat(clientLat)]
-            ];
-            fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
-                method: 'POST',
-                headers: {
-                    'Authorization': '5b3ce3597851110001cf624849ee31d7612e44018effded422136ba4',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ coordinates: coordinates })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (routeLayer) {
-                    map.removeLayer(routeLayer);
-                }
-                routeLayer = L.geoJSON(data, {
-                    style: { color: '#00bfff', weight: 6, dashArray: '10,10', opacity: 0.8 }
-                }).addTo(map);
-                const distance = (data.features[0].properties.segments[0].distance / 1000).toFixed(1);
-                const duration = Math.round(data.features[0].properties.segments[0].duration / 60);
-                document.getElementById('eta').textContent = duration + ' minutes';
-                document.getElementById('distance').textContent = distance + ' km';
-                map.fitBounds(routeLayer.getBounds());
-            })
-            .catch(error => console.error('Error:', error));
+
+        if (data.status === 'in_progress' || data.status === 'on_way') {
+            activateStep('step-onway');
+        }
+
+        if (data.status === 'completed') {
+            activateStep('step-onway');
+            activateStep('step-delivered');
         }
     }
+};
 
-    initMap();
-
-
-    setInterval(() => {
-        fetch(`/live-location/${orderId}/`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.driver && data.driver.lat && data.driver.lng) {
-                    driverMarker.setLatLng([data.driver.lat, data.driver.lng]);
-                }
-                if (data.seller && data.seller.lat && data.seller.lng) {
-                    sellerMarker.setLatLng([data.seller.lat, data.seller.lng]);
-                }
-                if (data.customer && data.customer.lat && data.customer.lng) {
-                    clientMarker.setLatLng([data.customer.lat, data.customer.lng]);
-                }
-                updateRoute();
-            })
-            .catch(error => console.error('Error:', error));
-    }, 10000);
-
-    // إرسال موقع اليوزر الحالي (customer, delivery, seller) كل فترة قصيرة
-    function sendMyLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                fetch(`/live-location/${orderId}/`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ lat: position.coords.latitude, lng: position.coords.longitude })
-                });
-                // تحديث ماركر موقعك مباشرة
-                if (userRole === "delivery_agent" && driverMarker) {
-                    driverMarker.setLatLng([position.coords.latitude, position.coords.longitude]);
-                }
-                if (userRole === "saler" && sellerMarker) {
-                    sellerMarker.setLatLng([position.coords.latitude, position.coords.longitude]);
-                }
-                if (userRole === "user" && clientMarker) {
-                    clientMarker.setLatLng([position.coords.latitude, position.coords.longitude]);
-                }
-            });
+function activateStep(stepId) {
+    const step = document.getElementById(stepId);
+    if (step) {
+        step.style.color = '#000';
+        const icon = step.querySelector('i');
+        if (icon && icon.classList.contains('fa-circle')) {
+            icon.classList.remove('fa-regular', 'fa-circle');
+            icon.classList.add('fa-solid', 'fa-circle-check');
+            icon.style.color = 'var(--main-color)';
+        }
+        const timeSpan = step.querySelector('span:last-child');
+        if (timeSpan && timeSpan.textContent.trim() === '-') {
+            const now = new Date();
+            timeSpan.textContent = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
         }
     }
-    setInterval(sendMyLocation, 10000);
+}
 
-   
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('startDeliveryBtn').onclick = function() {
+function sendMyLiveLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            socket.send(JSON.stringify({ role: userRole, lat, lng }));
+            updateMarker(userRole, lat, lng);
+        });
+
+        navigator.geolocation.watchPosition(function (position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            socket.send(JSON.stringify({ role: userRole, lat, lng }));
+            updateMarker(userRole, lat, lng);
+        });
+    }
+}
+sendMyLiveLocation();
+
+document.addEventListener('DOMContentLoaded', function () {
+    const startBtn = document.getElementById('startDeliveryBtn');
+    const completeBtn = document.getElementById('completeDeliveryBtn');
+
+    if (startBtn) {
+        startBtn.onclick = function () {
             fetch(`/orders/${orderId}/update-status/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: 'in_progress' })
-            }).then(() => location.reload());
+            }).then(() => {
+                socket.send(JSON.stringify({ status: 'in_progress' }));
+                activateStep('step-onway');
+            });
         };
-        document.getElementById('completeDeliveryBtn').onclick = function() {
+    }
+
+    if (completeBtn) {
+        completeBtn.onclick = function () {
             fetch(`/orders/${orderId}/update-status/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: 'completed' })
-            }).then(() => location.reload());
+            }).then(() => {
+                socket.send(JSON.stringify({ status: 'completed' }));
+                activateStep('step-onway');
+                activateStep('step-delivered');
+            });
         };
-    });
+    }
+});
 </script>
+    
 {% endblock %}

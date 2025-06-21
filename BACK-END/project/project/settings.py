@@ -37,6 +37,7 @@ CSRF_COOKIE_HTTPONLY = True
 
 SITE_ID = 1
 INSTALLED_APPS = [
+    'channels',
     'jazzmin',
     'pages.apps.PagesConfig',
     'django.contrib.admin',
@@ -54,6 +55,15 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
 
 ]
+
+#ويبسوكست و هيتغر لما ارفع
+ASGI_APPLICATION = 'project.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 REDIRECT_URI = 'http://localhost:8000/accounts/google/login/callback/'
 
