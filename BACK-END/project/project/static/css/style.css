@@ -789,7 +789,9 @@ nav form i:hover {
 .side-menu.active {
   left: 0;
 }
-
+.dark .logo-text{
+    stroke: #222;
+}
 /* Responsive */
 @media (max-width: 1000px) {
   .menu-toggle {
