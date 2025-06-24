@@ -835,7 +835,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const currentX = e.touches[0].clientX;
     const diff = currentX - startX;
 
-    if (diff < -70) {
+    if (diff < -100) {
       wallet.classList.add("open");
       isDragging = false;
     }
@@ -892,7 +892,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const currentX = e.touches[0].clientX;
       const diff = currentX - startX;
 
-      if (diff < 70 && diff > 0) {
+      console.log(diff);
+      if (diff < 100 && diff > 90) {
         side.classList.add("active");
         isDragging = false;
       }
