@@ -12,7 +12,7 @@ const swiper = new Swiper(".swiper", {
     clickable: true,
   },
   autoplay: {
-    delay: 1500,
+    delay: 5000,
   },
 
   scrollbar: {
@@ -25,7 +25,7 @@ const swiper = new Swiper(".swiper", {
 var x = new Swiper(".pro-div .container .products", {
   slidesPerView: 4,
   spaceBetween: 30,
-  autoplay: { delay: 3000 },
+  autoplay: { delay: 5000 },
   navigation: {
     nextEl: ".btSwapProNext",
     prevEl: ".btSwapProPrev",
@@ -80,7 +80,7 @@ document.querySelectorAll("#iconheart").forEach((icon) => {
 var x = new Swiper(".categs", {
   slidesPerView: 4,
   spaceBetween: 30,
-  autoplay: { delay: 2000 },
+  autoplay: { delay: 5000 },
   navigation: {
     nextEl: ".btnSwapNext",
     prevEl: ".BtnSwapPrev",

@@ -249,7 +249,7 @@ searchInput.addEventListener("keydown", (e) => {
 var x = new Swiper(".xx", {
   slidesPerView: 1,
   spaceBetween: 30,
-  autoplay: { delay: 3000 },
+  autoplay: { delay: 5000 },
   navigation: {
     nextEl: ".nxt",
     prevEl: ".bc",
@@ -259,7 +259,7 @@ var x = new Swiper(".xx", {
 var xcxc = new Swiper(".z", {
   slidesPerView: 1,
   spaceBetween: 30,
-  autoplay: { delay: 3000 },
+  autoplay: { delay: 5000 },
   navigation: {
     nextEl: ".nxt",
     prevEl: ".bc",
