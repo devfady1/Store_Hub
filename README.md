@@ -149,5 +149,5 @@ storehub/
 
 ---
 
-*Developed with ❤️ by Fady Ashraf Salah*
+*Developed with ❤️ by Fady Ashraf Salah && Maged Emel Sobhy && Farouq Hossam && Mariam Ayman && Marina Samir && Menna Allah Mohamed
 
